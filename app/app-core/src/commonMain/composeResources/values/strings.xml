@@ -1,0 +1,5 @@
+<resources>
+    <string name="login_footer_tos">By continuing, you agree to our %1 and %2</string>
+    <string name="login_footer_tos_link1">Terms of Service</string>
+    <string name="login_footer_tos_link2">Privacy Policy</string>
+</resources>
