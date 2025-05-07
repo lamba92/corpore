@@ -1,5 +1,5 @@
 [versions]
-android-gradle-plugin = "8.9.1"
+android-gradle-plugin = "8.10.0"
 android-test-junit = "1.2.1"
 androidx-test-core = "1.6.1"
 androidx-test-runner = "1.6.2"
