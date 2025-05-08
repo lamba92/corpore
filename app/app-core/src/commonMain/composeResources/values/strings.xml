@@ -2,4 +2,9 @@
     <string name="login_footer_tos">By continuing, you agree to our %1 and %2</string>
     <string name="login_footer_tos_link1">Terms of Service</string>
     <string name="login_footer_tos_link2">Privacy Policy</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_apple">Continue with Apple</string>
+    <string name="login_welcome">Welcome to Corpore</string>
+    <string name="login_subtitle">Your AI-powered fitness trainer</string>
+    <string name="login_error">Login failed. Please try again.</string>
 </resources>

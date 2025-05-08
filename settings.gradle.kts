@@ -37,4 +37,5 @@ rootProject.name = "corpore"
 
 include(
     ":app:app-core",
+    ":app:app-android",
 )

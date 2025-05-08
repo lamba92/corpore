@@ -6,12 +6,16 @@ import io.github.lamba92.corpore.app.core.data.AuthRepository
 import io.github.lamba92.corpore.app.core.data.AuthResult
 import io.github.lamba92.corpore.app.core.data.LoggingRepository
 import io.github.lamba92.corpore.app.core.data.logError
+import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
-import io.github.lamba92.corpore.app.core.usecase.execute
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -33,8 +37,12 @@ class LoginScreenViewModel(
     val isLoggingInUsingAppleStateFlow =
         MutableStateFlow(false)
 
-    val isErrorStateFlow =
-        MutableStateFlow(false)
+    private val errorsChannel = Channel<Unit>(onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+    val errorsFlow =
+        errorsChannel
+            .consumeAsFlow()
+            .shareIn(viewModelScope, SharingStarted.Eagerly, 0)
 
     fun loginWithGoogle() {
         login(isLoggingInUsingGoogleStateFlow, loginWithGoogleUseCase::execute)
@@ -56,7 +64,7 @@ class LoginScreenViewModel(
         viewModelScope.launch {
             val result = action()
             if (result is AuthResult.Failure) {
-                isErrorStateFlow.value = true
+                errorsChannel.send(Unit)
                 loggingRepository.logError(result.error)
             }
             stateFlow.value = false

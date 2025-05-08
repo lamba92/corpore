@@ -10,7 +10,7 @@ plugins {
 }
 
 kotlin {
-
+    jvmToolchain(8)
     androidLibrary {
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
         namespace = "io.gituhb.lamba92.corpore.app.core"
@@ -24,13 +24,15 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(libs.kotlinx.coroutines.core)
-                api(libs.kotlinx.serialization.json)
-                api(libs.kotlinx.datetime)
+                api(libs.coil.compose)
                 api(libs.compose.foundation)
                 api(libs.compose.lifecycle.viewmodel)
-                api(libs.compose.resources)
                 api(libs.compose.material3)
+                api(libs.compose.navigation)
+                api(libs.compose.resources)
+                api(libs.kotlinx.coroutines.core)
+                api(libs.kotlinx.datetime)
+                api(libs.kotlinx.serialization.json)
             }
         }
     }
