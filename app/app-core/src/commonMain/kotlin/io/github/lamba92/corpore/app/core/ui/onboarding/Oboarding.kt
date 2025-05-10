@@ -259,19 +259,16 @@ fun Onboarding(
             label = "CarouselAnimation",
             modifier = Modifier.weight(1f),
         ) { target ->
-            Column(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .padding(horizontal = CorporeTheme.appMetrics.outerPadding),
-                verticalArrangement = verticalArrangement,
-                horizontalAlignment = horizontalAlignment,
+            Box(
+                modifier = Modifier.padding(horizontal = CorporeTheme.appMetrics.outerPadding),
             ) {
                 when (target) {
                     OnboardingStep.TrainingLevelSelection ->
                         TrainingLevelSelection(
                             selectedTrainingLevel = data.selectedTrainingLevel,
                             onTrainingLevelClick = { onboardingUpdate(it.toUpdate()) },
+                            verticalArrangement = verticalArrangement,
+                            horizontalAlignment = horizontalAlignment,
                         )
 
                     OnboardingStep.UserData -> {} // UserData()

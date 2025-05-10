@@ -3,7 +3,6 @@ package io.github.lamba92.corpore.app.core.ui.onboarding
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,37 +30,42 @@ import io.github.lamba92.app_core.generated.resources.onboarding_user_level_pro
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ColumnScope.TrainingLevelSelection(
+fun TrainingLevelSelection(
     selectedTrainingLevel: TrainingLevel?,
     onTrainingLevelClick: (TrainingLevel) -> Unit,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    modifier: Modifier = Modifier,
 ) {
-    OnboardingTitle(
-        title = stringResource(Res.string.onboarding_about_yourself_user_level_title),
-        subtitle = stringResource(Res.string.onboarding_about_yourself_user_level_subtitle),
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        text = stringResource(Res.string.onboarding_about_yourself_user_level_text),
-        style = MaterialTheme.typography.bodyMedium,
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        userScrollEnabled = false,
+    Column(
+        modifier = modifier,
+        verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
     ) {
-        items(TrainingLevel.entries) { trainingLevel ->
-            TrainingLevelButton(
-                level = trainingLevel,
-                isSelected = selectedTrainingLevel == trainingLevel,
-                onClick = { onTrainingLevelClick(trainingLevel) },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f),
-            )
+        OnboardingTitle(
+            title = stringResource(Res.string.onboarding_about_yourself_user_level_title),
+            subtitle = stringResource(Res.string.onboarding_about_yourself_user_level_subtitle),
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(Res.string.onboarding_about_yourself_user_level_text),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyVerticalGrid(
+            columns = GridCells.FixedSize(100.dp),
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            userScrollEnabled = false,
+        ) {
+            items(TrainingLevel.entries) { trainingLevel ->
+                TrainingLevelButton(
+                    level = trainingLevel,
+                    isSelected = selectedTrainingLevel == trainingLevel,
+                    onClick = { onTrainingLevelClick(trainingLevel) },
+                )
+            }
         }
     }
 }
@@ -107,6 +111,8 @@ fun TrainingLevelButton(
                         MaterialTheme.colorScheme.outline
                     },
             ),
+        // square shape
+        shape = MaterialTheme.shapes.small,
         modifier = modifier.aspectRatio(1f),
     ) {
         Column(
