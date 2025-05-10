@@ -15,3 +15,9 @@ class LoginWithAppleUseCase(
 ) : UseCase<AuthResult, Unit> {
     override suspend fun execute(param: Unit): AuthResult = authRepository.loginWithApple()
 }
+
+class LogoutUseCase(
+    private val authRepository: AuthRepository,
+) : UseCase<Unit, Unit> {
+    override suspend fun execute(param: Unit) = authRepository.logout()
+}

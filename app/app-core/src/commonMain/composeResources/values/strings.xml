@@ -1,12 +1,23 @@
 <resources>
-    <string name="login_footer_tos">By continuing, you agree to our %1 and %2</string>
-    <string name="login_footer_tos_link1">Terms of Service</string>
-    <string name="login_footer_tos_link2">Privacy Policy</string>
-    <string name="continue_with_google">Continue with Google</string>
-    <string name="continue_with_apple">Continue with Apple</string>
-    <string name="login_welcome">Welcome to Corpore</string>
-    <string name="login_subtitle">Your AI-powered fitness trainer</string>
-    <string name="login_error">Login failed. Please try again.</string>
-    <string name="next">Next</string>
-    <string name="back">Back</string>
+    <string name="app_name">Forma</string>
+
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_continue_with_apple">Continue with Apple</string>
+    <string name="onboarding_continue_with_google">Continue with Google</string>
+    <string name="onboarding_create_plan">Create training plan</string>
+    <string name="onboarding_login_error">Login failed. Please try again.</string>
+    <string name="onboarding_login_footer_tos">By continuing, you agree to our %1 and %2</string>
+    <string name="onboarding_login_footer_tos_link1">Terms of Service</string>
+    <string name="onboarding_login_footer_tos_link2">Privacy Policy</string>
+    <string name="onboarding_login_subtitle">Your AI-powered fitness trainer</string>
+    <string name="onboarding_login_welcome">Welcome to %1$s</string>
+    <string name="onboarding_logout">Logout</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_user_level_advanced">Advanced</string>
+    <string name="onboarding_user_level_beginner">Beginner</string>
+    <string name="onboarding_user_level_intermediate">Intermediate</string>
+    <string name="onboarding_user_level_pro">Pro</string>
+    <string name="onboarding_about_yourself_user_level_title">Tell us about yourself</string>
+    <string name="onboarding_about_yourself_user_level_subtitle">This helps us create a personalized plan for you.</string>
+    <string name="onboarding_about_yourself_user_level_text">What's your training background?</string>
 </resources>

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalResourceApi::class)
-
 package io.github.lamba92.corpore.app.core.ui.onboarding
 
 import androidx.compose.foundation.background
@@ -17,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -36,19 +33,20 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.github.lamba92.app_core.generated.resources.Res
-import io.github.lamba92.app_core.generated.resources.continue_with_apple
-import io.github.lamba92.app_core.generated.resources.continue_with_google
-import io.github.lamba92.app_core.generated.resources.login_error
-import io.github.lamba92.app_core.generated.resources.login_footer_tos
-import io.github.lamba92.app_core.generated.resources.login_footer_tos_link1
-import io.github.lamba92.app_core.generated.resources.login_footer_tos_link2
-import io.github.lamba92.app_core.generated.resources.login_subtitle
-import io.github.lamba92.app_core.generated.resources.login_welcome
-import io.github.lamba92.corpore.app.core.ui.theme.LocalAppMetrics
+import io.github.lamba92.app_core.generated.resources.app_name
+import io.github.lamba92.app_core.generated.resources.onboarding_continue_with_apple
+import io.github.lamba92.app_core.generated.resources.onboarding_continue_with_google
+import io.github.lamba92.app_core.generated.resources.onboarding_login_error
+import io.github.lamba92.app_core.generated.resources.onboarding_login_footer_tos
+import io.github.lamba92.app_core.generated.resources.onboarding_login_footer_tos_link1
+import io.github.lamba92.app_core.generated.resources.onboarding_login_footer_tos_link2
+import io.github.lamba92.app_core.generated.resources.onboarding_login_subtitle
+import io.github.lamba92.app_core.generated.resources.onboarding_login_welcome
+import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
+import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -61,7 +59,7 @@ fun LoginScreen(
     val isLoggingInUsingGoogle by viewModel.isLoggingInUsingGoogleStateFlow.collectAsState()
     val isLoggingInUsingApple by viewModel.isLoggingInUsingAppleStateFlow.collectAsState()
     val errorSnackbarHostState = remember { SnackbarHostState() }
-    val snackbarMessage = stringResource(Res.string.login_error)
+    val snackbarMessage = stringResource(Res.string.onboarding_login_error)
     LaunchedEffect(Unit) {
         viewModel
             .errorsFlow
@@ -105,8 +103,8 @@ fun LoginScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.primary)
-                    .padding(all = LocalAppMetrics.current.outerPadding),
+                    .background(color = CorporeTheme.colorScheme.primary)
+                    .padding(all = CorporeTheme.appMetrics.outerPadding),
         ) {
             Column(
                 modifier = Modifier.align(Alignment.Center),
@@ -114,20 +112,24 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 AsyncImage(
-                    model = Res.getUri("files/corpore-logo.svg"),
+                    model = Res.getUri("files/icons/corpore-logo.svg"),
                     contentDescription = "Corpore logo",
                     modifier = Modifier.size(100.dp),
                 )
                 Text(
-                    text = stringResource(Res.string.login_welcome),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    text =
+                        stringResource(
+                            resource = Res.string.onboarding_login_welcome,
+                            formatArgs = arrayOf(stringResource(resource = Res.string.app_name)),
+                        ),
+                    style = CorporeTheme.typography.headlineLarge,
+                    color = CorporeTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(top = 16.dp),
                 )
                 Text(
-                    text = stringResource(Res.string.login_subtitle),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(Res.string.onboarding_login_subtitle),
+                    style = CorporeTheme.typography.bodyLarge,
+                    color = CorporeTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(top = 8.dp),
                 )
             }
@@ -193,13 +195,13 @@ fun GoogleLoginButton(
     OAuthLoginButton(
         onClick = onClick,
         isLoggingIn = isLoggingIn,
-        text = Res.string.continue_with_google,
+        text = Res.string.onboarding_continue_with_google,
         buttonContainerColor = Color.White,
         textColor = Color.Black,
         enabled = enabled,
         icon = {
             AsyncImage(
-                model = Res.getUri("files/google-g-logo.svg"),
+                model = Res.getUri("files/icons/google-g-logo.svg"),
                 contentDescription = "Google logo",
                 modifier = Modifier.size(24.dp),
             )
@@ -216,13 +218,13 @@ fun AppleLoginButton(
     OAuthLoginButton(
         onClick = onClick,
         isLoggingIn = isLoggingIn,
-        text = Res.string.continue_with_apple,
+        text = Res.string.onboarding_continue_with_apple,
         buttonContainerColor = Color.Black,
         textColor = Color.White,
         enabled = enabled,
         icon = {
             AsyncImage(
-                model = Res.getUri("files/apple-logo-white.svg"),
+                model = Res.getUri("files/icons/apple-logo-white.svg"),
                 contentDescription = "Apple logo",
                 modifier = Modifier.size(24.dp),
             )
@@ -237,16 +239,16 @@ fun LoginFooterTOSText(
 ) {
     val text =
         buildAnnotatedString {
-            val link1 = stringResource(Res.string.login_footer_tos_link1)
-            val link2 = stringResource(Res.string.login_footer_tos_link2)
-            val fullString = stringResource(Res.string.login_footer_tos, link1, link2)
+            val link1 = stringResource(Res.string.onboarding_login_footer_tos_link1)
+            val link2 = stringResource(Res.string.onboarding_login_footer_tos_link2)
+            val fullString = stringResource(Res.string.onboarding_login_footer_tos, link1, link2)
             addStyle(
-                SpanStyle(color = MaterialTheme.colorScheme.secondary),
+                SpanStyle(color = CorporeTheme.colorScheme.secondary),
                 start = fullString.indexOf(link1),
                 end = fullString.indexOf(link1) + link1.length,
             )
             addStyle(
-                SpanStyle(color = MaterialTheme.colorScheme.secondary),
+                SpanStyle(color = CorporeTheme.colorScheme.secondary),
                 start = fullString.indexOf(link2),
                 end = fullString.indexOf(link2) + link2.length,
             )
@@ -271,7 +273,7 @@ fun FooterText(
     Text(
         text = text,
         color = Color.White,
-        style = MaterialTheme.typography.labelSmall,
+        style = CorporeTheme.typography.labelSmall,
         modifier = modifier.border(2.dp, Color.Red),
     )
 }

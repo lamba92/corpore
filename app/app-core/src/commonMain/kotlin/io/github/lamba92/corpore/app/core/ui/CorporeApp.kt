@@ -4,11 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import io.github.lamba92.corpore.app.core.di.DiModules
-import io.github.lamba92.corpore.app.core.ui.onboarding.AboutYourselfScreen
 import io.github.lamba92.corpore.app.core.ui.onboarding.LoginScreen
+import io.github.lamba92.corpore.app.core.ui.onboarding.Onboarding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import org.koin.compose.KoinApplication
 
@@ -28,13 +27,15 @@ fun CorporeApp(navHostController: NavHostController = rememberNavController()) {
                             },
                         )
                     }
-                    navigation("aboutYourself", "onboarding") {
-                        composable("aboutYourself") {
-                            AboutYourselfScreen(
-                                onLogoutClick = { navHostController.navigate("login") },
-                                onNextClick = { /* TODO */ },
-                            )
-                        }
+                    composable("onboarding") {
+                        Onboarding(
+                            onLogout = {
+                                navHostController.navigate("login") {
+                                    popUpTo("onboarding") { inclusive = true }
+                                }
+                            },
+                            onOnboardingComplete = { /* TODO */ },
+                        )
                     }
                 }
             },

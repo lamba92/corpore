@@ -272,3 +272,8 @@ fun CorporeTheme(
         )
     }
 }
+
+typealias CorporeTheme = MaterialTheme
+
+val CorporeTheme.appMetrics
+    @Composable get() = LocalAppMetrics.current
