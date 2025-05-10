@@ -7,4 +7,6 @@
     <string name="login_welcome">Welcome to Corpore</string>
     <string name="login_subtitle">Your AI-powered fitness trainer</string>
     <string name="login_error">Login failed. Please try again.</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
 </resources>

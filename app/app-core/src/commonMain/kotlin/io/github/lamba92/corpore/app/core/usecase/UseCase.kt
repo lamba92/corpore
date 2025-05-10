@@ -5,4 +5,3 @@ fun interface UseCase<K, T> {
 }
 
 suspend fun <T> UseCase<T, Unit>.execute() = execute(Unit)
-

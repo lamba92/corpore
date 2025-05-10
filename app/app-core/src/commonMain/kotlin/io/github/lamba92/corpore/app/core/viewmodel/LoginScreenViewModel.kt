@@ -2,10 +2,10 @@ package io.github.lamba92.corpore.app.core.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.lamba92.corpore.app.core.data.AuthRepository
-import io.github.lamba92.corpore.app.core.data.AuthResult
-import io.github.lamba92.corpore.app.core.data.LoggingRepository
-import io.github.lamba92.corpore.app.core.data.logError
+import io.github.lamba92.corpore.app.core.repository.AuthRepository
+import io.github.lamba92.corpore.app.core.repository.AuthResult
+import io.github.lamba92.corpore.app.core.repository.LoggingRepository
+import io.github.lamba92.corpore.app.core.repository.logError
 import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
@@ -65,7 +65,10 @@ class LoginScreenViewModel(
             val result = action()
             if (result is AuthResult.Failure) {
                 errorsChannel.send(Unit)
-                loggingRepository.logError(result.error)
+                loggingRepository.logError(
+                    tag = this::class.simpleName!!,
+                    exception = result.error,
+                )
             }
             stateFlow.value = false
         }

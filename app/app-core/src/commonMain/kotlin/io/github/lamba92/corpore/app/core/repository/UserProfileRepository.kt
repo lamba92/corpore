@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.data
+package io.github.lamba92.corpore.app.core.repository
 
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.datetime.Instant

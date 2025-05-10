@@ -7,10 +7,19 @@ plugins {
     alias(libs.plugins.kotlin.plugin.compose)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.ktlint)
+    `maven-publish`
+}
+
+publishing {
+    repositories {
+        maven(layout.buildDirectory.dir("mavenTestRepository")) {
+            name = "test"
+        }
+    }
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(11)
     androidLibrary {
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
         namespace = "io.gituhb.lamba92.corpore.app.core"
@@ -25,14 +34,21 @@ kotlin {
         commonMain {
             dependencies {
                 api(libs.coil.compose)
+                api(libs.coil.svg)
                 api(libs.compose.foundation)
                 api(libs.compose.lifecycle.viewmodel)
                 api(libs.compose.material3)
                 api(libs.compose.navigation)
                 api(libs.compose.resources)
+                api(libs.koin.compose.viewmodel)
                 api(libs.kotlinx.coroutines.core)
                 api(libs.kotlinx.datetime)
                 api(libs.kotlinx.serialization.json)
+            }
+        }
+        jvmMain {
+            dependencies {
+                api(libs.kotlinx.coroutines.swing)
             }
         }
     }

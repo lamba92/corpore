@@ -9,7 +9,7 @@ coil = "3.1.0"
 compose-lifecycle-viewmodel = "2.8.2"
 dokka = "2.0.0"
 h2 = "2.3.232"
-jetbrains-compose = "1.7.3"
+jetbrains-compose = "1.8.0"
 junit = "5.12.2"
 kotlin = "2.1.20"
 kotlin-leveldb = "1.0.2"
@@ -22,13 +22,17 @@ ktor = "3.1.1"
 logback = "1.5.18"
 nexus-publish-plugin = "2.0.0"
 activity-compose = "1.8.0"
+compose-bom = "2025.05.00"
+koin = "4.1.0-Beta8"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 android-test-junit = { module = "androidx.test.ext:junit", version.ref = "android-test-junit" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 compose-animation = { module = "org.jetbrains.compose.animation:animation", version.ref = "jetbrains-compose" }
 compose-animation-graphics = { module = "org.jetbrains.compose.animation:animation-graphics", version.ref = "jetbrains-compose" }
 compose-components-animatedimage = { module = "org.jetbrains.compose.components:components-animatedimage", version.ref = "jetbrains-compose" }
@@ -40,6 +44,7 @@ compose-desktop-linux-x64 = { module = "org.jetbrains.compose.desktop:desktop-jv
 compose-desktop-macos-arm64 = { module = "org.jetbrains.compose.desktop:desktop-jvm-macos-arm64", version.ref = "jetbrains-compose" }
 compose-desktop-macos-x64 = { module = "org.jetbrains.compose.desktop:desktop-jvm-macos-x64", version.ref = "jetbrains-compose" }
 compose-desktop-windows-x64 = { module = "org.jetbrains.compose.desktop:desktop-jvm-windows-x64", version.ref = "jetbrains-compose" }
+compose-desktop-windows-arm64 = { module = "org.jetbrains.compose.desktop:desktop-jvm-windows-arm64", version.ref = "jetbrains-compose" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
 compose-html-core = { module = "org.jetbrains.compose.html:html-core", version.ref = "jetbrains-compose" }
 compose-html-svg = { module = "org.jetbrains.compose.html:html-svg", version.ref = "jetbrains-compose" }
@@ -61,10 +66,19 @@ dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", vers
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-leveldb = { module = "com.github.lamba92:kotlin-leveldb", version.ref = "kotlin-leveldb" }
 kotlin-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
@@ -80,6 +94,16 @@ ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negoti
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 nexus-publish-plugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus-publish-plugin" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+
+[bundles]
+compose-desktop = [
+    "compose-desktop-linux-arm64",
+    "compose-desktop-linux-x64",
+    "compose-desktop-macos-arm64",
+    "compose-desktop-macos-x64",
+    "compose-desktop-windows-x64",
+    "compose-desktop-windows-arm64"
+]
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }

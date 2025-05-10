@@ -1,7 +1,7 @@
 package io.github.lamba92.corpore.app.core.usecase.login
 
-import io.github.lamba92.corpore.app.core.data.AuthRepository
-import io.github.lamba92.corpore.app.core.data.AuthResult
+import io.github.lamba92.corpore.app.core.repository.AuthRepository
+import io.github.lamba92.corpore.app.core.repository.AuthResult
 import io.github.lamba92.corpore.app.core.usecase.UseCase
 
 class LoginWithGoogleUseCase(

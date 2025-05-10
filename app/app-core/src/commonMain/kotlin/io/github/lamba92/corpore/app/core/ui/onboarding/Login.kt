@@ -1,15 +1,20 @@
 @file:OptIn(ExperimentalResourceApi::class)
 
-package io.github.lamba92.corpore.app.core.ui
+package io.github.lamba92.corpore.app.core.ui.onboarding
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -24,11 +29,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.continue_with_apple
@@ -39,18 +44,20 @@ import io.github.lamba92.app_core.generated.resources.login_footer_tos_link1
 import io.github.lamba92.app_core.generated.resources.login_footer_tos_link2
 import io.github.lamba92.app_core.generated.resources.login_subtitle
 import io.github.lamba92.app_core.generated.resources.login_welcome
+import io.github.lamba92.corpore.app.core.ui.theme.LocalAppMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginScreen(
+    viewModel: LoginScreenViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit,
 ) {
-    val viewModel = viewModel<LoginScreenViewModel>()
     val isLoggingInUsingGoogle by viewModel.isLoggingInUsingGoogleStateFlow.collectAsState()
     val isLoggingInUsingApple by viewModel.isLoggingInUsingAppleStateFlow.collectAsState()
     val errorSnackbarHostState = remember { SnackbarHostState() }
@@ -60,8 +67,8 @@ fun LoginScreen(
             .errorsFlow
             .onEach {
                 errorSnackbarHostState.showSnackbar(
-                    snackbarMessage,
-                    withDismissAction = true
+                    message = snackbarMessage,
+                    withDismissAction = true,
                 )
             }
             .launchIn(this)
@@ -72,12 +79,12 @@ fun LoginScreen(
     }
 
     LoginScreen(
-        onLoginWithGoogle = viewModel::loginWithGoogle,
-        onLoginWithApple = viewModel::loginWithApple,
+        onLoginWithGoogleClick = viewModel::loginWithGoogle,
+        onLoginWithAppleClick = viewModel::loginWithApple,
         onTOSClicked = viewModel::onTOSClicked,
         isLoggingInUsingGoogle = isLoggingInUsingGoogle,
         isLoggingInUsingApple = isLoggingInUsingApple,
-        errorSnackbarHostState = errorSnackbarHostState
+        errorSnackbarHostState = errorSnackbarHostState,
     )
 }
 
@@ -85,55 +92,62 @@ fun LoginScreen(
 fun LoginScreen(
     isLoggingInUsingGoogle: Boolean,
     isLoggingInUsingApple: Boolean,
-    onLoginWithGoogle: () -> Unit = {},
-    onLoginWithApple: () -> Unit = {},
+    onLoginWithGoogleClick: () -> Unit = {},
+    onLoginWithAppleClick: () -> Unit = {},
     onTOSClicked: () -> Unit = {},
     errorSnackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(errorSnackbarHostState) },
     ) {
-        Column(
+        Box(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                    .background(color = MaterialTheme.colorScheme.primary)
+                    .padding(all = LocalAppMetrics.current.outerPadding),
         ) {
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier.align(Alignment.Center),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 AsyncImage(
                     model = Res.getUri("files/corpore-logo.svg"),
                     contentDescription = "Corpore logo",
-                    modifier = Modifier.size(250.dp)
+                    modifier = Modifier.size(100.dp),
                 )
                 Text(
                     text = stringResource(Res.string.login_welcome),
                     style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(top = 16.dp)
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.padding(top = 16.dp),
                 )
                 Text(
                     text = stringResource(Res.string.login_subtitle),
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 8.dp)
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                modifier = Modifier.align(Alignment.BottomCenter),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 GoogleLoginButton(
-                    onClick = onLoginWithGoogle,
-                    isLoggingIn = isLoggingInUsingGoogle
+                    onClick = onLoginWithGoogleClick,
+                    isLoggingIn = isLoggingInUsingGoogle,
+                    enabled = !isLoggingInUsingApple && !isLoggingInUsingGoogle,
                 )
                 AppleLoginButton(
-                    onClick = onLoginWithApple,
-                    isLoggingIn = isLoggingInUsingApple
+                    onClick = onLoginWithAppleClick,
+                    isLoggingIn = isLoggingInUsingApple,
+                    enabled = !isLoggingInUsingApple && !isLoggingInUsingGoogle,
                 )
                 LoginFooterTOSText(
                     onTOSClicked = onTOSClicked,
-                    modifier = Modifier.padding(top = 16.dp)
+                    modifier = Modifier.padding(top = 16.dp),
                 )
             }
         }
@@ -145,20 +159,26 @@ fun OAuthLoginButton(
     onClick: () -> Unit,
     isLoggingIn: Boolean,
     text: StringResource,
-    icon: @Composable (() -> Unit),
+    buttonContainerColor: Color,
+    textColor: Color,
+    enabled: Boolean,
+    icon: @Composable () -> Unit,
 ) {
     FilledTonalButton(
         onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        enabled = !isLoggingIn
+        colors = ButtonDefaults.filledTonalButtonColors(buttonContainerColor),
+        modifier = Modifier.width(250.dp),
+        enabled = enabled,
     ) {
         when {
             isLoggingIn -> CircularProgressIndicator(modifier = Modifier.size(24.dp))
             else -> {
                 icon()
-                Text(stringResource(text))
+                Text(
+                    modifier = Modifier.padding(start = 12.dp),
+                    text = stringResource(text),
+                    color = textColor,
+                )
             }
         }
     }
@@ -168,18 +188,22 @@ fun OAuthLoginButton(
 fun GoogleLoginButton(
     onClick: () -> Unit,
     isLoggingIn: Boolean,
+    enabled: Boolean,
 ) {
     OAuthLoginButton(
         onClick = onClick,
         isLoggingIn = isLoggingIn,
         text = Res.string.continue_with_google,
+        buttonContainerColor = Color.White,
+        textColor = Color.Black,
+        enabled = enabled,
         icon = {
             AsyncImage(
                 model = Res.getUri("files/google-g-logo.svg"),
                 contentDescription = "Google logo",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
-        }
+        },
     )
 }
 
@@ -187,18 +211,22 @@ fun GoogleLoginButton(
 fun AppleLoginButton(
     onClick: () -> Unit,
     isLoggingIn: Boolean,
+    enabled: Boolean,
 ) {
     OAuthLoginButton(
         onClick = onClick,
         isLoggingIn = isLoggingIn,
         text = Res.string.continue_with_apple,
+        buttonContainerColor = Color.Black,
+        textColor = Color.White,
+        enabled = enabled,
         icon = {
             AsyncImage(
-                model = Res.getUri("files/apple-logo-white.svg.svg"),
+                model = Res.getUri("files/apple-logo-white.svg"),
                 contentDescription = "Apple logo",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
-        }
+        },
     )
 }
 
@@ -207,27 +235,29 @@ fun LoginFooterTOSText(
     onTOSClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val text = buildAnnotatedString {
-        val link1 = stringResource(Res.string.login_footer_tos_link1)
-        val link2 = stringResource(Res.string.login_footer_tos_link2)
-        val fullString = stringResource(Res.string.login_footer_tos, link1, link2)
-        addStyle(
-            SpanStyle(color = MaterialTheme.colorScheme.secondary),
-            start = fullString.indexOf(link1),
-            end = fullString.indexOf(link1) + link1.length
-        )
-        addStyle(
-            SpanStyle(color = MaterialTheme.colorScheme.secondary),
-            start = fullString.indexOf(link2),
-            end = fullString.indexOf(link2) + link2.length
-        )
-    }
+    val text =
+        buildAnnotatedString {
+            val link1 = stringResource(Res.string.login_footer_tos_link1)
+            val link2 = stringResource(Res.string.login_footer_tos_link2)
+            val fullString = stringResource(Res.string.login_footer_tos, link1, link2)
+            addStyle(
+                SpanStyle(color = MaterialTheme.colorScheme.secondary),
+                start = fullString.indexOf(link1),
+                end = fullString.indexOf(link1) + link1.length,
+            )
+            addStyle(
+                SpanStyle(color = MaterialTheme.colorScheme.secondary),
+                start = fullString.indexOf(link2),
+                end = fullString.indexOf(link2) + link2.length,
+            )
+        }
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onTOSClicked() },
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable { onTOSClicked() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         FooterText(text)
     }
@@ -240,7 +270,8 @@ fun FooterText(
 ) {
     Text(
         text = text,
+        color = Color.White,
         style = MaterialTheme.typography.labelSmall,
-        modifier = modifier
+        modifier = modifier.border(2.dp, Color.Red),
     )
 }
