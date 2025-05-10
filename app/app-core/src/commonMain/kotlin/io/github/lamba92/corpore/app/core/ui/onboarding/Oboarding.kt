@@ -64,7 +64,7 @@ fun OnboardingButton(
     modifier: Modifier = Modifier,
     buttonColors: ButtonColors,
     content:
-    @Composable (RowScope.() -> Unit),
+        @Composable (RowScope.() -> Unit),
 ) {
     Button(
         onClick = onClick,
@@ -92,7 +92,7 @@ fun OnboardingNextButton(
             ),
     ) {
         Text(
-            text = stringResource(Res.string.onboarding_next)
+            text = stringResource(Res.string.onboarding_next),
         )
         Image(
             painter = painterResource(Res.drawable.outline_arrow_forward_24),
@@ -148,7 +148,7 @@ fun OnboardingBackButton(
         Text(
             text = stringResource(Res.string.onboarding_back),
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
