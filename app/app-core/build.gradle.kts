@@ -31,11 +31,6 @@ kotlin {
     iosSimulatorArm64()
 
     sourceSets {
-        all {
-            languageSettings {
-                enableLanguageFeature("when-guards")
-            }
-        }
         commonMain {
             dependencies {
                 api(libs.coil.compose)
