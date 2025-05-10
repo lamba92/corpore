@@ -7,14 +7,15 @@ import io.github.lamba92.corpore.app.core.repository.StaticLoggingRepository
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
 import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
-import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 object DiModules {
     val repositories =
         module {
             single<AuthRepository> { MockAuthRepository }
-            single<LoggingRepository> { StaticLoggingRepository }
+            factory<LoggingRepository> { (tag: String) -> StaticLoggingRepository(tag) }
         }
     val useCases =
         module {
@@ -23,7 +24,17 @@ object DiModules {
         }
     val viewModels =
         module {
-            viewModelOf(::LoginScreenViewModel)
+            viewModel {
+                LoginScreenViewModel(
+                    loginWithGoogleUseCase = get(),
+                    loginWithAppleUseCase = get(),
+                    authRepository = get(),
+                    loggingRepository =
+                        get(LoggingRepository::class) {
+                            parametersOf(LoginScreenViewModel::class.simpleName!!)
+                        },
+                )
+            }
         }
 
     val all = repositories + useCases + viewModels

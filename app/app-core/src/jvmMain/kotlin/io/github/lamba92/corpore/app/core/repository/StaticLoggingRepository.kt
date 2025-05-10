@@ -4,41 +4,26 @@ package io.github.lamba92.corpore.app.core.repository
 
 import java.util.logging.Logger
 
-actual data object StaticLoggingRepository : LoggingRepository {
+actual data class StaticLoggingRepository actual constructor(override val tag: String) : LoggingRepository {
     private val logger = Logger.getLogger("PlatformLoggingRepository")
 
-    actual override fun logEvent(
-        tag: String,
-        event: String,
-    ) {
+    actual override fun logEvent(event: String) {
         logger.info("[$tag] $event")
     }
 
-    actual override fun logError(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logError(message: String) {
         logger.severe("[$tag] $message")
     }
 
-    actual override fun logInfo(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logInfo(message: String) {
         logger.info("[$tag] $message")
     }
 
-    actual override fun logDebug(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logDebug(message: String) {
         logger.fine("[$tag] $message")
     }
 
-    actual override fun logWarning(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logWarning(message: String) {
         logger.warning("[$tag] $message")
     }
 }

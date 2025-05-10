@@ -3,62 +3,31 @@
 package io.github.lamba92.corpore.app.core.repository
 
 interface LoggingRepository {
-    fun logEvent(
-        tag: String,
-        event: String,
-    )
+    val tag: String
 
-    fun logError(
-        tag: String,
-        message: String,
-    )
+    fun logEvent(event: String)
 
-    fun logInfo(
-        tag: String,
-        message: String,
-    )
+    fun logError(message: String)
 
-    fun logDebug(
-        tag: String,
-        message: String,
-    )
+    fun logInfo(message: String)
 
-    fun logWarning(
-        tag: String,
-        message: String,
-    )
+    fun logDebug(message: String)
+
+    fun logWarning(message: String)
 }
 
-fun LoggingRepository.logError(
-    tag: String,
-    exception: Throwable,
-) {
-    logError(tag, exception.stackTraceToString())
+fun LoggingRepository.logError(exception: Throwable) {
+    logError(exception.stackTraceToString())
 }
 
-expect object StaticLoggingRepository : LoggingRepository {
-    override fun logEvent(
-        tag: String,
-        event: String,
-    )
+expect class StaticLoggingRepository(tag: String) : LoggingRepository {
+    override fun logEvent(event: String)
 
-    override fun logError(
-        tag: String,
-        message: String,
-    )
+    override fun logError(message: String)
 
-    override fun logInfo(
-        tag: String,
-        message: String,
-    )
+    override fun logInfo(message: String)
 
-    override fun logDebug(
-        tag: String,
-        message: String,
-    )
+    override fun logDebug(message: String)
 
-    override fun logWarning(
-        tag: String,
-        message: String,
-    )
+    override fun logWarning(message: String)
 }

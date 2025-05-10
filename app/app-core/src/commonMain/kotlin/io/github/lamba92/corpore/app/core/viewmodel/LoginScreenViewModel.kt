@@ -60,17 +60,16 @@ class LoginScreenViewModel(
         stateFlow: MutableStateFlow<Boolean>,
         action: suspend () -> AuthResult,
     ) {
+        loggingRepository.logInfo("Login started")
         stateFlow.value = true
         viewModelScope.launch {
             val result = action()
             if (result is AuthResult.Failure) {
                 errorsChannel.send(Unit)
-                loggingRepository.logError(
-                    tag = this::class.simpleName!!,
-                    exception = result.error,
-                )
+                loggingRepository.logError(result.error)
             }
             stateFlow.value = false
+            loggingRepository.logInfo("Login finished")
         }
     }
 }

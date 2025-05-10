@@ -4,39 +4,24 @@ package io.github.lamba92.corpore.app.core.repository
 
 import android.util.Log
 
-actual data object StaticLoggingRepository : LoggingRepository {
-    actual override fun logEvent(
-        tag: String,
-        event: String,
-    ) {
+actual data class StaticLoggingRepository actual constructor(override val tag: String) : LoggingRepository {
+    actual override fun logEvent(event: String) {
         Log.d(tag, event)
     }
 
-    actual override fun logError(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logError(message: String) {
         Log.e(tag, message)
     }
 
-    actual override fun logInfo(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logInfo(message: String) {
         Log.i(tag, message)
     }
 
-    actual override fun logDebug(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logDebug(message: String) {
         Log.d(tag, message)
     }
 
-    actual override fun logWarning(
-        tag: String,
-        message: String,
-    ) {
+    actual override fun logWarning(message: String) {
         Log.w(tag, message)
     }
 }
