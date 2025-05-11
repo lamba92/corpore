@@ -149,7 +149,7 @@ fun Onboarding(
                 data = data,
                 onUpdate = onUpdate,
                 verticalArrangement = verticalArrangement,
-                horizontalAlignment = horizontalAlignment
+                horizontalAlignment = horizontalAlignment,
             )
         }
         OnboardingFooter(
@@ -172,7 +172,6 @@ private fun slideOut(direction: Int) = slideOutHorizontally { fullWidth -> -dire
 private fun slideIn(direction: Int) = slideInHorizontally { fullWidth -> direction * fullWidth }
 
 private fun TrainingLevel.toUpdate() = OnboardingDataUpdateEvent.TrainingLevelSelected(this)
-
 
 @Composable
 fun OnboardingHeader(
@@ -201,7 +200,7 @@ fun OnboardingContent(
     data: OnboardingData,
     onUpdate: (OnboardingDataUpdateEvent) -> Unit,
     verticalArrangement: Arrangement.Vertical,
-    horizontalAlignment: Alignment.Horizontal
+    horizontalAlignment: Alignment.Horizontal,
 ) {
     Box(
         modifier = Modifier.padding(horizontal = CorporeTheme.appMetrics.outerPadding),
