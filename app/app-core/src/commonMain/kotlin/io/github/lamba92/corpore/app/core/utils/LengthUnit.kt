@@ -1,0 +1,123 @@
+package io.github.lamba92.corpore.app.core.utils
+
+import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
+
+// Sealed interface to represent different length units
+sealed interface LengthUnit {
+    val factorToMeters: Double // Factor to convert this unit to meters
+
+    object Millimeters : LengthUnit {
+        override val factorToMeters: Double = 0.001
+
+        override fun toString(): String = "mm"
+    }
+
+    object Centimeters : LengthUnit {
+        override val factorToMeters: Double = 0.01
+
+        override fun toString(): String = "cm"
+    }
+
+    object Meters : LengthUnit {
+        override val factorToMeters: Double = 1.0
+
+        override fun toString(): String = "m"
+    }
+
+    object Kilometers : LengthUnit {
+        override val factorToMeters: Double = 1000.0
+
+        override fun toString(): String = "km"
+    }
+
+    object Inches : LengthUnit {
+        override val factorToMeters: Double = 0.0254
+
+        override fun toString(): String = "in"
+    }
+
+    object Feet : LengthUnit {
+        override val factorToMeters: Double = 0.3048
+
+        override fun toString(): String = "ft"
+    }
+
+    object Yards : LengthUnit {
+        override val factorToMeters: Double = 0.9144
+
+        override fun toString(): String = "yd"
+    }
+
+    object Miles : LengthUnit {
+        override val factorToMeters: Double = 1609.34
+
+        override fun toString(): String = "mi"
+    }
+}
+
+@JvmInline
+@Serializable
+value class Length(private val meters: Double) : Comparable<Length> {
+    // Secondary constructor for creating Length from a value and unit
+    constructor(value: Number, unit: LengthUnit) : this(value.toDouble() * unit.factorToMeters)
+
+    // Properties to get the length value in different units
+    val inMillimeters: Double get() = meters / LengthUnit.Millimeters.factorToMeters
+    val inCentimeters: Double get() = meters / LengthUnit.Centimeters.factorToMeters
+    val inMeters: Double get() = meters
+    val inKilometers: Double get() = meters / LengthUnit.Kilometers.factorToMeters
+    val inInches: Double get() = meters / LengthUnit.Inches.factorToMeters
+    val inFeet: Double get() = meters / LengthUnit.Feet.factorToMeters
+    val inYards: Double get() = meters / LengthUnit.Yards.factorToMeters
+    val inMiles: Double get() = meters / LengthUnit.Miles.factorToMeters
+
+    // Method to convert length to a specific unit
+    fun to(unit: LengthUnit): Double = meters / unit.factorToMeters
+
+    // Arithmetic operators
+    operator fun plus(other: Length): Length = Length(meters + other.meters, LengthUnit.Meters)
+
+    operator fun minus(other: Length): Length = Length(meters - other.meters, LengthUnit.Meters)
+
+    operator fun times(factor: Number): Length = Length(meters * factor.toDouble(), LengthUnit.Meters)
+
+    operator fun div(factor: Number): Length = Length(meters / factor.toDouble(), LengthUnit.Meters)
+
+    // Comparison
+    override fun compareTo(other: Length): Int = this.meters.compareTo(other.meters)
+
+    // String representation
+    override fun toString(): String =
+        when {
+            meters < LengthUnit.Meters.factorToMeters -> "$inMillimeters ${LengthUnit.Millimeters}"
+            meters < LengthUnit.Kilometers.factorToMeters -> "$inCentimeters ${LengthUnit.Centimeters}"
+            meters < LengthUnit.Miles.factorToMeters -> "$inMeters ${LengthUnit.Meters}"
+            else -> "$inKilometers ${LengthUnit.Kilometers}"
+        }
+
+    fun toString(
+        unit: LengthUnit,
+        precision: Int = 2,
+    ): String =
+        when (unit) {
+            LengthUnit.Millimeters -> "${inMillimeters.toStringWithPrecision(precision)} ${LengthUnit.Millimeters}"
+            LengthUnit.Centimeters -> "${inCentimeters.toStringWithPrecision(precision)} ${LengthUnit.Centimeters}"
+            LengthUnit.Meters -> "${inMeters.toStringWithPrecision(precision)} ${LengthUnit.Meters}"
+            LengthUnit.Kilometers -> "${inKilometers.toStringWithPrecision(precision)} ${LengthUnit.Kilometers}"
+            LengthUnit.Inches -> "${inInches.toStringWithPrecision(precision)} ${LengthUnit.Inches}"
+            LengthUnit.Feet -> "${inFeet.toStringWithPrecision(precision)} ${LengthUnit.Feet}"
+            LengthUnit.Yards -> "${inYards.toStringWithPrecision(precision)} ${LengthUnit.Yards}"
+            LengthUnit.Miles -> "${inMiles.toStringWithPrecision(precision)} ${LengthUnit.Miles}"
+        }
+}
+
+// Extension properties for creating Length instances with specific units
+val Number.millimeters: Length get() = Length(this, LengthUnit.Millimeters)
+val Number.centimeters: Length get() = Length(this, LengthUnit.Centimeters)
+val Number.meters: Length get() = Length(this, LengthUnit.Meters)
+val Number.kilometers: Length get() = Length(this, LengthUnit.Kilometers)
+val Number.inches: Length get() = Length(this, LengthUnit.Inches)
+val Number.feet: Length get() = Length(this, LengthUnit.Feet)
+val Number.yards: Length get() = Length(this, LengthUnit.Yards)
+val Number.miles: Length get() = Length(this, LengthUnit.Miles)

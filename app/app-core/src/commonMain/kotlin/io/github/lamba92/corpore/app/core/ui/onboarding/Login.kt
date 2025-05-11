@@ -60,6 +60,7 @@ fun LoginScreen(
     val isLoggingInUsingApple by viewModel.isLoggingInUsingAppleStateFlow.collectAsState()
     val errorSnackbarHostState = remember { SnackbarHostState() }
     val snackbarMessage = stringResource(Res.string.onboarding_login_error)
+
     LaunchedEffect(Unit) {
         viewModel
             .errorsFlow

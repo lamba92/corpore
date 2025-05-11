@@ -3,13 +3,11 @@ package io.github.lamba92.corpore.app.core.ui.onboarding
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -27,12 +25,13 @@ import io.github.lamba92.app_core.generated.resources.onboarding_user_level_adva
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_beginner
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_intermediate
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_pro
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun TrainingLevelSelection(
+fun TrainingLevel(
     selectedTrainingLevel: TrainingLevel?,
-    onTrainingLevelClick: (TrainingLevel) -> Unit,
+    onUpdate: (OnboardingDataUpdateEvent.TrainingLevelSelected) -> Unit,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     modifier: Modifier = Modifier,
@@ -51,21 +50,61 @@ fun TrainingLevelSelection(
             text = stringResource(Res.string.onboarding_about_yourself_user_level_text),
             style = MaterialTheme.typography.bodyMedium,
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyVerticalGrid(
-            columns = GridCells.FixedSize(100.dp),
+        Spacer(modifier = Modifier.height(16.dp))
+        TrainingLevelSelectionButtons(
+            selectedTrainingLevel = selectedTrainingLevel,
+            onTrainingLevelClick = { onUpdate(OnboardingDataUpdateEvent.TrainingLevelSelected(it)) },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+        )
+    }
+}
+
+@Composable
+fun TrainingLevelSelectionButtons(
+    selectedTrainingLevel: TrainingLevel?,
+    onTrainingLevelClick: (TrainingLevel) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        TrainingLevelSelectionButtonsRow(
+            selectedTrainingLevel = selectedTrainingLevel,
+            onTrainingLevelClick = onTrainingLevelClick,
+            levels = arrayOf(TrainingLevel.Beginner, TrainingLevel.Intermediate),
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            userScrollEnabled = false,
-        ) {
-            items(TrainingLevel.entries) { trainingLevel ->
-                TrainingLevelButton(
-                    level = trainingLevel,
-                    isSelected = selectedTrainingLevel == trainingLevel,
-                    onClick = { onTrainingLevelClick(trainingLevel) },
-                )
-            }
+        )
+        TrainingLevelSelectionButtonsRow(
+            selectedTrainingLevel = selectedTrainingLevel,
+            onTrainingLevelClick = onTrainingLevelClick,
+            levels = arrayOf(TrainingLevel.Advanced, TrainingLevel.Pro),
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+fun TrainingLevelSelectionButtonsRow(
+    selectedTrainingLevel: TrainingLevel?,
+    onTrainingLevelClick: (TrainingLevel) -> Unit,
+    modifier: Modifier = Modifier,
+    vararg levels: TrainingLevel,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier,
+    ) {
+        levels.forEach { level ->
+            TrainingLevelButton(
+                level = level,
+                isSelected = selectedTrainingLevel == level,
+                onClick = { onTrainingLevelClick(level) },
+                modifier = Modifier.weight(0.5f),
+            )
         }
     }
 }
@@ -113,7 +152,9 @@ fun TrainingLevelButton(
             ),
         // square shape
         shape = MaterialTheme.shapes.small,
-        modifier = modifier.aspectRatio(1f),
+        modifier =
+            modifier
+                .fillMaxWidth(),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -128,6 +169,7 @@ fun TrainingLevelButton(
                         TrainingLevel.Pro -> Res.getUri("files/icons/trophy_24dp.svg")
                     },
                 contentDescription = null,
+                modifier = Modifier.size(48.dp),
             )
             Spacer(modifier = Modifier.height(8.dp))
             val resourceId =

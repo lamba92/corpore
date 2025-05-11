@@ -6,6 +6,8 @@ import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.ui.onboarding.TrainingLevel
 import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
+import io.github.lamba92.corpore.app.core.utils.Length
+import io.github.lamba92.corpore.app.core.utils.Weight
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,11 +17,22 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class OnboardingData(
     val selectedTrainingLevel: TrainingLevel? = null,
+    val yearOfBirth: Int? = null,
+    val weight: Weight? = null,
+    val height: Length? = null,
+    val measurementUnit: MeasurementSystem = MeasurementSystem.Metric,
     val selectedActivities: List<SportActivity> = emptyList(),
 )
+
+enum class MeasurementSystem {
+    Metric,
+    Imperial,
+}
 
 enum class SportActivity {
     Gym,
@@ -31,14 +44,26 @@ enum class SportActivity {
 sealed interface OnboardingDataUpdateEvent {
     data class TrainingLevelSelected(val trainingLevel: TrainingLevel) : OnboardingDataUpdateEvent
 
-    data class ActivityAdded(val activity: SportActivity) : OnboardingDataUpdateEvent
+    sealed interface PhysicalProfile : OnboardingDataUpdateEvent {
+        data class YearOfBirthSelected(val year: Int) : PhysicalProfile
 
-    data class ActivityRemoved(val activity: SportActivity) : OnboardingDataUpdateEvent
+        data class WeightSelected(val weight: Weight) : PhysicalProfile
+
+        data class HeightSelected(val height: Length) : PhysicalProfile
+
+        data class MeasurementSystemSelected(val measurementSystem: MeasurementSystem) : PhysicalProfile
+    }
+
+    sealed interface ActivitiesSelection : OnboardingDataUpdateEvent {
+        data class ActivityAdded(val activities: List<SportActivity>) : ActivitiesSelection
+
+        data class ActivityRemoved(val activities: List<SportActivity>) : ActivitiesSelection
+    }
 }
 
 enum class OnboardingStep {
     TrainingLevelSelection,
-    UserData,
+    PhysicalProfile,
     ActivitiesSelection,
     CurrentFitnessLevelUserInput,
     ActivitiesRotationFrequency,
@@ -84,13 +109,7 @@ class OnboardingViewModel(
             onboardingDataStateFlow,
             _currentOnboardingStepStateFlow,
         ) { onboardingData, currentOnboardingStep ->
-            when (currentOnboardingStep) {
-                OnboardingStep.TrainingLevelSelection -> onboardingData.selectedTrainingLevel != null
-                OnboardingStep.UserData -> true // TODO: implement
-                OnboardingStep.ActivitiesSelection -> onboardingData.selectedActivities.isNotEmpty()
-                OnboardingStep.CurrentFitnessLevelUserInput -> true // TODO: implement
-                OnboardingStep.ActivitiesRotationFrequency -> true // TODO: implement
-            }
+            currentOnboardingStep.canGoNext(onboardingData)
         }
             .stateIn(
                 scope = viewModelScope,
@@ -112,17 +131,33 @@ class OnboardingViewModel(
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(selectedTrainingLevel = event.trainingLevel)
 
-            is OnboardingDataUpdateEvent.ActivityAdded ->
+            is OnboardingDataUpdateEvent.ActivitiesSelection.ActivityAdded ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        selectedActivities = onboardingDataStateFlow.value.selectedActivities + event.activity,
+                        selectedActivities = onboardingDataStateFlow.value.selectedActivities + event.activities,
                     )
 
-            is OnboardingDataUpdateEvent.ActivityRemoved ->
+            is OnboardingDataUpdateEvent.ActivitiesSelection.ActivityRemoved ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        selectedActivities = onboardingDataStateFlow.value.selectedActivities - event.activity,
+                        selectedActivities = onboardingDataStateFlow.value.selectedActivities - event.activities,
                     )
+
+            is OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected ->
+                onboardingDataStateFlow.value =
+                    onboardingDataStateFlow.value.copy(yearOfBirth = event.year)
+
+            is OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected ->
+                onboardingDataStateFlow.value =
+                    onboardingDataStateFlow.value.copy(weight = event.weight)
+
+            is OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected ->
+                onboardingDataStateFlow.value =
+                    onboardingDataStateFlow.value.copy(height = event.height)
+
+            is OnboardingDataUpdateEvent.PhysicalProfile.MeasurementSystemSelected ->
+                onboardingDataStateFlow.value =
+                    onboardingDataStateFlow.value.copy(measurementUnit = event.measurementSystem)
         }
     }
 
@@ -157,7 +192,8 @@ class OnboardingViewModel(
 fun OnboardingStep.canGoNext(data: OnboardingData) =
     when (this) {
         OnboardingStep.TrainingLevelSelection -> data.selectedTrainingLevel != null
-        OnboardingStep.UserData -> true
+        OnboardingStep.PhysicalProfile ->
+            data.yearOfBirth != null && data.weight != null && data.height != null
         OnboardingStep.ActivitiesSelection -> data.selectedActivities.isNotEmpty()
         OnboardingStep.CurrentFitnessLevelUserInput -> true
         OnboardingStep.ActivitiesRotationFrequency -> true

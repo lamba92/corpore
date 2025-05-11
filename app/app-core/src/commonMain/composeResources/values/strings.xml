@@ -20,4 +20,6 @@
     <string name="onboarding_about_yourself_user_level_title">Tell us about yourself</string>
     <string name="onboarding_about_yourself_user_level_subtitle">This helps us create a personalized plan for you.</string>
     <string name="onboarding_about_yourself_user_level_text">What's your training background?</string>
+    <string name="onboarding_physical_profile_title">Your Physical Profile</string>
+    <string name="onboarding_physical_profile_subtitle">This helps us create a personalized plan for you.</string>
 </resources>
