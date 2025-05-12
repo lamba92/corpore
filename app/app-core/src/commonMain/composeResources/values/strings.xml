@@ -22,4 +22,12 @@
     <string name="onboarding_about_yourself_user_level_text">What's your training background?</string>
     <string name="onboarding_physical_profile_title">Your Physical Profile</string>
     <string name="onboarding_physical_profile_subtitle">This helps us create a personalized plan for you.</string>
+    <string name="onboarding_physical_unit_system">Unit System</string>
+    <string name="onboarding_physical_unit_system_metric">Metric</string>
+    <string name="onboarding_physical_unit_system_imperial">Imperial</string>
+    <string name="onboarding_physical_year_of_birth">Year of birth</string>
+    <string name="onboarding_physical_weight_kg">Weight (kg)</string>
+    <string name="onboarding_physical_weight_pounds">Weight (pounds)</string>
+    <string name="onboarding_physical_height_cm">Height (cm)</string>
+    <string name="onboarding_physical_height_feet">Height (feet)</string>
 </resources>

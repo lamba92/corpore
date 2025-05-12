@@ -59,8 +59,14 @@ sealed interface LengthUnit {
 @JvmInline
 @Serializable
 value class Length(private val meters: Double) : Comparable<Length> {
-    // Secondary constructor for creating Length from a value and unit
-    constructor(value: Number, unit: LengthUnit) : this(value.toDouble() * unit.factorToMeters)
+
+    companion object {
+        // Function for creating Length from a value and unit
+        fun from(
+            value: Number,
+            unit: LengthUnit,
+        ) = Length(value.toDouble() * unit.factorToMeters)
+    }
 
     // Properties to get the length value in different units
     val inMillimeters: Double get() = meters / LengthUnit.Millimeters.factorToMeters
@@ -76,13 +82,13 @@ value class Length(private val meters: Double) : Comparable<Length> {
     fun to(unit: LengthUnit): Double = meters / unit.factorToMeters
 
     // Arithmetic operators
-    operator fun plus(other: Length): Length = Length(meters + other.meters, LengthUnit.Meters)
+    operator fun plus(other: Length): Length = Length.from(meters + other.meters, LengthUnit.Meters)
 
-    operator fun minus(other: Length): Length = Length(meters - other.meters, LengthUnit.Meters)
+    operator fun minus(other: Length): Length = Length.from(meters - other.meters, LengthUnit.Meters)
 
-    operator fun times(factor: Number): Length = Length(meters * factor.toDouble(), LengthUnit.Meters)
+    operator fun times(factor: Number): Length = Length.from(meters * factor.toDouble(), LengthUnit.Meters)
 
-    operator fun div(factor: Number): Length = Length(meters / factor.toDouble(), LengthUnit.Meters)
+    operator fun div(factor: Number): Length = Length.from(meters / factor.toDouble(), LengthUnit.Meters)
 
     // Comparison
     override fun compareTo(other: Length): Int = this.meters.compareTo(other.meters)
@@ -113,11 +119,11 @@ value class Length(private val meters: Double) : Comparable<Length> {
 }
 
 // Extension properties for creating Length instances with specific units
-val Number.millimeters: Length get() = Length(this, LengthUnit.Millimeters)
-val Number.centimeters: Length get() = Length(this, LengthUnit.Centimeters)
-val Number.meters: Length get() = Length(this, LengthUnit.Meters)
-val Number.kilometers: Length get() = Length(this, LengthUnit.Kilometers)
-val Number.inches: Length get() = Length(this, LengthUnit.Inches)
-val Number.feet: Length get() = Length(this, LengthUnit.Feet)
-val Number.yards: Length get() = Length(this, LengthUnit.Yards)
-val Number.miles: Length get() = Length(this, LengthUnit.Miles)
+val Number.millimeters: Length get() = Length.from(this, LengthUnit.Millimeters)
+val Number.centimeters: Length get() = Length.from(this, LengthUnit.Centimeters)
+val Number.meters: Length get() = Length.from(this, LengthUnit.Meters)
+val Number.kilometers: Length get() = Length.from(this, LengthUnit.Kilometers)
+val Number.inches: Length get() = Length.from(this, LengthUnit.Inches)
+val Number.feet: Length get() = Length.from(this, LengthUnit.Feet)
+val Number.yards: Length get() = Length.from(this, LengthUnit.Yards)
+val Number.miles: Length get() = Length.from(this, LengthUnit.Miles)

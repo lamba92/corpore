@@ -7,7 +7,9 @@ import io.github.lamba92.corpore.app.core.ui.onboarding.TrainingLevel
 import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
 import io.github.lamba92.corpore.app.core.utils.Length
+import io.github.lamba92.corpore.app.core.utils.LengthUnit
 import io.github.lamba92.corpore.app.core.utils.Weight
+import io.github.lamba92.corpore.app.core.utils.WeightUnit
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,16 +24,31 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OnboardingData(
     val selectedTrainingLevel: TrainingLevel? = null,
-    val yearOfBirth: Int? = null,
-    val weight: Weight? = null,
-    val height: Length? = null,
-    val measurementUnit: MeasurementSystem = MeasurementSystem.Metric,
+    val physicalProfile: PhysicalProfile = PhysicalProfile(),
     val selectedActivities: List<SportActivity> = emptyList(),
-)
+) {
 
-enum class MeasurementSystem {
-    Metric,
-    Imperial,
+    @Serializable
+    data class PhysicalProfile(
+        val yearOfBirth: Int? = null,
+        val weight: Weight? = null,
+        val height: Length? = null,
+        val measurementSystem: MeasurementSystem = MeasurementSystem.Metric,
+    )
+}
+
+enum class MeasurementSystem(
+    val weightUnit: WeightUnit,
+    val lengthUnit: LengthUnit,
+) {
+    Metric(
+        weightUnit = WeightUnit.Kilograms,
+        lengthUnit = LengthUnit.Centimeters,
+    ),
+    Imperial(
+        weightUnit = WeightUnit.Pounds,
+        lengthUnit = LengthUnit.Feet,
+    );
 }
 
 enum class SportActivity {
@@ -51,7 +68,8 @@ sealed interface OnboardingDataUpdateEvent {
 
         data class HeightSelected(val height: Length) : PhysicalProfile
 
-        data class MeasurementSystemSelected(val measurementSystem: MeasurementSystem) : PhysicalProfile
+        data class MeasurementSystemSelected(val measurementSystem: MeasurementSystem) :
+            PhysicalProfile
     }
 
     sealed interface ActivitiesSelection : OnboardingDataUpdateEvent {
@@ -145,19 +163,51 @@ class OnboardingViewModel(
 
             is OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected ->
                 onboardingDataStateFlow.value =
-                    onboardingDataStateFlow.value.copy(yearOfBirth = event.year)
+                    onboardingDataStateFlow
+                        .value
+                        .copy(
+                            physicalProfile =
+                                onboardingDataStateFlow
+                                    .value
+                                    .physicalProfile
+                                    .copy(yearOfBirth = event.year)
+                        )
 
             is OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected ->
                 onboardingDataStateFlow.value =
-                    onboardingDataStateFlow.value.copy(weight = event.weight)
+                    onboardingDataStateFlow
+                        .value
+                        .copy(
+                            physicalProfile =
+                                onboardingDataStateFlow
+                                    .value
+                                    .physicalProfile
+                                    .copy(weight = event.weight)
+                        )
 
             is OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected ->
                 onboardingDataStateFlow.value =
-                    onboardingDataStateFlow.value.copy(height = event.height)
+                    onboardingDataStateFlow
+                        .value
+                        .copy(
+                            physicalProfile =
+                                onboardingDataStateFlow
+                                    .value
+                                    .physicalProfile
+                                    .copy(height = event.height)
+                        )
 
             is OnboardingDataUpdateEvent.PhysicalProfile.MeasurementSystemSelected ->
                 onboardingDataStateFlow.value =
-                    onboardingDataStateFlow.value.copy(measurementUnit = event.measurementSystem)
+                    onboardingDataStateFlow
+                        .value
+                        .copy(
+                            physicalProfile =
+                                onboardingDataStateFlow
+                                    .value
+                                    .physicalProfile
+                                    .copy(measurementSystem = event.measurementSystem)
+                        )
         }
     }
 
@@ -193,7 +243,10 @@ fun OnboardingStep.canGoNext(data: OnboardingData) =
     when (this) {
         OnboardingStep.TrainingLevelSelection -> data.selectedTrainingLevel != null
         OnboardingStep.PhysicalProfile ->
-            data.yearOfBirth != null && data.weight != null && data.height != null
+            data.physicalProfile.yearOfBirth != null
+                    && data.physicalProfile.weight != null
+                    && data.physicalProfile.height != null
+
         OnboardingStep.ActivitiesSelection -> data.selectedActivities.isNotEmpty()
         OnboardingStep.CurrentFitnessLevelUserInput -> true
         OnboardingStep.ActivitiesRotationFrequency -> true

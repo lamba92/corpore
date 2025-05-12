@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -216,11 +217,8 @@ fun OnboardingContent(
 
             OnboardingStep.PhysicalProfile ->
                 PhysicalProfile(
-                    yearOfBirth = data.yearOfBirth,
-                    weight = data.weight,
-                    height = data.height,
-                    measurementUnit = data.measurementUnit,
-                    onUpdate = onUpdate,
+                    data = data.physicalProfile,
+                    onUpdate = onUpdate
                 )
 
             OnboardingStep.ActivitiesSelection -> {} // ActivitiesSelection()
@@ -393,7 +391,7 @@ fun LogoutButton(
 }
 
 @Composable
-fun OnboardingTitle(
+fun ColumnScope.OnboardingTitle(
     title: String,
     subtitle: String,
 ) {
