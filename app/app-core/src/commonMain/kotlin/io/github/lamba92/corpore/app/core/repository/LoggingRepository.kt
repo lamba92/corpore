@@ -21,6 +21,8 @@ fun LoggingRepository.logError(exception: Throwable) {
 }
 
 expect class StaticLoggingRepository(tag: String) : LoggingRepository {
+    override val tag: String
+
     override fun logEvent(event: String)
 
     override fun logError(message: String)

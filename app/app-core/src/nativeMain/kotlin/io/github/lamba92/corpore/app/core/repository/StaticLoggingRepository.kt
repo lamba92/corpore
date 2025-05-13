@@ -4,7 +4,9 @@ package io.github.lamba92.corpore.app.core.repository
 
 import kotlinx.datetime.Clock
 
-actual class StaticLoggingRepository actual constructor(override val tag: String) : LoggingRepository {
+actual class StaticLoggingRepository actual constructor(
+    actual override val tag: String,
+) : LoggingRepository {
     private val now
         get() = Clock.System.now()
 
