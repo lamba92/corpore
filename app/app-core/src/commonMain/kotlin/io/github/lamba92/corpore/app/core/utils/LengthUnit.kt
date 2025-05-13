@@ -59,7 +59,6 @@ sealed interface LengthUnit {
 @JvmInline
 @Serializable
 value class Length(private val meters: Double) : Comparable<Length> {
-
     companion object {
         // Function for creating Length from a value and unit
         fun from(

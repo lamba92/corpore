@@ -218,7 +218,7 @@ fun OnboardingContent(
             OnboardingStep.PhysicalProfile ->
                 PhysicalProfile(
                     data = data.physicalProfile,
-                    onUpdate = onUpdate
+                    onUpdate = onUpdate,
                 )
 
             OnboardingStep.ActivitiesSelection -> {} // ActivitiesSelection()

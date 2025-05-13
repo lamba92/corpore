@@ -16,7 +16,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CorporeApp(
     navHostController: NavHostController = rememberNavController(),
-    onboardingBackHandler: @Composable (OnboardingViewModel) -> Unit = {}
+    onboardingBackHandler: @Composable (OnboardingViewModel) -> Unit = {},
 ) {
     CorporeTheme {
         KoinApplication(
@@ -33,7 +33,7 @@ fun CorporeApp(
                         )
                     }
                     composable("onboarding") {
-                        val onboardingViewModel:OnboardingViewModel = koinViewModel()
+                        val onboardingViewModel: OnboardingViewModel = koinViewModel()
                         onboardingBackHandler(onboardingViewModel)
                         Onboarding(
                             viewModel = onboardingViewModel,

@@ -27,7 +27,6 @@ data class OnboardingData(
     val physicalProfile: PhysicalProfile = PhysicalProfile(),
     val selectedActivities: List<SportActivity> = emptyList(),
 ) {
-
     @Serializable
     data class PhysicalProfile(
         val yearOfBirth: Int? = null,
@@ -48,7 +47,7 @@ enum class MeasurementSystem(
     Imperial(
         weightUnit = WeightUnit.Pounds,
         lengthUnit = LengthUnit.Feet,
-    );
+    ),
 }
 
 enum class SportActivity {
@@ -170,7 +169,7 @@ class OnboardingViewModel(
                                 onboardingDataStateFlow
                                     .value
                                     .physicalProfile
-                                    .copy(yearOfBirth = event.year)
+                                    .copy(yearOfBirth = event.year),
                         )
 
             is OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected ->
@@ -182,7 +181,7 @@ class OnboardingViewModel(
                                 onboardingDataStateFlow
                                     .value
                                     .physicalProfile
-                                    .copy(weight = event.weight)
+                                    .copy(weight = event.weight),
                         )
 
             is OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected ->
@@ -194,7 +193,7 @@ class OnboardingViewModel(
                                 onboardingDataStateFlow
                                     .value
                                     .physicalProfile
-                                    .copy(height = event.height)
+                                    .copy(height = event.height),
                         )
 
             is OnboardingDataUpdateEvent.PhysicalProfile.MeasurementSystemSelected ->
@@ -206,7 +205,7 @@ class OnboardingViewModel(
                                 onboardingDataStateFlow
                                     .value
                                     .physicalProfile
-                                    .copy(measurementSystem = event.measurementSystem)
+                                    .copy(measurementSystem = event.measurementSystem),
                         )
         }
     }
@@ -243,9 +242,9 @@ fun OnboardingStep.canGoNext(data: OnboardingData) =
     when (this) {
         OnboardingStep.TrainingLevelSelection -> data.selectedTrainingLevel != null
         OnboardingStep.PhysicalProfile ->
-            data.physicalProfile.yearOfBirth != null
-                    && data.physicalProfile.weight != null
-                    && data.physicalProfile.height != null
+            data.physicalProfile.yearOfBirth != null &&
+                data.physicalProfile.weight != null &&
+                data.physicalProfile.height != null
 
         OnboardingStep.ActivitiesSelection -> data.selectedActivities.isNotEmpty()
         OnboardingStep.CurrentFitnessLevelUserInput -> true

@@ -116,7 +116,7 @@ fun YearOfBirthTextField(
                 text = stringResource(Res.string.onboarding_physical_year_of_birth),
                 style = MaterialTheme.typography.labelMedium,
             )
-        }
+        },
     )
 }
 
@@ -126,7 +126,7 @@ fun WeightTextField(
     measurementSystem: MeasurementSystem,
     onUpdate: (OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected) -> Unit,
     modifier: Modifier = Modifier,
-    ) {
+) {
     OutlinedTextField(
         modifier = modifier,
         value = weight?.to(measurementSystem.weightUnit)?.toStringWithPrecision(2) ?: "",
@@ -138,15 +138,16 @@ fun WeightTextField(
         },
         label = {
             Text(
-                text = stringResource(
-                    when (measurementSystem) {
-                        MeasurementSystem.Metric ->
-                            Res.string.onboarding_physical_weight_kg
+                text =
+                    stringResource(
+                        when (measurementSystem) {
+                            MeasurementSystem.Metric ->
+                                Res.string.onboarding_physical_weight_kg
 
-                        MeasurementSystem.Imperial ->
-                            Res.string.onboarding_physical_weight_pounds
-                    }
-                ),
+                            MeasurementSystem.Imperial ->
+                                Res.string.onboarding_physical_weight_pounds
+                        },
+                    ),
                 style = MaterialTheme.typography.labelMedium,
             )
         },
@@ -154,13 +155,14 @@ fun WeightTextField(
             AsyncImage(
                 model = Res.getUri("files/icons/monitor_weight_24dp.svg"),
                 contentDescription = "weight icon",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
         },
-        keyboardOptions = KeyboardOptions(
-            autoCorrectEnabled = false,
-            keyboardType = KeyboardType.Decimal
-        )
+        keyboardOptions =
+            KeyboardOptions(
+                autoCorrectEnabled = false,
+                keyboardType = KeyboardType.Decimal,
+            ),
     )
 }
 
@@ -182,15 +184,16 @@ fun HeightTextField(
         },
         label = {
             Text(
-                text = stringResource(
-                    when (measurementSystem) {
-                        MeasurementSystem.Metric ->
-                            Res.string.onboarding_physical_height_cm
+                text =
+                    stringResource(
+                        when (measurementSystem) {
+                            MeasurementSystem.Metric ->
+                                Res.string.onboarding_physical_height_cm
 
-                        MeasurementSystem.Imperial ->
-                            Res.string.onboarding_physical_height_feet
-                    }
-                ),
+                            MeasurementSystem.Imperial ->
+                                Res.string.onboarding_physical_height_feet
+                        },
+                    ),
                 style = MaterialTheme.typography.labelMedium,
             )
         },
@@ -198,27 +201,26 @@ fun HeightTextField(
             AsyncImage(
                 model = Res.getUri("files/icons/straighten_24dp.svg"),
                 contentDescription = "weight icon",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
         },
-        keyboardOptions = KeyboardOptions(
-            autoCorrectEnabled = false,
-            keyboardType = KeyboardType.Decimal
-        )
+        keyboardOptions =
+            KeyboardOptions(
+                autoCorrectEnabled = false,
+                keyboardType = KeyboardType.Decimal,
+            ),
     )
 }
 
 private fun toHeightSelectedUpdate(
     it: Double,
     unit: LengthUnit,
-) =
-    OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected(Length.from(it, unit))
+) = OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected(Length.from(it, unit))
 
 private fun Double.toWeightSelectedUpdate(unit: WeightUnit) =
     OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected(Weight.from(this, unit))
 
-private fun Int.toYearOfBirthSelectedUpdate() =
-    OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected(this)
+private fun Int.toYearOfBirthSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected(this)
 
 @Composable
 fun UnitSystemRow(
@@ -265,10 +267,11 @@ fun UnitSystemSegmentedButton(
                             ),
                         )
                     },
-                    shape = SegmentedButtonDefaults.itemShape(
-                        index = measurementSystem.ordinal,
-                        count = MeasurementSystem.entries.size,
-                    ),
+                    shape =
+                        SegmentedButtonDefaults.itemShape(
+                            index = measurementSystem.ordinal,
+                            count = MeasurementSystem.entries.size,
+                        ),
                     label = {
                         Text(
                             text =
@@ -283,12 +286,11 @@ fun UnitSystemSegmentedButton(
                                 ),
                             style = MaterialTheme.typography.labelMedium,
                         )
-                    }
+                    },
                 )
             }
     }
 }
-
 
 @Composable
 fun UnitSystemToggle(
@@ -333,4 +335,3 @@ fun UnitSystemToggle(
             }
     }
 }
-
