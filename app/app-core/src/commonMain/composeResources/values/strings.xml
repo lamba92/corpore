@@ -30,4 +30,8 @@
     <string name="onboarding_physical_weight_pounds">Weight (pounds)</string>
     <string name="onboarding_physical_height_cm">Height (cm)</string>
     <string name="onboarding_physical_height_feet">Height (feet)</string>
+    <string name="onboarding_sport_activity_gym">Gym</string>
+    <string name="onboarding_sport_activity_running">Running</string>
+    <string name="onboarding_sport_activity_swimming">Swimming</string>
+    <string name="onboarding_sport_activity_free_body">Free body</string>
 </resources>

@@ -12,7 +12,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -162,6 +161,7 @@ fun Onboarding(
             onBackClick = onBackClick,
             onNextClick = onNextClick,
         )
+        Spacer(modifier = Modifier.height(CorporeTheme.appMetrics.innerPadding))
     }
 }
 
@@ -171,8 +171,6 @@ private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<Onboa
 private fun slideOut(direction: Int) = slideOutHorizontally { fullWidth -> -direction * fullWidth }
 
 private fun slideIn(direction: Int) = slideInHorizontally { fullWidth -> direction * fullWidth }
-
-private fun TrainingLevel.toUpdate() = OnboardingDataUpdateEvent.TrainingLevelSelected(this)
 
 @Composable
 fun OnboardingHeader(
@@ -221,7 +219,12 @@ fun OnboardingContent(
                     onUpdate = onUpdate,
                 )
 
-            OnboardingStep.ActivitiesSelection -> {} // ActivitiesSelection()
+            OnboardingStep.ActivitiesSelection ->
+                ActivitiesSelection(
+                    selectedActivities = data.selectedActivities,
+                    onUpdate = onUpdate,
+                )
+
             OnboardingStep.CurrentFitnessLevelUserInput -> {} // CurrentFitnessLevelUserInput()
             OnboardingStep.ActivitiesRotationFrequency -> {} // ActivitiesRotationFrequency()
         }
@@ -391,7 +394,7 @@ fun LogoutButton(
 }
 
 @Composable
-fun ColumnScope.OnboardingTitle(
+fun OnboardingTitle(
     title: String,
     subtitle: String,
 ) {
