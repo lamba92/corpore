@@ -9,10 +9,15 @@ import io.github.lamba92.corpore.app.core.di.DiModules
 import io.github.lamba92.corpore.app.core.ui.onboarding.LoginScreen
 import io.github.lamba92.corpore.app.core.ui.onboarding.Onboarding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
 import org.koin.compose.KoinApplication
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CorporeApp(navHostController: NavHostController = rememberNavController()) {
+fun CorporeApp(
+    navHostController: NavHostController = rememberNavController(),
+    onboardingBackHandler: @Composable (OnboardingViewModel) -> Unit = {}
+) {
     CorporeTheme {
         KoinApplication(
             application = { modules(DiModules.all) },
@@ -28,7 +33,10 @@ fun CorporeApp(navHostController: NavHostController = rememberNavController()) {
                         )
                     }
                     composable("onboarding") {
+                        val onboardingViewModel:OnboardingViewModel = koinViewModel()
+                        onboardingBackHandler(onboardingViewModel)
                         Onboarding(
+                            viewModel = onboardingViewModel,
                             onLogout = {
                                 navHostController.navigate("login") {
                                     popUpTo("onboarding") { inclusive = true }
