@@ -65,6 +65,8 @@ value class Length(private val meters: Double) : Comparable<Length> {
             value: Number,
             unit: LengthUnit,
         ) = Length(value.toDouble() * unit.factorToMeters)
+
+        val ZERO = Length(0.0)
     }
 
     // Properties to get the length value in different units

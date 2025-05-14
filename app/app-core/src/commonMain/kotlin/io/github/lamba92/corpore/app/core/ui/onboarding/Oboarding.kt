@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -35,6 +37,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -111,52 +119,72 @@ fun Onboarding(
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     isLoggingOut: Boolean,
 ) {
-    Column(
+    Box(
         modifier =
             modifier
                 .fillMaxSize()
-                .background(CorporeTheme.colorScheme.background)
-                .padding(vertical = CorporeTheme.appMetrics.outerPadding),
+                .background(CorporeTheme.colorScheme.background),
     ) {
-        OnboardingHeader(
-            pageNumber = currentStep.ordinal + 1,
-            totalPages = OnboardingStep.entries.size,
+        var onboardingFooterHeight by remember { mutableStateOf(0.dp) }
+        val density = LocalDensity.current
+        Column(
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        vertical = CorporeTheme.appMetrics.innerPadding,
-                        horizontal = CorporeTheme.appMetrics.outerPadding,
-                    ),
-        )
-        var previousStep by remember { mutableStateOf(currentStep) }
-        val direction =
-            when {
-                currentStep.ordinal > previousStep.ordinal -> 1 // Forward
-                currentStep.ordinal < previousStep.ordinal -> -1 // Backward
-                else -> 0
-            }
-        LaunchedEffect(currentStep) {
-            previousStep = currentStep
-        }
-        var isAnimating by remember { mutableStateOf(false) }
-        AnimatedContent(
-            targetState = currentStep,
-            transitionSpec = slideAnimation(direction),
-            label = "OnboardingContent",
-            modifier = Modifier.weight(1f),
-        ) { target ->
-            isAnimating = transition.isRunning
-            OnboardingContent(
-                target = target,
-                data = data,
-                onUpdate = onUpdate,
-                verticalArrangement = verticalArrangement,
-                horizontalAlignment = horizontalAlignment,
+                    .fillMaxSize()
+                    .padding(top = CorporeTheme.appMetrics.outerPadding)
+        ) {
+            OnboardingHeader(
+                pageNumber = currentStep.ordinal + 1,
+                totalPages = OnboardingStep.entries.size,
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            vertical = CorporeTheme.appMetrics.innerPadding,
+                            horizontal = CorporeTheme.appMetrics.outerPadding,
+                        ),
             )
+            var previousStep by remember { mutableStateOf(currentStep) }
+            val direction =
+                when {
+                    currentStep.ordinal > previousStep.ordinal -> 1 // Forward
+                    currentStep.ordinal < previousStep.ordinal -> -1 // Backward
+                    else -> 0
+                }
+            LaunchedEffect(currentStep) {
+                previousStep = currentStep
+            }
+            AnimatedContent(
+                targetState = currentStep,
+                transitionSpec = slideAnimation(direction),
+                label = "OnboardingContent",
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .verticalScroll(state = rememberScrollState()),
+            ) { target ->
+                Column {
+                    OnboardingContent(
+                        target = target,
+                        data = data,
+                        onUpdate = onUpdate,
+                        verticalArrangement = verticalArrangement,
+                        horizontalAlignment = horizontalAlignment,
+                    )
+                    Spacer(modifier = Modifier.height(onboardingFooterHeight))
+                }
+            }
         }
         OnboardingFooter(
-            modifier = Modifier.padding(horizontal = CorporeTheme.appMetrics.outerPadding),
+            modifier =
+                Modifier
+                    .onGloballyPositioned {
+                        onboardingFooterHeight = with(density) { it.size.height.toDp() }
+                    }
+                    .gradientOverlay(CorporeTheme.colorScheme.primary)
+                    .padding(horizontal = CorporeTheme.appMetrics.outerPadding)
+                    .padding(bottom = CorporeTheme.appMetrics.innerPadding)
+                    .align(Alignment.BottomCenter),
             isFirstScreen = currentStep.ordinal == 0,
             isLastScreen = currentStep.ordinal == OnboardingStep.entries.lastIndex,
             isLoggingOut = isLoggingOut,
@@ -164,9 +192,23 @@ fun Onboarding(
             onBackClick = onBackClick,
             onNextClick = onNextClick,
         )
-        Spacer(modifier = Modifier.height(CorporeTheme.appMetrics.innerPadding))
     }
 }
+
+fun Modifier.gradientOverlay(color: Color) = this.then(
+    Modifier.drawWithContent {
+        drawContent()
+        drawRect(
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    color.copy(alpha = 0f),  // Top: fully transparent
+                    color.copy(alpha = 0.5f) // Bottom: 50% opaque
+                )
+            ),
+            blendMode = BlendMode.SrcOver
+        )
+    }
+)
 
 private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<OnboardingStep>.() -> ContentTransform =
     { slideIn(direction) togetherWith slideOut(direction) }
@@ -221,6 +263,7 @@ fun OnboardingContent(
             OnboardingStep.PhysicalProfile ->
                 PhysicalProfile(
                     data = data.physicalProfile,
+                    measurementUnitSystem = data.measurementUnitSystem,
                     onUpdate = onUpdate,
                 )
 
@@ -230,7 +273,14 @@ fun OnboardingContent(
                     onUpdate = onUpdate,
                 )
 
-            OnboardingStep.CurrentFitnessLevelUserInput -> {} // CurrentFitnessLevelUserInput()
+            OnboardingStep.CurrentFitnessLevelInput ->
+                CurrentFitnessLevel(
+                    selectedActivities = data.selectedActivities.toSet(),
+                    currentFitnessLevelUserInputs = data.currentFitnessLevelUserInputs,
+                    measurementUnitSystem = data.measurementUnitSystem,
+                    onUpdate = onUpdate,
+                )
+
             OnboardingStep.ActivitiesRotationFrequency -> {} // ActivitiesRotationFrequency()
         }
     }
@@ -263,6 +313,7 @@ fun OnboardingFooter(
 
             else ->
                 OnboardingBackButton(
+                    isLastScreen = isLastScreen,
                     onClick = onBackClick,
                     modifier = Modifier.weight(leftButtonWeight),
                 )
@@ -357,6 +408,7 @@ fun OnboardingBackButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
+    isLastScreen: Boolean,
 ) {
     OnboardingButton(
         onClick = onClick,
@@ -372,11 +424,13 @@ fun OnboardingBackButton(
             painter = painterResource(Res.drawable.baseline_arrow_back_24),
             contentDescription = "Arrow back icon",
         )
-        Text(
-            text = stringResource(Res.string.onboarding_back),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+        if (!isLastScreen) {
+            Text(
+                text = stringResource(Res.string.onboarding_back),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 

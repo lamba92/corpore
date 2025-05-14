@@ -41,6 +41,8 @@ value class Weight(private val grams: Double) : Comparable<Weight> {
             value: Number,
             unit: WeightUnit,
         ) = Weight(value.toDouble() * unit.factorToGrams)
+
+        val ZERO = Weight(0.0)
     }
 
     // Properties to get the weight value in different units

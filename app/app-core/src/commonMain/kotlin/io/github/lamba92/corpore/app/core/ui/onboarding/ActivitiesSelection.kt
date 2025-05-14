@@ -30,7 +30,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ActivitiesSelection(
-    selectedActivities: List<SportActivity>,
+    selectedActivities: Set<SportActivity>,
     onUpdate: (OnboardingDataUpdateEvent.ActivitiesSelection) -> Unit,
     modifier: Modifier = Modifier,
 ) {
