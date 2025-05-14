@@ -37,7 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -181,7 +181,7 @@ fun Onboarding(
                     .onGloballyPositioned {
                         onboardingFooterHeight = with(density) { it.size.height.toDp() }
                     }
-                    .gradientOverlay(CorporeTheme.colorScheme.primary)
+                    .gradientOverlay(CorporeTheme.colorScheme.background)
                     .padding(horizontal = CorporeTheme.appMetrics.outerPadding)
                     .padding(bottom = CorporeTheme.appMetrics.innerPadding)
                     .align(Alignment.BottomCenter),
@@ -197,15 +197,14 @@ fun Onboarding(
 
 fun Modifier.gradientOverlay(color: Color) =
     this.then(
-        Modifier.drawWithContent {
-            drawContent()
+        Modifier.drawBehind {
             drawRect(
                 brush =
                     Brush.verticalGradient(
                         colors =
                             listOf(
                                 color.copy(alpha = 0f),
-                                color.copy(alpha = 0.5f),
+                                color.copy(alpha = 1f),
                             ),
                     ),
                 blendMode = BlendMode.SrcOver,
