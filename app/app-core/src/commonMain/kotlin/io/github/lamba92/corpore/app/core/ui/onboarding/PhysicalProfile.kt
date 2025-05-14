@@ -60,7 +60,7 @@ fun PhysicalProfile(
             title = stringResource(Res.string.onboarding_physical_profile_title),
             subtitle = stringResource(Res.string.onboarding_physical_profile_subtitle),
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         UnitSystemRow(
             selectedMeasurementUnit = data.measurementSystem,
             onUpdate = onUpdate,
@@ -129,7 +129,10 @@ fun WeightTextField(
 ) {
     OutlinedTextField(
         modifier = modifier,
-        value = weight?.to(measurementSystem.weightUnit)?.toStringWithPrecision(2) ?: "",
+        value =
+            weight
+                ?.to(measurementSystem.weightUnit)
+                ?.toStringWithPrecision(2) ?: "",
         onValueChange = {
             it
                 .toDoubleOrNull()
@@ -235,7 +238,7 @@ fun UnitSystemRow(
     ) {
         Text(
             text = stringResource(Res.string.onboarding_physical_unit_system),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         UnitSystemSegmentedButton(

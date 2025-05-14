@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.lamba92.app_core.generated.resources.Res
@@ -138,12 +139,14 @@ fun Onboarding(
         LaunchedEffect(currentStep) {
             previousStep = currentStep
         }
+        var isAnimating by remember { mutableStateOf(false) }
         AnimatedContent(
             targetState = currentStep,
             transitionSpec = slideAnimation(direction),
             label = "OnboardingContent",
             modifier = Modifier.weight(1f),
         ) { target ->
+            isAnimating = transition.isRunning
             OnboardingContent(
                 target = target,
                 data = data,
@@ -181,8 +184,10 @@ fun OnboardingHeader(
     Box(modifier = modifier) {
         Text(
             text = stringResource(Res.string.app_name),
-            style = CorporeTheme.typography.bodyLarge,
+            style = CorporeTheme.typography.titleLarge,
             color = CorporeTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.CenterStart),
         )
         Text(
             text = "$pageNumber/$totalPages",
@@ -247,6 +252,7 @@ fun OnboardingFooter(
     ) {
         val leftButtonWeight by animateFloatAsState(if (isFirstScreen || isLastScreen) 0.2f else 0.5f)
         val rightButtonWeight by derivedStateOf { 1f - leftButtonWeight }
+
         when {
             isFirstScreen ->
                 LogoutButton(
@@ -398,15 +404,17 @@ fun OnboardingTitle(
     title: String,
     subtitle: String,
 ) {
-    Text(
-        text = title,
-        style = CorporeTheme.typography.titleMedium,
-        color = CorporeTheme.colorScheme.onBackground,
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    Text(
-        text = subtitle,
-        style = CorporeTheme.typography.bodyMedium,
-        color = CorporeTheme.colorScheme.onBackground,
-    )
+    Column {
+        Text(
+            text = title,
+            style = CorporeTheme.typography.titleLarge,
+            color = CorporeTheme.colorScheme.onBackground,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = subtitle,
+            style = CorporeTheme.typography.titleMedium,
+            color = CorporeTheme.colorScheme.onBackground,
+        )
+    }
 }

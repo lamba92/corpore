@@ -20,12 +20,14 @@ object DiModules {
             single<AuthRepository> { MockAuthRepository }
             factory<LoggingRepository> { (tag: String) -> StaticLoggingRepository(tag) }
         }
+
     val useCases =
         module {
             single { LoginWithGoogleUseCase(get()) }
             single { LoginWithAppleUseCase(get()) }
             single { LogoutUseCase(get()) }
         }
+
     val viewModels =
         module {
             viewModel {

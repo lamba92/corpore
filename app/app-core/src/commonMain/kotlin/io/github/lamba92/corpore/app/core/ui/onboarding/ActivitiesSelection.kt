@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
@@ -17,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_free_body
+import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_free_subtitle
+import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_free_title
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_gym
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_running
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_swimming
@@ -33,24 +36,32 @@ fun ActivitiesSelection(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SportActivity
-            .entries
-            .forEach { activity ->
-                SportActivity(
-                    activity = activity,
-                    isSelected = activity in selectedActivities,
-                    onClick = {
-                        when (activity) {
-                            in selectedActivities -> onUpdate(activity.toActivityRemovedUpdate())
-                            else -> onUpdate(activity.toActivityAddedUpdate())
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+        OnboardingTitle(
+            title = stringResource(Res.string.onboarding_sport_activity_free_title),
+            subtitle = stringResource(Res.string.onboarding_sport_activity_free_subtitle),
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            SportActivity
+                .entries
+                .forEach { activity ->
+                    SportActivity(
+                        activity = activity,
+                        isSelected = activity in selectedActivities,
+                        onClick = {
+                            when (activity) {
+                                in selectedActivities -> onUpdate(activity.toActivityRemovedUpdate())
+                                else -> onUpdate(activity.toActivityAddedUpdate())
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+        }
     }
 }
 
