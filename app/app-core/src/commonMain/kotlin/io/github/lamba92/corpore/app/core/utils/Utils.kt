@@ -1,5 +1,7 @@
 package io.github.lamba92.corpore.app.core.utils
 
+import kotlin.math.pow
+
 /**
  * Converts a [Number] to a string with exactly [precision] digits after the decimal point.
  *
@@ -24,46 +26,9 @@ package io.github.lamba92.corpore.app.core.utils
 internal fun Number.toStringWithPrecision(precision: Int): String {
     require(precision >= 0) { "Precision must be non-negative" }
 
-    val raw = this.toString()
-    var inFraction = false // True once '.' is seen
-    var digitsAfterDot = 0 // Counter for fractional digits
-    var copyRest = false // Set to true when we hit an unexpected char or finish precision
-
-    return buildString {
-        for (ch in raw) {
-            if (copyRest) {
-                // After finishing the relevant digits or seeing scientific notation,
-                // just copy everything else (e.g., "E-5")
-                append(ch)
-                continue
-            }
-
-            append(ch)
-
-            when {
-                inFraction ->
-                    when {
-                        ch.isDigit() -> {
-                            digitsAfterDot++
-                            // If we’ve reached the desired precision, we’re done with precision trimming
-                            if (digitsAfterDot >= precision) copyRest = true
-                        }
-                        // Unexpected char inside the fraction — stop counting and copy the rest
-                        else -> copyRest = true
-                    }
-                ch == '.' -> inFraction = true
-            }
-        }
-
-        // If the number ends before enough digits, pad with zeros
-        when {
-            inFraction && digitsAfterDot < precision ->
-                repeat(precision - digitsAfterDot) { append('0') }
-            // If the number has no decimal part but precision > 0, add dot and pad
-            !inFraction && precision > 0 -> {
-                append('.')
-                repeat(precision) { append('0') }
-            }
-        }
-    }
+    val powerOf10 = 10.0.pow(precision.toDouble())
+    val scaledNumber = (this.toDouble() * powerOf10).toLong()
+    val integerPart = scaledNumber / powerOf10.toLong()
+    val fractionalPart = (scaledNumber % powerOf10.toLong()).toString().padStart(precision, '0')
+    return if (precision == 0) integerPart.toString() else "$integerPart.$fractionalPart"
 }
