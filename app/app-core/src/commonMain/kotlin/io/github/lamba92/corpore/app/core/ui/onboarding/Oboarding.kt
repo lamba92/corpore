@@ -131,7 +131,7 @@ fun Onboarding(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(top = CorporeTheme.appMetrics.outerPadding)
+                    .padding(top = CorporeTheme.appMetrics.outerPadding),
         ) {
             OnboardingHeader(
                 pageNumber = currentStep.ordinal + 1,
@@ -195,20 +195,23 @@ fun Onboarding(
     }
 }
 
-fun Modifier.gradientOverlay(color: Color) = this.then(
-    Modifier.drawWithContent {
-        drawContent()
-        drawRect(
-            brush = Brush.verticalGradient(
-                colors = listOf(
-                    color.copy(alpha = 0f),  // Top: fully transparent
-                    color.copy(alpha = 0.5f) // Bottom: 50% opaque
-                )
-            ),
-            blendMode = BlendMode.SrcOver
-        )
-    }
-)
+fun Modifier.gradientOverlay(color: Color) =
+    this.then(
+        Modifier.drawWithContent {
+            drawContent()
+            drawRect(
+                brush =
+                    Brush.verticalGradient(
+                        colors =
+                            listOf(
+                                color.copy(alpha = 0f),
+                                color.copy(alpha = 0.5f),
+                            ),
+                    ),
+                blendMode = BlendMode.SrcOver,
+            )
+        },
+    )
 
 private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<OnboardingStep>.() -> ContentTransform =
     { slideIn(direction) togetherWith slideOut(direction) }

@@ -64,13 +64,13 @@ fun PhysicalProfile(
         WeightTextField(
             data = data,
             measurementUnitSystem = measurementUnitSystem,
-            onUpdate = onUpdate
+            onUpdate = onUpdate,
         )
         Spacer(modifier = Modifier.height(8.dp))
         HeightTextField(
             data = data,
             measurementUnitSystem = measurementUnitSystem,
-            onUpdate = onUpdate
+            onUpdate = onUpdate,
         )
     }
 }
@@ -79,23 +79,25 @@ fun PhysicalProfile(
 private fun HeightTextField(
     data: OnboardingData.PhysicalProfile,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit
+    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
 ) {
     LengthTextField(
         length = data.height,
-        lengthUnit = when (measurementUnitSystem) {
-            MeasurementUnitSystem.Metric -> LengthUnit.Centimeters
-            MeasurementUnitSystem.Imperial -> LengthUnit.Feet
-        },
+        lengthUnit =
+            when (measurementUnitSystem) {
+                MeasurementUnitSystem.Metric -> LengthUnit.Centimeters
+                MeasurementUnitSystem.Imperial -> LengthUnit.Feet
+            },
         onValueChange = { onUpdate(it.toHeightSelectedUpdate()) },
-        label = defaultTextFieldLabel(
-            stringResource(
-                when (measurementUnitSystem) {
-                    MeasurementUnitSystem.Metric -> Res.string.onboarding_physical_height_cm
-                    MeasurementUnitSystem.Imperial -> Res.string.onboarding_physical_height_feet
-                }
-            )
-        ),
+        label =
+            defaultTextFieldLabel(
+                stringResource(
+                    when (measurementUnitSystem) {
+                        MeasurementUnitSystem.Metric -> Res.string.onboarding_physical_height_cm
+                        MeasurementUnitSystem.Imperial -> Res.string.onboarding_physical_height_feet
+                    },
+                ),
+            ),
         modifier = Modifier.fillMaxWidth(),
     )
 }
@@ -104,23 +106,25 @@ private fun HeightTextField(
 fun WeightTextField(
     data: OnboardingData.PhysicalProfile,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit
+    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
 ) {
     WeightTextField(
         weight = data.weight,
-        weightUnit = when (measurementUnitSystem) {
-            MeasurementUnitSystem.Metric -> WeightUnit.Kilograms
-            MeasurementUnitSystem.Imperial -> WeightUnit.Pounds
-        },
+        weightUnit =
+            when (measurementUnitSystem) {
+                MeasurementUnitSystem.Metric -> WeightUnit.Kilograms
+                MeasurementUnitSystem.Imperial -> WeightUnit.Pounds
+            },
         onValueChange = { onUpdate(it.toWeightSelectedUpdate()) },
-        label = defaultTextFieldLabel(
-            stringResource(
-                when (measurementUnitSystem) {
-                    MeasurementUnitSystem.Metric -> Res.string.onboarding_physical_weight_kg
-                    MeasurementUnitSystem.Imperial -> Res.string.onboarding_physical_weight_pounds
-                }
-            )
-        ),
+        label =
+            defaultTextFieldLabel(
+                stringResource(
+                    when (measurementUnitSystem) {
+                        MeasurementUnitSystem.Metric -> Res.string.onboarding_physical_weight_kg
+                        MeasurementUnitSystem.Imperial -> Res.string.onboarding_physical_weight_pounds
+                    },
+                ),
+            ),
         modifier = Modifier.fillMaxWidth(),
     )
 }
@@ -156,16 +160,10 @@ fun YearOfBirthTextField(
     )
 }
 
+private fun Length.toHeightSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected(this)
 
-private fun Length.toHeightSelectedUpdate() =
-    OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected(this)
+private fun Weight.toWeightSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected(this)
 
-private fun Weight.toWeightSelectedUpdate() =
-    OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected(this)
+private fun Int.toYearOfBirthSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected(this)
 
-private fun Int.toYearOfBirthSelectedUpdate() =
-    OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected(this)
-
-internal fun MeasurementUnitSystem.toUpdate() =
-    OnboardingDataUpdateEvent.MeasurementSystemSelected(measurementUnitSystem = this)
-
+internal fun MeasurementUnitSystem.toUpdate() = OnboardingDataUpdateEvent.MeasurementSystemSelected(measurementUnitSystem = this)

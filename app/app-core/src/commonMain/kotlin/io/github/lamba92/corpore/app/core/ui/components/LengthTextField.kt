@@ -45,10 +45,11 @@ fun LengthTextField(
     )
 }
 
-fun defaultLengthTextFieldTailingIcon(): @Composable () -> Unit = {
-    AsyncImage(
-        model = Res.getUri("files/icons/straighten_24dp.svg"),
-        contentDescription = "weight icon",
-        modifier = Modifier.size(24.dp),
-    )
-}
+fun defaultLengthTextFieldTailingIcon(): @Composable () -> Unit =
+    {
+        AsyncImage(
+            model = Res.getUri("files/icons/straighten_24dp.svg"),
+            contentDescription = "weight icon",
+            modifier = Modifier.size(24.dp),
+        )
+    }
