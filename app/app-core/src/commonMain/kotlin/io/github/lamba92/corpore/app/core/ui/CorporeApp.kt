@@ -24,7 +24,10 @@ fun CorporeApp(
             application = { modules(DiModules.all) },
             content = {
                 WithCoilDebugLogger {
-                    NavHost(navHostController, "login") {
+                    NavHost(
+                        navController = navHostController,
+                        startDestination = "login"
+                    ) {
                         composable("login") {
                             LoginScreen(
                                 onLoginSuccess = {

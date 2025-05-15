@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
@@ -60,7 +63,6 @@ fun LoginScreen(
     val isLoggingInUsingApple by viewModel.isLoggingInUsingAppleStateFlow.collectAsState()
     val errorSnackbarHostState = remember { SnackbarHostState() }
     val snackbarMessage = stringResource(Res.string.onboarding_login_error)
-
     LaunchedEffect(Unit) {
         viewModel
             .errorsFlow
@@ -105,7 +107,8 @@ fun LoginScreen(
                 Modifier
                     .fillMaxSize()
                     .background(color = CorporeTheme.colorScheme.primary)
-                    .padding(all = CorporeTheme.appMetrics.outerPadding),
+                    .padding(all = CorporeTheme.appMetrics.outerPadding)
+                    .padding(top = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()),
         ) {
             Column(
                 modifier = Modifier.align(Alignment.Center),
