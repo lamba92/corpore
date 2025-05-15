@@ -29,7 +29,7 @@ data class OnboardingData(
     val measurementUnitSystem: MeasurementUnitSystem = MeasurementUnitSystem.Metric,
     val physicalProfile: PhysicalProfile = PhysicalProfile(),
     val selectedActivities: Set<SportActivity> = emptySet(),
-    val currentFitnessLevelUserInputs: CurrentFitnessLevelUserInputs = CurrentFitnessLevelUserInputs(),
+    val currentFitnessLevel: CurrentFitnessLevelUserInputs = CurrentFitnessLevelUserInputs(),
 ) {
     @Serializable
     data class PhysicalProfile(
@@ -151,7 +151,7 @@ enum class OnboardingStep {
     TrainingLevelSelection,
     PhysicalProfile,
     ActivitiesSelection,
-    CurrentFitnessLevelInput,
+    CurrentFitnessLevel,
     ActivitiesRotationFrequency,
 }
 
@@ -292,10 +292,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Gym.BenchPress1RMChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 gym =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.gym.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.gym.copy(
                                         benchPress1RM = event.weight,
                                     ),
                             ),
@@ -304,10 +304,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Gym.Squat1RMChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 gym =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.gym.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.gym.copy(
                                         squat1RM = event.weight,
                                     ),
                             ),
@@ -316,10 +316,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Gym.Deadlift1RMChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 gym =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.gym.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.gym.copy(
                                         deadlift1RM = event.weight,
                                     ),
                             ),
@@ -332,10 +332,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Running.DistanceIn30MinsChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 running =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.running.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.running.copy(
                                         distanceIn30Mins = event.length,
                                     ),
                             ),
@@ -348,10 +348,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Swimming.FreestyleDistance15MinChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 swimming =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.swimming.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.swimming.copy(
                                         freestyleDistance15Min = event.length,
                                     ),
                             ),
@@ -360,18 +360,18 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Swimming.KnownStrokesAdded ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 swimming =
                                     onboardingDataStateFlow
                                         .value
-                                        .currentFitnessLevelUserInputs
+                                        .currentFitnessLevel
                                         .swimming
                                         .copy(
                                             knownStrokes =
                                                 onboardingDataStateFlow
                                                     .value
-                                                    .currentFitnessLevelUserInputs
+                                                    .currentFitnessLevel
                                                     .swimming
                                                     .knownStrokes + event.stroke,
                                         ),
@@ -381,18 +381,18 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.Swimming.KnownStrokesRemoved ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 swimming =
                                     onboardingDataStateFlow
                                         .value
-                                        .currentFitnessLevelUserInputs
+                                        .currentFitnessLevel
                                         .swimming
                                         .copy(
                                             knownStrokes =
                                                 onboardingDataStateFlow
                                                     .value
-                                                    .currentFitnessLevelUserInputs
+                                                    .currentFitnessLevel
                                                     .swimming
                                                     .knownStrokes - event.stroke,
                                         ),
@@ -406,10 +406,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.FreeBody.MaxPushupsChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 calisthenics =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.calisthenics.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.calisthenics.copy(
                                         maxPushups = event.maxPushups,
                                     ),
                             ),
@@ -418,10 +418,10 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.FreeBody.WallSitHoldChange ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 calisthenics =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.calisthenics.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.calisthenics.copy(
                                         wallSitHold = event.duration,
                                     ),
                             ),
@@ -430,14 +430,14 @@ class OnboardingViewModel(
             is OnboardingDataUpdateEvent.CurrentFitnessLevel.FreeBody.CanPlank30SecToggle ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 calisthenics =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.calisthenics.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.calisthenics.copy(
                                         canPlank30Sec =
                                             !onboardingDataStateFlow
                                                 .value
-                                                .currentFitnessLevelUserInputs
+                                                .currentFitnessLevel
                                                 .calisthenics
                                                 .canPlank30Sec,
                                     ),
@@ -447,14 +447,14 @@ class OnboardingViewModel(
             OnboardingDataUpdateEvent.CurrentFitnessLevel.FreeBody.HasTrainedBeforeToggle ->
                 onboardingDataStateFlow.value =
                     onboardingDataStateFlow.value.copy(
-                        currentFitnessLevelUserInputs =
-                            onboardingDataStateFlow.value.currentFitnessLevelUserInputs.copy(
+                        currentFitnessLevel =
+                            onboardingDataStateFlow.value.currentFitnessLevel.copy(
                                 calisthenics =
-                                    onboardingDataStateFlow.value.currentFitnessLevelUserInputs.calisthenics.copy(
+                                    onboardingDataStateFlow.value.currentFitnessLevel.calisthenics.copy(
                                         hasTrainedBefore =
                                             !onboardingDataStateFlow
                                                 .value
-                                                .currentFitnessLevelUserInputs
+                                                .currentFitnessLevel
                                                 .calisthenics
                                                 .hasTrainedBefore,
                                     ),
@@ -499,6 +499,45 @@ fun OnboardingStep.canGoNext(data: OnboardingData) =
                 data.physicalProfile.height != Length.ZERO
 
         OnboardingStep.ActivitiesSelection -> data.selectedActivities.isNotEmpty()
-        OnboardingStep.CurrentFitnessLevelInput -> true
+        OnboardingStep.CurrentFitnessLevel -> validateCurrentFitnessLevel(data)
         OnboardingStep.ActivitiesRotationFrequency -> true
     }
+
+fun validateCurrentFitnessLevel(data: OnboardingData): Boolean {
+    val isGymValid =
+        when (SportActivity.Gym) {
+            in data.selectedActivities ->
+                data.currentFitnessLevel.gym.benchPress1RM != Weight.ZERO &&
+                    data.currentFitnessLevel.gym.squat1RM != Weight.ZERO &&
+                    data.currentFitnessLevel.gym.deadlift1RM != Weight.ZERO
+            else -> true
+        }
+
+    val isRunningValid =
+        when (SportActivity.Running) {
+            in data.selectedActivities ->
+                data.currentFitnessLevel.running.distanceIn30Mins != Length.ZERO
+            else -> true
+        }
+
+    val isSwimmingValid =
+        when (SportActivity.Swimming) {
+            in data.selectedActivities ->
+                data.currentFitnessLevel.swimming.freestyleDistance15Min != Length.ZERO
+            else -> true
+        }
+
+    val isCalisthenicsValid =
+        when (SportActivity.FreeBody) {
+            in data.selectedActivities ->
+                when {
+                    data.currentFitnessLevel.calisthenics.hasTrainedBefore ->
+                        data.currentFitnessLevel.calisthenics.maxPushups != 0 &&
+                            data.currentFitnessLevel.calisthenics.wallSitHold != Duration.ZERO
+                    else -> true
+                }
+            else -> true
+        }
+
+    return isGymValid && isRunningValid && isSwimmingValid && isCalisthenicsValid
+}

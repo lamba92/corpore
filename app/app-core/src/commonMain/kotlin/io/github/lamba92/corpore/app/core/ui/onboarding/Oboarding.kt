@@ -350,7 +350,7 @@ fun OnboardingContent(
                     )
                 }
 
-            OnboardingStep.CurrentFitnessLevelInput ->
+            OnboardingStep.CurrentFitnessLevel ->
                 OnboardingContentScaffold(
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
@@ -358,7 +358,7 @@ fun OnboardingContent(
                 ) {
                     CurrentFitnessLevel(
                         selectedActivities = data.selectedActivities.toSet(),
-                        currentFitnessLevel = data.currentFitnessLevelUserInputs,
+                        currentFitnessLevel = data.currentFitnessLevel,
                         measurementUnitSystem = data.measurementUnitSystem,
                         onUpdate = onUpdate,
                     )
