@@ -1,12 +1,14 @@
 package io.github.lamba92.corpore.app.core.di
 
 import io.github.lamba92.corpore.app.core.repository.AuthRepository
+import io.github.lamba92.corpore.app.core.repository.CoilDebugLogger
 import io.github.lamba92.corpore.app.core.repository.LoggingRepository
 import io.github.lamba92.corpore.app.core.repository.MockAuthRepository
 import io.github.lamba92.corpore.app.core.repository.StaticLoggingRepository
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
+import io.github.lamba92.corpore.app.core.utils.CoilLogger
 import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
 import org.koin.core.module.dsl.viewModel
@@ -18,6 +20,7 @@ object DiModules {
     val repositories =
         module {
             single<AuthRepository> { MockAuthRepository }
+            single<CoilLogger> { CoilDebugLogger }
             factory<LoggingRepository> { (tag: String) -> StaticLoggingRepository(tag) }
         }
 

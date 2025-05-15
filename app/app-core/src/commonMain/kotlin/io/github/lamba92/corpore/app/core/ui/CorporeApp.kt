@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.lamba92.corpore.app.core.di.DiModules
+import io.github.lamba92.corpore.app.core.ui.components.WithCoilDebugLogger
 import io.github.lamba92.corpore.app.core.ui.onboarding.LoginScreen
 import io.github.lamba92.corpore.app.core.ui.onboarding.Onboarding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
@@ -22,28 +23,30 @@ fun CorporeApp(
         KoinApplication(
             application = { modules(DiModules.all) },
             content = {
-                NavHost(navHostController, "login") {
-                    composable("login") {
-                        LoginScreen(
-                            onLoginSuccess = {
-                                navHostController.navigate("onboarding") {
-                                    popUpTo("login") { inclusive = true }
-                                }
-                            },
-                        )
-                    }
-                    composable("onboarding") {
-                        val onboardingViewModel: OnboardingViewModel = koinViewModel()
-                        onboardingBackHandler(onboardingViewModel)
-                        Onboarding(
-                            viewModel = onboardingViewModel,
-                            onLogout = {
-                                navHostController.navigate("login") {
-                                    popUpTo("onboarding") { inclusive = true }
-                                }
-                            },
-                            onOnboardingComplete = { /* TODO */ },
-                        )
+                WithCoilDebugLogger {
+                    NavHost(navHostController, "login") {
+                        composable("login") {
+                            LoginScreen(
+                                onLoginSuccess = {
+                                    navHostController.navigate("onboarding") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
+                            )
+                        }
+                        composable("onboarding") {
+                            val onboardingViewModel: OnboardingViewModel = koinViewModel()
+                            onboardingBackHandler(onboardingViewModel)
+                            Onboarding(
+                                viewModel = onboardingViewModel,
+                                onLogout = {
+                                    navHostController.navigate("login") {
+                                        popUpTo("onboarding") { inclusive = true }
+                                    }
+                                },
+                                onOnboardingComplete = { /* TODO */ },
+                            )
+                        }
                     }
                 }
             },

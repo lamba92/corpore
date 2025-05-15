@@ -11,8 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.corpore.app.core.utils.Weight
 import io.github.lamba92.corpore.app.core.utils.WeightUnit
 import io.github.lamba92.corpore.app.core.utils.toStringWithPrecision
@@ -53,10 +51,10 @@ fun WeightTextField(
 
 fun defaultWeightTextFieldIcon(): @Composable () -> Unit =
     {
-        AsyncImage(
-            model = Res.getUri("files/icons/weight_24dp.svg"),
+        ResourceImage(
+            path = "files/icons/weight_24dp.svg",
             contentDescription = "weight icon",
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier.size(24.dp),
         )
     }
 

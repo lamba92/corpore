@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.github.lamba92.app_core.generated.resources.Res
-import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_free_body
+import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_calisthenics
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_free_subtitle
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_free_title
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_gym
@@ -109,7 +109,7 @@ fun SportActivity(
                                     SportActivity.Gym -> Res.string.onboarding_sport_activity_gym
                                     SportActivity.Running -> Res.string.onboarding_sport_activity_running
                                     SportActivity.Swimming -> Res.string.onboarding_sport_activity_swimming
-                                    SportActivity.FreeBody -> Res.string.onboarding_sport_activity_free_body
+                                    SportActivity.FreeBody -> Res.string.onboarding_sport_activity_calisthenics
                                 },
                         ),
                     style = CorporeTheme.typography.bodyLarge,

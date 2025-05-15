@@ -7,8 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.corpore.app.core.utils.Length
 import io.github.lamba92.corpore.app.core.utils.LengthUnit
 import io.github.lamba92.corpore.app.core.utils.toStringWithPrecision
@@ -47,8 +45,8 @@ fun LengthTextField(
 
 fun defaultLengthTextFieldTailingIcon(): @Composable () -> Unit =
     {
-        AsyncImage(
-            model = Res.getUri("files/icons/straighten_24dp.svg"),
+        ResourceImage(
+            path = "files/icons/straighten_24dp.svg",
             contentDescription = "weight icon",
             modifier = Modifier.size(24.dp),
         )

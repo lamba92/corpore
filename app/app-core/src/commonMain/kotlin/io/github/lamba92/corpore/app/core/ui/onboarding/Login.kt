@@ -31,7 +31,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.app_name
 import io.github.lamba92.app_core.generated.resources.onboarding_continue_with_apple
@@ -42,6 +41,7 @@ import io.github.lamba92.app_core.generated.resources.onboarding_login_footer_to
 import io.github.lamba92.app_core.generated.resources.onboarding_login_footer_tos_link2
 import io.github.lamba92.app_core.generated.resources.onboarding_login_subtitle
 import io.github.lamba92.app_core.generated.resources.onboarding_login_welcome
+import io.github.lamba92.corpore.app.core.ui.components.ResourceImage
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
@@ -112,8 +112,8 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                AsyncImage(
-                    model = Res.getUri("files/icons/corpore-logo.svg"),
+                ResourceImage(
+                    path = "files/icons/corpore-logo.svg",
                     contentDescription = "Corpore logo",
                     modifier = Modifier.size(100.dp),
                 )
@@ -201,8 +201,8 @@ fun GoogleLoginButton(
         textColor = Color.Black,
         enabled = enabled,
         icon = {
-            AsyncImage(
-                model = Res.getUri("files/icons/google-g-logo.svg"),
+            ResourceImage(
+                path = "files/icons/google-g-logo.svg",
                 contentDescription = "Google logo",
                 modifier = Modifier.size(24.dp),
             )
@@ -224,8 +224,8 @@ fun AppleLoginButton(
         textColor = Color.White,
         enabled = enabled,
         icon = {
-            AsyncImage(
-                model = Res.getUri("files/icons/apple-logo-white.svg"),
+            ResourceImage(
+                path = "files/icons/apple-logo-white.svg",
                 contentDescription = "Apple logo",
                 modifier = Modifier.size(24.dp),
             )

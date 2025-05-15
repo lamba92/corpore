@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +19,7 @@ import io.github.lamba92.app_core.generated.resources.onboarding_physical_profil
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_weight_kg
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_weight_pounds
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_year_of_birth
+import io.github.lamba92.corpore.app.core.ui.components.IntTextField
 import io.github.lamba92.corpore.app.core.ui.components.LengthTextField
 import io.github.lamba92.corpore.app.core.ui.components.UnitSystemRow
 import io.github.lamba92.corpore.app.core.ui.components.WeightTextField
@@ -55,10 +55,22 @@ fun PhysicalProfile(
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(24.dp))
-        YearOfBirthTextField(
-            yearOfBirth = data.yearOfBirth,
-            onUpdate = onUpdate,
+        IntTextField(
+            value = data.yearOfBirth,
+            onValueChange = { onUpdate(it.toYearOfBirthSelectedUpdate()) },
             modifier = Modifier.fillMaxWidth(),
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(Res.drawable.baseline_calendar_today_24),
+                    contentDescription = "calendar icon",
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(Res.string.onboarding_physical_year_of_birth),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            },
         )
         Spacer(modifier = Modifier.height(8.dp))
         WeightTextField(
@@ -126,37 +138,6 @@ fun WeightTextField(
                 ),
             ),
         modifier = Modifier.fillMaxWidth(),
-    )
-}
-
-@Composable
-fun YearOfBirthTextField(
-    yearOfBirth: Int?,
-    onUpdate: (OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    OutlinedTextField(
-        modifier = modifier,
-        value = yearOfBirth?.toString() ?: "",
-        onValueChange = {
-            it
-                .filter { it.isDigit() }
-                .toIntOrNull()
-                ?.toYearOfBirthSelectedUpdate()
-                ?.let(onUpdate)
-        },
-        trailingIcon = {
-            Icon(
-                painter = painterResource(Res.drawable.baseline_calendar_today_24),
-                contentDescription = "calendar icon",
-            )
-        },
-        label = {
-            Text(
-                text = stringResource(Res.string.onboarding_physical_year_of_birth),
-                style = MaterialTheme.typography.labelMedium,
-            )
-        },
     )
 }
 

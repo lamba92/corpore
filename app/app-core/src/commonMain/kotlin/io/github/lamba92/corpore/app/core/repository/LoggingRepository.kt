@@ -2,6 +2,9 @@
 
 package io.github.lamba92.corpore.app.core.repository
 
+import coil3.util.Logger
+import io.github.lamba92.corpore.app.core.utils.CoilLogger
+
 interface LoggingRepository {
     val tag: String
 
@@ -18,6 +21,27 @@ interface LoggingRepository {
 
 fun LoggingRepository.logError(exception: Throwable) {
     logError(exception.stackTraceToString())
+}
+
+object CoilDebugLogger : CoilLogger {
+    private val logger = StaticLoggingRepository("CoilDebugLogger")
+
+    override var minLevel = Logger.Level.Debug
+
+    override fun log(
+        tag: String,
+        level: Logger.Level,
+        message: String?,
+        throwable: Throwable?,
+    ) {
+        when (level) {
+            Logger.Level.Debug -> logger.logDebug(message ?: "")
+            Logger.Level.Error -> logger.logError(message ?: "")
+            Logger.Level.Info -> logger.logInfo(message ?: "")
+            Logger.Level.Warn -> logger.logWarning(message ?: "")
+            Logger.Level.Verbose -> {}
+        }
+    }
 }
 
 expect class StaticLoggingRepository(tag: String) : LoggingRepository {

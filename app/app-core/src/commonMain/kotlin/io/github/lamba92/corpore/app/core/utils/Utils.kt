@@ -1,5 +1,6 @@
 package io.github.lamba92.corpore.app.core.utils
 
+import coil3.util.Logger
 import kotlin.math.pow
 
 /**
@@ -32,3 +33,5 @@ internal fun Number.toStringWithPrecision(precision: Int): String {
     val fractionalPart = (scaledNumber % powerOf10.toLong()).toString().padStart(precision, '0')
     return if (precision == 0) integerPart.toString() else "$integerPart.$fractionalPart"
 }
+
+typealias CoilLogger = Logger

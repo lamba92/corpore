@@ -8,10 +8,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +47,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.app_name
 import io.github.lamba92.app_core.generated.resources.baseline_arrow_back_24
@@ -125,25 +129,34 @@ fun Onboarding(
                 .fillMaxSize()
                 .background(CorporeTheme.colorScheme.background),
     ) {
+        var onboardingHeaderHeight by remember { mutableStateOf(0.dp) }
         var onboardingFooterHeight by remember { mutableStateOf(0.dp) }
         val density = LocalDensity.current
+        OnboardingHeader(
+            pageNumber = currentStep.ordinal + 1,
+            totalPages = OnboardingStep.entries.size,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned {
+                        onboardingHeaderHeight = with(density) { it.size.height.toDp() }
+                    }
+                    .gradientOverlay(
+                        CorporeTheme.colorScheme.background,
+                        GradientDirection.BottomToTop,
+                    )
+                    .padding(
+                        vertical = CorporeTheme.appMetrics.innerPadding,
+                        horizontal = CorporeTheme.appMetrics.outerPadding,
+                    )
+                    .zIndex(10f),
+        )
         Column(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .padding(top = CorporeTheme.appMetrics.outerPadding),
         ) {
-            OnboardingHeader(
-                pageNumber = currentStep.ordinal + 1,
-                totalPages = OnboardingStep.entries.size,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            vertical = CorporeTheme.appMetrics.innerPadding,
-                            horizontal = CorporeTheme.appMetrics.outerPadding,
-                        ),
-            )
             var previousStep by remember { mutableStateOf(currentStep) }
             val direction =
                 when {
@@ -151,28 +164,24 @@ fun Onboarding(
                     currentStep.ordinal < previousStep.ordinal -> -1 // Backward
                     else -> 0
                 }
-            LaunchedEffect(currentStep) {
-                previousStep = currentStep
-            }
+            remember(currentStep) { previousStep = currentStep }
+            val onboardingContentState = rememberOnboardingContentState()
             AnimatedContent(
                 targetState = currentStep,
                 transitionSpec = slideAnimation(direction),
                 label = "OnboardingContent",
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .verticalScroll(state = rememberScrollState()),
+                modifier = Modifier.fillMaxWidth(),
             ) { target ->
-                Column {
-                    OnboardingContent(
-                        target = target,
-                        data = data,
-                        onUpdate = onUpdate,
-                        verticalArrangement = verticalArrangement,
-                        horizontalAlignment = horizontalAlignment,
-                    )
-                    Spacer(modifier = Modifier.height(onboardingFooterHeight))
-                }
+                OnboardingContent(
+                    target = target,
+                    data = data,
+                    onUpdate = onUpdate,
+                    verticalArrangement = verticalArrangement,
+                    horizontalAlignment = horizontalAlignment,
+                    onboardingHeaderHeight = onboardingHeaderHeight,
+                    onboardingFooterHeight = onboardingFooterHeight,
+                    state = onboardingContentState,
+                )
             }
         }
         OnboardingFooter(
@@ -181,10 +190,14 @@ fun Onboarding(
                     .onGloballyPositioned {
                         onboardingFooterHeight = with(density) { it.size.height.toDp() }
                     }
-                    .gradientOverlay(CorporeTheme.colorScheme.background)
+                    .gradientOverlay(
+                        CorporeTheme.colorScheme.background,
+                        GradientDirection.TopToBottom,
+                    )
                     .padding(horizontal = CorporeTheme.appMetrics.outerPadding)
                     .padding(bottom = CorporeTheme.appMetrics.innerPadding)
-                    .align(Alignment.BottomCenter),
+                    .align(Alignment.BottomCenter)
+                    .zIndex(10f),
             isFirstScreen = currentStep.ordinal == 0,
             isLastScreen = currentStep.ordinal == OnboardingStep.entries.lastIndex,
             isLoggingOut = isLoggingOut,
@@ -195,22 +208,41 @@ fun Onboarding(
     }
 }
 
-fun Modifier.gradientOverlay(color: Color) =
-    this.then(
-        Modifier.drawBehind {
-            drawRect(
-                brush =
-                    Brush.verticalGradient(
-                        colors =
-                            listOf(
-                                color.copy(alpha = 0f),
-                                color.copy(alpha = 1f),
-                            ),
-                    ),
-                blendMode = BlendMode.SrcOver,
-            )
-        },
-    )
+enum class GradientDirection {
+    TopToBottom,
+    BottomToTop,
+}
+
+fun Modifier.gradientOverlay(
+    color: Color,
+    direction: GradientDirection,
+    initialAlpha: Float = 0f,
+    endAlpha: Float = 1f,
+) = this.then(
+    Modifier.drawBehind {
+        val gradientStops =
+            when (direction) {
+                GradientDirection.TopToBottom ->
+                    arrayOf(
+                        0.0f to color.copy(alpha = initialAlpha),
+                        0.3f to color.copy(alpha = endAlpha),
+                        1.0f to color.copy(alpha = endAlpha),
+                    )
+
+                GradientDirection.BottomToTop ->
+                    arrayOf(
+                        0.0f to color.copy(alpha = endAlpha),
+                        0.7f to color.copy(alpha = endAlpha),
+                        1.0f to color.copy(alpha = initialAlpha),
+                    )
+            }
+
+        drawRect(
+            brush = Brush.verticalGradient(colorStops = gradientStops),
+            blendMode = BlendMode.SrcOver,
+        )
+    },
+)
 
 private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<OnboardingStep>.() -> ContentTransform =
     { slideIn(direction) togetherWith slideOut(direction) }
@@ -242,6 +274,24 @@ fun OnboardingHeader(
     }
 }
 
+val defaultOnboardingContentStateMap
+    get() = OnboardingStep.entries.associateWith { ScrollState(0) }
+
+class OnboardingContentState(
+    private val scrollStateMap: Map<OnboardingStep, ScrollState> = defaultOnboardingContentStateMap,
+) {
+    fun getScrollState(step: OnboardingStep): ScrollState = scrollStateMap.getValue(step)
+}
+
+@Composable
+fun rememberOnboardingContentState(initial: Map<OnboardingStep, Int> = emptyMap()): OnboardingContentState {
+    return remember {
+        val initialValue =
+            defaultOnboardingContentStateMap + initial.mapValues { ScrollState(it.value) }
+        OnboardingContentState(initialValue)
+    }
+}
+
 @Composable
 fun OnboardingContent(
     target: OnboardingStep,
@@ -249,42 +299,94 @@ fun OnboardingContent(
     onUpdate: (OnboardingDataUpdateEvent) -> Unit,
     verticalArrangement: Arrangement.Vertical,
     horizontalAlignment: Alignment.Horizontal,
+    onboardingHeaderHeight: Dp,
+    onboardingFooterHeight: Dp,
+    state: OnboardingContentState = remember { OnboardingContentState() },
 ) {
+    val scrollState = state.getScrollState(target)
     Box(
-        modifier = Modifier.padding(horizontal = CorporeTheme.appMetrics.outerPadding),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = CorporeTheme.appMetrics.outerPadding),
     ) {
         when (target) {
             OnboardingStep.TrainingLevelSelection ->
-                TrainingLevel(
-                    selectedTrainingLevel = data.selectedTrainingLevel,
-                    onUpdate = onUpdate,
-                    verticalArrangement = verticalArrangement,
-                    horizontalAlignment = horizontalAlignment,
-                )
+                OnboardingContentScaffold(
+                    onboardingHeaderHeight = onboardingHeaderHeight,
+                    onboardingFooterHeight = onboardingFooterHeight,
+                    scrollState = scrollState,
+                ) {
+                    TrainingLevel(
+                        selectedTrainingLevel = data.selectedTrainingLevel,
+                        onUpdate = onUpdate,
+                        verticalArrangement = verticalArrangement,
+                        horizontalAlignment = horizontalAlignment,
+                    )
+                }
 
             OnboardingStep.PhysicalProfile ->
-                PhysicalProfile(
-                    data = data.physicalProfile,
-                    measurementUnitSystem = data.measurementUnitSystem,
-                    onUpdate = onUpdate,
-                )
+                OnboardingContentScaffold(
+                    onboardingHeaderHeight = onboardingHeaderHeight,
+                    onboardingFooterHeight = onboardingFooterHeight,
+                    scrollState = scrollState,
+                ) {
+                    PhysicalProfile(
+                        data = data.physicalProfile,
+                        measurementUnitSystem = data.measurementUnitSystem,
+                        onUpdate = onUpdate,
+                    )
+                }
 
             OnboardingStep.ActivitiesSelection ->
-                ActivitiesSelection(
-                    selectedActivities = data.selectedActivities,
-                    onUpdate = onUpdate,
-                )
+                OnboardingContentScaffold(
+                    onboardingHeaderHeight = onboardingHeaderHeight,
+                    onboardingFooterHeight = onboardingFooterHeight,
+                    scrollState = scrollState,
+                ) {
+                    ActivitiesSelection(
+                        selectedActivities = data.selectedActivities,
+                        onUpdate = onUpdate,
+                    )
+                }
 
             OnboardingStep.CurrentFitnessLevelInput ->
-                CurrentFitnessLevel(
-                    selectedActivities = data.selectedActivities.toSet(),
-                    currentFitnessLevelUserInputs = data.currentFitnessLevelUserInputs,
-                    measurementUnitSystem = data.measurementUnitSystem,
-                    onUpdate = onUpdate,
-                )
+                OnboardingContentScaffold(
+                    onboardingHeaderHeight = onboardingHeaderHeight,
+                    onboardingFooterHeight = onboardingFooterHeight,
+                    scrollState = scrollState,
+                ) {
+                    CurrentFitnessLevel(
+                        selectedActivities = data.selectedActivities.toSet(),
+                        currentFitnessLevel = data.currentFitnessLevelUserInputs,
+                        measurementUnitSystem = data.measurementUnitSystem,
+                        onUpdate = onUpdate,
+                    )
+                }
 
             OnboardingStep.ActivitiesRotationFrequency -> {} // ActivitiesRotationFrequency()
         }
+    }
+}
+
+@Composable
+fun OnboardingContentScaffold(
+    onboardingHeaderHeight: Dp,
+    onboardingFooterHeight: Dp,
+    scrollState: ScrollState = rememberScrollState(),
+    modifier: Modifier = Modifier,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier = modifier.verticalScroll(scrollState),
+        verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
+    ) {
+        Spacer(modifier = Modifier.height(onboardingHeaderHeight))
+        content()
+        Spacer(modifier = Modifier.height(onboardingFooterHeight))
     }
 }
 
