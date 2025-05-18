@@ -1,15 +1,12 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.core.ui.onboarding.content
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.baseline_calendar_today_24
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_height_cm
@@ -22,8 +19,12 @@ import io.github.lamba92.app_core.generated.resources.onboarding_physical_year_o
 import io.github.lamba92.corpore.app.core.ui.components.IntTextField
 import io.github.lamba92.corpore.app.core.ui.components.LengthTextField
 import io.github.lamba92.corpore.app.core.ui.components.UnitSystemRow
+import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.WeightTextField
 import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
+import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
+import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
+import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.utils.Length
 import io.github.lamba92.corpore.app.core.utils.LengthUnit
 import io.github.lamba92.corpore.app.core.utils.Weight
@@ -48,13 +49,13 @@ fun PhysicalProfile(
             title = stringResource(Res.string.onboarding_physical_profile_title),
             subtitle = stringResource(Res.string.onboarding_physical_profile_subtitle),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        VerticalSpacer()
         UnitSystemRow(
             selectedMeasurementUnit = measurementUnitSystem,
             onValueChange = { onUpdate(it.toUpdate()) },
             modifier = Modifier.fillMaxWidth(),
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        VerticalSpacer(height = CorporeTheme.appMetrics.innerPadding)
         IntTextField(
             value = data.yearOfBirth,
             onValueChange = { onUpdate(it.toYearOfBirthSelectedUpdate()) },
@@ -72,13 +73,13 @@ fun PhysicalProfile(
                 )
             },
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
         WeightTextField(
             data = data,
             measurementUnitSystem = measurementUnitSystem,
             onUpdate = onUpdate,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
         HeightTextField(
             data = data,
             measurementUnitSystem = measurementUnitSystem,

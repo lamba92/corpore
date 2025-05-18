@@ -1,10 +1,7 @@
 package io.github.lamba92.corpore.app.core.ui.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -20,6 +17,7 @@ import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.baseline_arrow_back_24
 import io.github.lamba92.app_core.generated.resources.baseline_logout_24
 import io.github.lamba92.app_core.generated.resources.onboarding_back
+import io.github.lamba92.app_core.generated.resources.onboarding_create_plan
 import io.github.lamba92.app_core.generated.resources.onboarding_next
 import io.github.lamba92.app_core.generated.resources.outline_arrow_forward_24
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
@@ -85,11 +83,7 @@ fun OnboardingGeneratePlanButton(
                 contentColor = CorporeTheme.colorScheme.onPrimary,
             ),
     ) {
-        Text(stringResource(Res.string.onboarding_next))
-        Image(
-            painter = painterResource(Res.drawable.outline_arrow_forward_24),
-            contentDescription = "Arrow forward icon",
-        )
+        Text(stringResource(Res.string.onboarding_create_plan))
     }
 }
 
@@ -139,26 +133,6 @@ fun LogoutButton(
             painter = painterResource(Res.drawable.baseline_logout_24),
             contentDescription = "Logout icon",
             modifier = Modifier.padding(start = 4.dp),
-        )
-    }
-}
-
-@Composable
-fun OnboardingTitle(
-    title: String,
-    subtitle: String,
-) {
-    Column {
-        Text(
-            text = title,
-            style = CorporeTheme.typography.titleLarge,
-            color = CorporeTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = subtitle,
-            style = CorporeTheme.typography.titleMedium,
-            color = CorporeTheme.colorScheme.onBackground,
         )
     }
 }

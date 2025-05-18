@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.core.ui.components
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind

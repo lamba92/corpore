@@ -10,13 +10,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import io.github.lamba92.corpore.app.core.ui.onboarding.content.ActivitiesRotationFrequency
+import io.github.lamba92.corpore.app.core.ui.onboarding.content.ActivitiesSelection
+import io.github.lamba92.corpore.app.core.ui.onboarding.content.FitnessLevelProfile
+import io.github.lamba92.corpore.app.core.ui.onboarding.content.PhysicalProfile
+import io.github.lamba92.corpore.app.core.ui.onboarding.content.TrainingLevel
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.MeasurementUnitSystem
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingStep
-import io.github.lamba92.corpore.app.core.viewmodel.SportActivity
 
 private val defaultOnboardingContentStateMap
     get() = OnboardingStep.entries.associateWith { ScrollState(0) }
@@ -110,21 +113,10 @@ fun OnboardingContent(
                     scrollState = scrollState,
                 ) {
                     ActivitiesRotationFrequency(
-                        selectedActivities = data.selectedActivities,
-                        activitiesRotationFrequency = data.activitiesRotationFrequency,
-                        measurementUnitSystem = data.measurementUnitSystem,
+                        selectedRotationFrequency = data.activitiesRotationFrequency,
                         onUpdate = onUpdate,
                     )
                 }
         }
     }
-}
-
-@Composable
-fun ActivitiesRotationFrequency(
-    selectedActivities: Set<SportActivity>,
-    activitiesRotationFrequency: OnboardingData.RotationFrequency,
-    measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
-) {
 }

@@ -3,7 +3,7 @@ package io.github.lamba92.corpore.app.core.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.lamba92.corpore.app.core.repository.AuthRepository
-import io.github.lamba92.corpore.app.core.ui.onboarding.TrainingLevel
+import io.github.lamba92.corpore.app.core.ui.onboarding.content.TrainingLevel
 import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
 import io.github.lamba92.corpore.app.core.utils.Length

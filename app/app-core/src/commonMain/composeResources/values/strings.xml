@@ -48,8 +48,8 @@
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_performance">Calisthenics performance</string>
     <string name="onboarding_fitness_level_profile_user_input_swimming_15_min_meters">Freestyle distance in 15 minutes (m)</string>
     <string name="onboarding_fitness_level_profile_user_input_swimming_15_min_yards">Freestyle distance in 15 minutes (yd)</string>
-    <string name="onboarding_fitness_level_profile_user_input_running_15_min_meters">Running performance (m)</string>
-    <string name="onboarding_fitness_level_profile_user_input_running_15_min_yards">Running performance (yd)</string>
+    <string name="onboarding_fitness_level_profile_user_input_running_15_min_meters">What distance do you run in 15 minutes? (m)</string>
+    <string name="onboarding_fitness_level_profile_user_input_running_15_min_yards">What distance do you run in 15 minutes? (yd)</string>
     <string name="onboarding_fitness_level_profile_user_input_swimming_stroke_freestyle">Freestyle</string>
     <string name="onboarding_fitness_level_profile_user_input_swimming_stroke_backstroke">Backstroke</string>
     <string name="onboarding_fitness_level_profile_user_input_swimming_stroke_breaststroke">Breaststroke</string>
@@ -61,4 +61,10 @@
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_max_pushups">Maximum consecutive push-ups</string>
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_wall_sit_hold">Wall sit hold (seconds)</string>
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_can_plank_30_sec">Can hold plank for 30 seconds</string>
+    <string name="onboarding_activity_rotation_title">How long should your training cycle be?</string>
+    <string name="onboarding_activity_rotation_subtitle">Select the length of your plan.</string>
+    <string name="onboarding_activity_rotation_1_week_plan_title">1-Week Plan</string>
+    <string name="onboarding_activity_rotation_more_week_plan_title">%1$s-Weeks Plan</string>
+    <string name="onboarding_activity_rotation_1_week_plan_subtitle">Training plan lasts and repeats every week</string>
+    <string name="onboarding_activity_rotation_more_week_plan_subtitle">Training plan lasts and repeats every %1$s weeks</string>
 </resources>

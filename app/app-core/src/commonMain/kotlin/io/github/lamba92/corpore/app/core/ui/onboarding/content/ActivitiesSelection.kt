@@ -1,13 +1,10 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.core.ui.onboarding.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -23,7 +20,10 @@ import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_gym
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_running
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_swimming
+import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
+import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
+import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
 import io.github.lamba92.corpore.app.core.viewmodel.SportActivity
 import org.jetbrains.compose.resources.stringResource
@@ -41,9 +41,9 @@ fun ActivitiesSelection(
             title = stringResource(Res.string.onboarding_sport_activity_free_title),
             subtitle = stringResource(Res.string.onboarding_sport_activity_free_subtitle),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        VerticalSpacer()
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(CorporeTheme.appMetrics.innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SportActivity
@@ -100,7 +100,7 @@ fun SportActivity(
                     contentDescription = activity.name,
                     modifier = Modifier.size(48.dp),
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
                 Text(
                     text =
                         stringResource(

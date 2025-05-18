@@ -29,6 +29,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import io.github.lamba92.corpore.app.core.ui.components.GradientDirection
+import io.github.lamba92.corpore.app.core.ui.components.gradientOverlay
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData

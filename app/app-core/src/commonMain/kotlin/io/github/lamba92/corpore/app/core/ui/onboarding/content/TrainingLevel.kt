@@ -1,12 +1,10 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.core.ui.onboarding.content
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +23,10 @@ import io.github.lamba92.app_core.generated.resources.onboarding_user_level_adva
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_beginner
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_intermediate
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_pro
+import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
+import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
+import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
+import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
 import org.jetbrains.compose.resources.stringResource
 
@@ -45,12 +47,12 @@ fun TrainingLevel(
             title = stringResource(Res.string.onboarding_about_yourself_user_level_title),
             subtitle = stringResource(Res.string.onboarding_about_yourself_user_level_subtitle),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        VerticalSpacer()
         Text(
             text = stringResource(Res.string.onboarding_about_yourself_user_level_text),
             style = MaterialTheme.typography.bodyMedium,
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        VerticalSpacer()
         TrainingLevelSelectionButtons(
             selectedTrainingLevel = selectedTrainingLevel,
             onTrainingLevelClick = { onUpdate(OnboardingDataUpdateEvent.TrainingLevelSelected(it)) },
@@ -70,7 +72,7 @@ fun TrainingLevelSelectionButtons(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(CorporeTheme.appMetrics.innerPadding),
     ) {
         TrainingLevelSelectionButtonsRow(
             selectedTrainingLevel = selectedTrainingLevel,
@@ -171,7 +173,7 @@ fun TrainingLevelButton(
                 contentDescription = null,
                 modifier = Modifier.size(48.dp),
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
             val resourceId =
                 when (level) {
                     TrainingLevel.Beginner -> Res.string.onboarding_user_level_beginner

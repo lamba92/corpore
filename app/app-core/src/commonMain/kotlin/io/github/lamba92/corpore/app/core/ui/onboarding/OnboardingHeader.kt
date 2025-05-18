@@ -20,14 +20,18 @@ fun OnboardingHeader(
     Box(modifier = modifier) {
         Text(
             text = stringResource(Res.string.app_name),
-            style = CorporeTheme.typography.titleLarge,
+            style =
+                CorporeTheme
+                    .typography
+                    .titleLarge
+                    .copy(fontSize = CorporeTheme.typography.titleLarge.fontSize * 2),
             color = CorporeTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.CenterStart),
         )
         Text(
             text = "$pageNumber/$totalPages",
-            style = CorporeTheme.typography.bodySmall,
+            style = CorporeTheme.typography.bodyMedium,
             color = CorporeTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.CenterEnd),
         )

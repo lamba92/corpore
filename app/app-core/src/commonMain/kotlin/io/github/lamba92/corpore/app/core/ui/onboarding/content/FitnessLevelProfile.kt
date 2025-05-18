@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.core.ui.onboarding.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -55,9 +53,12 @@ import io.github.lamba92.corpore.app.core.ui.components.IntTextField
 import io.github.lamba92.corpore.app.core.ui.components.LengthTextField
 import io.github.lamba92.corpore.app.core.ui.components.ResourceImage
 import io.github.lamba92.corpore.app.core.ui.components.UnitSystemRow
+import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.WeightTextField
 import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
+import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
+import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.utils.Length
 import io.github.lamba92.corpore.app.core.utils.LengthUnit
 import io.github.lamba92.corpore.app.core.utils.Weight
@@ -77,11 +78,8 @@ fun FitnessLevelProfile(
     onUpdate: (OnboardingDataUpdateEvent) -> Unit,
 ) {
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(CorporeTheme.appMetrics.innerPadding),
     ) {
         OnboardingTitle(
             title = stringResource(Res.string.onboarding_fitness_level_profile_title),
@@ -566,7 +564,7 @@ fun CardHeader(
                 icon()
             }
         }
-        Spacer(modifier = Modifier.width(8.dp))
+        VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
