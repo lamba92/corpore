@@ -3,63 +3,32 @@ package io.github.lamba92.corpore.app.core.ui.onboarding
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import io.github.lamba92.app_core.generated.resources.Res
-import io.github.lamba92.app_core.generated.resources.app_name
-import io.github.lamba92.app_core.generated.resources.baseline_arrow_back_24
-import io.github.lamba92.app_core.generated.resources.baseline_logout_24
-import io.github.lamba92.app_core.generated.resources.onboarding_back
-import io.github.lamba92.app_core.generated.resources.onboarding_next
-import io.github.lamba92.app_core.generated.resources.outline_arrow_forward_24
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
@@ -69,8 +38,6 @@ import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -212,371 +179,9 @@ fun Onboarding(
     }
 }
 
-enum class GradientDirection {
-    TopToBottom,
-    BottomToTop,
-}
-
-fun Modifier.gradientOverlay(
-    color: Color,
-    direction: GradientDirection,
-    initialAlpha: Float = 0f,
-    endAlpha: Float = 1f,
-) = this.then(
-    Modifier.drawBehind {
-        val gradientStops =
-            when (direction) {
-                GradientDirection.TopToBottom ->
-                    arrayOf(
-                        0.0f to color.copy(alpha = initialAlpha),
-                        0.3f to color.copy(alpha = endAlpha),
-                        1.0f to color.copy(alpha = endAlpha),
-                    )
-
-                GradientDirection.BottomToTop ->
-                    arrayOf(
-                        0.0f to color.copy(alpha = endAlpha),
-                        0.7f to color.copy(alpha = endAlpha),
-                        1.0f to color.copy(alpha = initialAlpha),
-                    )
-            }
-
-        drawRect(
-            brush = Brush.verticalGradient(colorStops = gradientStops),
-            blendMode = BlendMode.SrcOver,
-        )
-    },
-)
-
 private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<OnboardingStep>.() -> ContentTransform =
     { slideIn(direction) togetherWith slideOut(direction) }
 
 private fun slideOut(direction: Int) = slideOutHorizontally { fullWidth -> -direction * fullWidth }
 
 private fun slideIn(direction: Int) = slideInHorizontally { fullWidth -> direction * fullWidth }
-
-@Composable
-fun OnboardingHeader(
-    pageNumber: Int,
-    totalPages: Int,
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier) {
-        Text(
-            text = stringResource(Res.string.app_name),
-            style = CorporeTheme.typography.titleLarge,
-            color = CorporeTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterStart),
-        )
-        Text(
-            text = "$pageNumber/$totalPages",
-            style = CorporeTheme.typography.bodySmall,
-            color = CorporeTheme.colorScheme.onBackground,
-            modifier = Modifier.align(Alignment.CenterEnd),
-        )
-    }
-}
-
-val defaultOnboardingContentStateMap
-    get() = OnboardingStep.entries.associateWith { ScrollState(0) }
-
-class OnboardingContentState(
-    private val scrollStateMap: Map<OnboardingStep, ScrollState> = defaultOnboardingContentStateMap,
-) {
-    fun getScrollState(step: OnboardingStep): ScrollState = scrollStateMap.getValue(step)
-}
-
-@Composable
-fun rememberOnboardingContentState(initial: Map<OnboardingStep, Int> = emptyMap()): OnboardingContentState {
-    return remember {
-        val initialValue =
-            defaultOnboardingContentStateMap + initial.mapValues { ScrollState(it.value) }
-        OnboardingContentState(initialValue)
-    }
-}
-
-@Composable
-fun OnboardingContent(
-    target: OnboardingStep,
-    data: OnboardingData,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
-    verticalArrangement: Arrangement.Vertical,
-    horizontalAlignment: Alignment.Horizontal,
-    onboardingHeaderHeight: Dp,
-    onboardingFooterHeight: Dp,
-    state: OnboardingContentState = remember { OnboardingContentState() },
-) {
-    val scrollState = state.getScrollState(target)
-    Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(horizontal = CorporeTheme.appMetrics.outerPadding),
-    ) {
-        when (target) {
-            OnboardingStep.TrainingLevelSelection ->
-                OnboardingContentScaffold(
-                    onboardingHeaderHeight = onboardingHeaderHeight,
-                    onboardingFooterHeight = onboardingFooterHeight,
-                    scrollState = scrollState,
-                ) {
-                    TrainingLevel(
-                        selectedTrainingLevel = data.selectedTrainingLevel,
-                        onUpdate = onUpdate,
-                        verticalArrangement = verticalArrangement,
-                        horizontalAlignment = horizontalAlignment,
-                    )
-                }
-
-            OnboardingStep.PhysicalProfile ->
-                OnboardingContentScaffold(
-                    onboardingHeaderHeight = onboardingHeaderHeight,
-                    onboardingFooterHeight = onboardingFooterHeight,
-                    scrollState = scrollState,
-                ) {
-                    PhysicalProfile(
-                        data = data.physicalProfile,
-                        measurementUnitSystem = data.measurementUnitSystem,
-                        onUpdate = onUpdate,
-                    )
-                }
-
-            OnboardingStep.ActivitiesSelection ->
-                OnboardingContentScaffold(
-                    onboardingHeaderHeight = onboardingHeaderHeight,
-                    onboardingFooterHeight = onboardingFooterHeight,
-                    scrollState = scrollState,
-                ) {
-                    ActivitiesSelection(
-                        selectedActivities = data.selectedActivities,
-                        onUpdate = onUpdate,
-                    )
-                }
-
-            OnboardingStep.CurrentFitnessLevel ->
-                OnboardingContentScaffold(
-                    onboardingHeaderHeight = onboardingHeaderHeight,
-                    onboardingFooterHeight = onboardingFooterHeight,
-                    scrollState = scrollState,
-                ) {
-                    CurrentFitnessLevel(
-                        selectedActivities = data.selectedActivities.toSet(),
-                        currentFitnessLevel = data.currentFitnessLevel,
-                        measurementUnitSystem = data.measurementUnitSystem,
-                        onUpdate = onUpdate,
-                    )
-                }
-
-            OnboardingStep.ActivitiesRotationFrequency -> {} // ActivitiesRotationFrequency()
-        }
-    }
-}
-
-@Composable
-fun OnboardingContentScaffold(
-    onboardingHeaderHeight: Dp,
-    onboardingFooterHeight: Dp,
-    scrollState: ScrollState = rememberScrollState(),
-    modifier: Modifier = Modifier,
-    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    Column(
-        modifier = modifier.verticalScroll(scrollState),
-        verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment,
-    ) {
-        Spacer(modifier = Modifier.height(onboardingHeaderHeight))
-        content()
-        Spacer(modifier = Modifier.height(onboardingFooterHeight))
-    }
-}
-
-@Composable
-fun OnboardingFooter(
-    isFirstScreen: Boolean,
-    isLastScreen: Boolean,
-    canGoNext: Boolean,
-    onBackClick: () -> Unit = {},
-    onNextClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
-    isLoggingOut: Boolean,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        val leftButtonWeight by animateFloatAsState(if (isFirstScreen || isLastScreen) 0.2f else 0.5f)
-        val rightButtonWeight by derivedStateOf { 1f - leftButtonWeight }
-
-        when {
-            isFirstScreen ->
-                LogoutButton(
-                    enabled = !isLoggingOut,
-                    onClick = onBackClick,
-                    modifier = Modifier.weight(leftButtonWeight),
-                )
-
-            else ->
-                OnboardingBackButton(
-                    isLastScreen = isLastScreen,
-                    onClick = onBackClick,
-                    modifier = Modifier.weight(leftButtonWeight),
-                )
-        }
-        when {
-            isLastScreen ->
-                OnboardingGeneratePlanButton(
-                    onClick = onNextClick,
-                    enabled = canGoNext,
-                    modifier = Modifier.weight(rightButtonWeight),
-                )
-
-            else ->
-                OnboardingNextButton(
-                    onClick = onNextClick,
-                    enabled = canGoNext,
-                    modifier = Modifier.weight(rightButtonWeight),
-                )
-        }
-    }
-}
-
-@Composable
-fun OnboardingButton(
-    onClick: () -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-    buttonColors: ButtonColors,
-    content: @Composable RowScope.() -> Unit,
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        colors = buttonColors,
-        content = content,
-    )
-}
-
-@Composable
-fun OnboardingNextButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean,
-) {
-    OnboardingButton(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        buttonColors =
-            ButtonDefaults.buttonColors(
-                containerColor = CorporeTheme.colorScheme.primary,
-                contentColor = CorporeTheme.colorScheme.onPrimary,
-            ),
-    ) {
-        Text(
-            text = stringResource(Res.string.onboarding_next),
-        )
-        Image(
-            painter = painterResource(Res.drawable.outline_arrow_forward_24),
-            contentDescription = "Arrow forward icon",
-        )
-    }
-}
-
-@Composable
-fun OnboardingGeneratePlanButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean,
-) {
-    OnboardingButton(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        buttonColors =
-            ButtonDefaults.filledTonalButtonColors(
-                containerColor = CorporeTheme.colorScheme.primary,
-                contentColor = CorporeTheme.colorScheme.onPrimary,
-            ),
-    ) {
-        Text(stringResource(Res.string.onboarding_next))
-        Image(
-            painter = painterResource(Res.drawable.outline_arrow_forward_24),
-            contentDescription = "Arrow forward icon",
-        )
-    }
-}
-
-@Composable
-fun OnboardingBackButton(
-    onClick: () -> Unit,
-    enabled: Boolean = true,
-    modifier: Modifier = Modifier,
-    isLastScreen: Boolean,
-) {
-    OnboardingButton(
-        onClick = onClick,
-        modifier = modifier,
-        buttonColors =
-            ButtonDefaults.filledTonalButtonColors(
-                containerColor = CorporeTheme.colorScheme.secondary,
-                contentColor = CorporeTheme.colorScheme.onSecondary,
-            ),
-        enabled = enabled,
-    ) {
-        Image(
-            painter = painterResource(Res.drawable.baseline_arrow_back_24),
-            contentDescription = "Arrow back icon",
-        )
-        if (!isLastScreen) {
-            Text(
-                text = stringResource(Res.string.onboarding_back),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
-
-@Composable
-fun LogoutButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean,
-) {
-    TextButton(
-        onClick = onClick,
-        enabled = enabled,
-        modifier = modifier,
-    ) {
-        Icon(
-            painter = painterResource(Res.drawable.baseline_logout_24),
-            contentDescription = "Logout icon",
-            modifier = Modifier.padding(start = 4.dp),
-        )
-    }
-}
-
-@Composable
-fun OnboardingTitle(
-    title: String,
-    subtitle: String,
-) {
-    Column {
-        Text(
-            text = title,
-            style = CorporeTheme.typography.titleLarge,
-            color = CorporeTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = subtitle,
-            style = CorporeTheme.typography.titleMedium,
-            color = CorporeTheme.colorScheme.onBackground,
-        )
-    }
-}

@@ -26,7 +26,7 @@ fun CorporeApp(
                 WithCoilDebugLogger {
                     NavHost(
                         navController = navHostController,
-                        startDestination = "login"
+                        startDestination = "login",
                     ) {
                         composable("login") {
                             LoginScreen(
