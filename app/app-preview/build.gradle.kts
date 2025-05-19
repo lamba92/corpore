@@ -1,8 +1,8 @@
 plugins {
-    id(libs.plugins.kotlin.jvm.get().pluginId)
-    alias(libs.plugins.kotlin.plugin.compose)
-    alias(libs.plugins.jetbrains.compose)
-    alias(libs.plugins.kotlin.plugin.serialization)
+    id(libs.plugins.kotlin.jvm)
+    id(libs.plugins.kotlin.plugin.compose)
+    id(libs.plugins.jetbrains.compose)
+    id(libs.plugins.kotlin.plugin.serialization)
     application
 }
 
