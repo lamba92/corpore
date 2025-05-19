@@ -20,10 +20,11 @@ import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_gym
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_running
 import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_swimming
+import io.github.lamba92.corpore.app.core.ui.components.HorizontalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
+import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
-import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
 import io.github.lamba92.corpore.app.core.viewmodel.SportActivity
 import org.jetbrains.compose.resources.stringResource
@@ -43,7 +44,7 @@ fun ActivitiesSelection(
         )
         VerticalSpacer()
         Column(
-            verticalArrangement = Arrangement.spacedBy(CorporeTheme.appMetrics.innerPadding),
+            verticalArrangement = Arrangement.spacedByThemeInnerPadding(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SportActivity
@@ -100,7 +101,7 @@ fun SportActivity(
                     contentDescription = activity.name,
                     modifier = Modifier.size(48.dp),
                 )
-                VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
+                HorizontalSpacer()
                 Text(
                     text =
                         stringResource(

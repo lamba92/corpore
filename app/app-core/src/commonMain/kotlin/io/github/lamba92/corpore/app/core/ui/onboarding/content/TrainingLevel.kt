@@ -24,6 +24,8 @@ import io.github.lamba92.app_core.generated.resources.onboarding_user_level_begi
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_intermediate
 import io.github.lamba92.app_core.generated.resources.onboarding_user_level_pro
 import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
+import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
+import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeOuterPadding
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
@@ -72,7 +74,7 @@ fun TrainingLevelSelectionButtons(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(CorporeTheme.appMetrics.innerPadding),
+        verticalArrangement = Arrangement.spacedByThemeInnerPadding(),
     ) {
         TrainingLevelSelectionButtonsRow(
             selectedTrainingLevel = selectedTrainingLevel,
@@ -97,7 +99,7 @@ fun TrainingLevelSelectionButtonsRow(
     vararg levels: TrainingLevel,
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedByThemeOuterPadding(),
         modifier = modifier,
     ) {
         levels.forEach { level ->

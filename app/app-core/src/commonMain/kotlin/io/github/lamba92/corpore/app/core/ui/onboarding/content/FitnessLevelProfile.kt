@@ -49,13 +49,14 @@ import io.github.lamba92.app_core.generated.resources.onboarding_fitness_level_p
 import io.github.lamba92.app_core.generated.resources.onboarding_fitness_level_profile_user_input_swimming_stroke_breaststroke
 import io.github.lamba92.app_core.generated.resources.onboarding_fitness_level_profile_user_input_swimming_stroke_butterfly
 import io.github.lamba92.app_core.generated.resources.onboarding_fitness_level_profile_user_input_swimming_stroke_freestyle
+import io.github.lamba92.corpore.app.core.ui.components.HorizontalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.IntTextField
 import io.github.lamba92.corpore.app.core.ui.components.LengthTextField
 import io.github.lamba92.corpore.app.core.ui.components.ResourceImage
 import io.github.lamba92.corpore.app.core.ui.components.UnitSystemRow
-import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.WeightTextField
 import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
+import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
@@ -79,7 +80,7 @@ fun FitnessLevelProfile(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(CorporeTheme.appMetrics.innerPadding),
+        verticalArrangement = Arrangement.spacedByThemeInnerPadding(),
     ) {
         OnboardingTitle(
             title = stringResource(Res.string.onboarding_fitness_level_profile_title),
@@ -176,7 +177,7 @@ fun FitnessLevelInputCard(
 fun FitnessLevelCard(
     modifier: Modifier = Modifier,
     title: String,
-    horizontalOrVertical: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(8.dp),
+    horizontalOrVertical: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(CorporeTheme.appMetrics.outerPadding / 2),
     innerPadding: Dp = 16.dp,
     icon: @Composable () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
@@ -564,7 +565,7 @@ fun CardHeader(
                 icon()
             }
         }
-        VerticalSpacer(height = CorporeTheme.appMetrics.outerPadding / 2)
+        HorizontalSpacer()
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
