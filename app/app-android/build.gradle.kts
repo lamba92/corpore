@@ -1,7 +1,7 @@
 plugins {
-    id(libs.plugins.android.application.get().pluginId)
-    id(libs.plugins.kotlin.android.get().pluginId)
-    alias(libs.plugins.kotlin.plugin.compose)
+    id(libs.plugins.android.application)
+    id(libs.plugins.kotlin.android)
+    id(libs.plugins.kotlin.plugin.compose)
 }
 
 android {
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = namespace
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -42,9 +42,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
