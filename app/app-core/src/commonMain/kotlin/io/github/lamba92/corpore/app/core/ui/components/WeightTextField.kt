@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import io.github.lamba92.corpore.app.core.utils.Weight
-import io.github.lamba92.corpore.app.core.utils.WeightUnit
-import io.github.lamba92.corpore.app.core.utils.toStringWithPrecision
+import io.github.lamba92.corpore.common.core.Weight
+import io.github.lamba92.corpore.common.core.WeightUnit
+import io.github.lamba92.corpore.common.core.toStringWithPrecision
 
 @Composable
 fun WeightTextField(

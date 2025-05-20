@@ -1,55 +1,63 @@
-package io.github.lamba92.corpore.app.core.utils
+package io.github.lamba92.corpore.common.core
 
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
-// Sealed interface to represent different length units
+@Serializable
 sealed interface LengthUnit {
     val factorToMeters: Double // Factor to convert this unit to meters
 
-    object Millimeters : LengthUnit {
+    @Serializable
+    data object Millimeters : LengthUnit {
         override val factorToMeters: Double = 0.001
 
         override fun toString(): String = "mm"
     }
 
-    object Centimeters : LengthUnit {
+    @Serializable
+    data object Centimeters : LengthUnit {
         override val factorToMeters: Double = 0.01
 
         override fun toString(): String = "cm"
     }
 
-    object Meters : LengthUnit {
+    @Serializable
+    data object Meters : LengthUnit {
         override val factorToMeters: Double = 1.0
 
         override fun toString(): String = "m"
     }
 
-    object Kilometers : LengthUnit {
+    @Serializable
+    data object Kilometers : LengthUnit {
         override val factorToMeters: Double = 1000.0
 
         override fun toString(): String = "km"
     }
 
-    object Inches : LengthUnit {
+    @Serializable
+    data object Inches : LengthUnit {
         override val factorToMeters: Double = 0.0254
 
         override fun toString(): String = "in"
     }
 
-    object Feet : LengthUnit {
+    @Serializable
+    data object Feet : LengthUnit {
         override val factorToMeters: Double = 0.3048
 
         override fun toString(): String = "ft"
     }
 
-    object Yards : LengthUnit {
+    @Serializable
+    data object Yards : LengthUnit {
         override val factorToMeters: Double = 0.9144
 
         override fun toString(): String = "yd"
     }
 
-    object Miles : LengthUnit {
+    @Serializable
+    data object Miles : LengthUnit {
         override val factorToMeters: Double = 1609.34
 
         override fun toString(): String = "mi"
@@ -60,7 +68,6 @@ sealed interface LengthUnit {
 @Serializable
 value class Length(private val meters: Double) : Comparable<Length> {
     companion object {
-        // Function for creating Length from a value and unit
         fun from(
             value: Number,
             unit: LengthUnit,
@@ -69,7 +76,6 @@ value class Length(private val meters: Double) : Comparable<Length> {
         val ZERO = Length(0.0)
     }
 
-    // Properties to get the length value in different units
     val inMillimeters: Double get() = meters / LengthUnit.Millimeters.factorToMeters
     val inCentimeters: Double get() = meters / LengthUnit.Centimeters.factorToMeters
     val inMeters: Double get() = meters
@@ -79,10 +85,8 @@ value class Length(private val meters: Double) : Comparable<Length> {
     val inYards: Double get() = meters / LengthUnit.Yards.factorToMeters
     val inMiles: Double get() = meters / LengthUnit.Miles.factorToMeters
 
-    // Method to convert length to a specific unit
     fun to(unit: LengthUnit): Double = meters / unit.factorToMeters
 
-    // Arithmetic operators
     operator fun plus(other: Length): Length = Length.from(meters + other.meters, LengthUnit.Meters)
 
     operator fun minus(other: Length): Length = Length.from(meters - other.meters, LengthUnit.Meters)
@@ -91,10 +95,8 @@ value class Length(private val meters: Double) : Comparable<Length> {
 
     operator fun div(factor: Number): Length = Length.from(meters / factor.toDouble(), LengthUnit.Meters)
 
-    // Comparison
     override fun compareTo(other: Length): Int = this.meters.compareTo(other.meters)
 
-    // String representation
     override fun toString(): String =
         when {
             meters < LengthUnit.Meters.factorToMeters -> "$inMillimeters ${LengthUnit.Millimeters}"
@@ -119,7 +121,6 @@ value class Length(private val meters: Double) : Comparable<Length> {
         }
 }
 
-// Extension properties for creating Length instances with specific units
 val Number.millimeters: Length get() = Length.from(this, LengthUnit.Millimeters)
 val Number.centimeters: Length get() = Length.from(this, LengthUnit.Centimeters)
 val Number.meters: Length get() = Length.from(this, LengthUnit.Meters)

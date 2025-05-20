@@ -25,13 +25,13 @@ import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.utils.Length
-import io.github.lamba92.corpore.app.core.utils.LengthUnit
-import io.github.lamba92.corpore.app.core.utils.Weight
-import io.github.lamba92.corpore.app.core.utils.WeightUnit
 import io.github.lamba92.corpore.app.core.viewmodel.MeasurementUnitSystem
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.common.core.Length
+import io.github.lamba92.corpore.common.core.LengthUnit
+import io.github.lamba92.corpore.common.core.Weight
+import io.github.lamba92.corpore.common.core.WeightUnit
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 

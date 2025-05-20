@@ -1,6 +1,5 @@
-package io.github.lamba92.corpore.app.core.utils
+package io.github.lamba92.corpore.common.core
 
-import coil3.util.Logger
 import kotlin.math.pow
 
 /**
@@ -24,7 +23,7 @@ import kotlin.math.pow
  * @param precision the number of digits to keep after the decimal point.
  * @return a string representation of the number with the specified decimal precision.
  */
-internal fun Number.toStringWithPrecision(precision: Int): String {
+fun Number.toStringWithPrecision(precision: Int): String {
     require(precision >= 0) { "Precision must be non-negative" }
 
     val powerOf10 = 10.0.pow(precision.toDouble())
@@ -33,5 +32,3 @@ internal fun Number.toStringWithPrecision(precision: Int): String {
     val fractionalPart = (scaledNumber % powerOf10.toLong()).toString().padStart(precision, '0')
     return if (precision == 0) integerPart.toString() else "$integerPart.$fractionalPart"
 }
-
-typealias CoilLogger = Logger

@@ -6,8 +6,8 @@ import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.ui.onboarding.content.TrainingLevel
 import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
-import io.github.lamba92.corpore.app.core.utils.Length
-import io.github.lamba92.corpore.app.core.utils.Weight
+import io.github.lamba92.corpore.common.core.Length
+import io.github.lamba92.corpore.common.core.Weight
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
