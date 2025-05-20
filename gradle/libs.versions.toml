@@ -21,7 +21,8 @@ kotlinx-datetime = "0.6.2"
 kotlinx-io = "0.7.0"
 kotlinx-serialization-json = "1.8.1"
 ktlint-gradle = "12.1.2"
-ktor = "3.1.1"
+ktor = "3.2.0-eap-1289"
+lamba-docker = "1.0.0"
 logback = "1.5.18"
 nexus-publish-plugin = "2.0.0"
 
@@ -73,6 +74,7 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -86,11 +88,15 @@ kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.re
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization-json" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
+ktor-client-apache = { module = "io.ktor:ktor-client-apache", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 nexus-publish-plugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus-publish-plugin" }
@@ -104,6 +110,17 @@ compose-desktop = [
     "compose-desktop-windows-arm64",
     "compose-desktop-windows-x64",
 ]
+ktor-client = [
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-logging",
+]
+ktor-server = [
+    "ktor-server-netty",
+    "ktor-server-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "koin-ktor",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -116,3 +133,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+lamba-docker = { id = "io.github.lamba92.docker", version.ref = "lamba-docker" }

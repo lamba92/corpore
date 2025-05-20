@@ -11,4 +11,5 @@ dependencies {
     implementation(pluginMarker(libs.plugins.kotlin.plugin.compose))
     implementation(pluginMarker(libs.plugins.jetbrains.compose))
     implementation(pluginMarker(libs.plugins.ktlint))
+    implementation(pluginMarker(libs.plugins.lamba.docker))
 }

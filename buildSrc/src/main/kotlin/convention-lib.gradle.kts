@@ -5,7 +5,7 @@ import com.android.build.api.dsl.androidLibrary
 plugins {
     `maven-publish`
     id("com.android.kotlin.multiplatform.library")
-    id("org.jlleitschuh.gradle.ktlint")
+    id("convention-ktlint")
     kotlin("multiplatform")
     kotlin("plugin.serialization")
 }
@@ -32,8 +32,3 @@ kotlin {
 
 }
 
-ktlint {
-    filter {
-        exclude("**/generated/**")
-    }
-}

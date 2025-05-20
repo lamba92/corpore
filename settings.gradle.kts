@@ -17,6 +17,7 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         google()
+        maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
     }
     rulesMode = RulesMode.PREFER_SETTINGS
 }
