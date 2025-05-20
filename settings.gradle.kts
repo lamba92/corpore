@@ -40,5 +40,6 @@ include(
     ":app:app-core",
     ":app:app-android",
     ":app:app-preview",
-    ":common-core"
+    ":common-core",
+    ":server"
 )
