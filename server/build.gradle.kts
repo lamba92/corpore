@@ -13,5 +13,6 @@ application {
 dependencies {
     api(projects.app.appCore)
     api(libs.logback.classic)
+    api(libs.model.contex.protocol)
     api(libs.bundles.ktor.server)
 }
