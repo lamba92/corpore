@@ -14,5 +14,6 @@ dependencies {
     api(projects.app.appCore)
     api(libs.logback.classic)
     api(libs.model.contex.protocol)
+    api(libs.kotlinx.io.core)
     api(libs.bundles.ktor.server)
 }
