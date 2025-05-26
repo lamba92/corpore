@@ -11,9 +11,12 @@ application {
 }
 
 dependencies {
-    api(projects.app.appCore)
+    api(projects.commonCore)
     api(libs.logback.classic)
     api(libs.model.contex.protocol)
     api(libs.kotlinx.io.core)
     api(libs.bundles.ktor.server)
+    api(libs.bundles.ktor.client)
+    api(libs.ktor.client.apache)
+    api(libs.jwt.kt)
 }

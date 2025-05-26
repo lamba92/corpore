@@ -13,6 +13,7 @@ dokka = "2.0.0"
 h2 = "2.3.232"
 jetbrains-compose = "1.8.0"
 junit = "5.12.2"
+jwt-kt = "1.1.0-2.0.21"
 koin = "4.1.0-RC1"
 kotlin = "2.1.21"
 kotlin-leveldb = "1.0.2"
@@ -69,6 +70,7 @@ dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", vers
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+jwt-kt = { module = "com.appstractive:jwt-kt", version.ref = "jwt-kt" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
@@ -96,6 +98,7 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
@@ -114,14 +117,15 @@ compose-desktop = [
 ]
 ktor-client = [
     "ktor-client-content-negotiation",
-    "ktor-serialization-kotlinx-json",
     "ktor-client-logging",
+    "ktor-serialization-kotlinx-json",
 ]
 ktor-server = [
-    "ktor-server-netty",
-    "ktor-server-content-negotiation",
-    "ktor-serialization-kotlinx-json",
     "koin-ktor",
+    "ktor-serialization-kotlinx-json",
+    "ktor-server-auth",
+    "ktor-server-content-negotiation",
+    "ktor-server-netty",
 ]
 
 [plugins]

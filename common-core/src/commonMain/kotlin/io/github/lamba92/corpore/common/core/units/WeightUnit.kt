@@ -1,5 +1,6 @@
-package io.github.lamba92.corpore.common.core
+package io.github.lamba92.corpore.common.core.units
 
+import io.github.lamba92.corpore.common.core.toStringWithPrecision
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 

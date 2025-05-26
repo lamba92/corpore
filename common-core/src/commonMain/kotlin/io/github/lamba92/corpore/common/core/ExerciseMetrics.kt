@@ -4,12 +4,6 @@ import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 
 @Serializable
-data class ExerciseWithMetrics(
-    val exercise: Exercise.WithId,
-    val metrics: ExerciseMetrics,
-)
-
-@Serializable
 sealed interface ExerciseMetrics {
     @Serializable
     data class StrengthMetrics(
@@ -59,7 +53,3 @@ sealed interface ExerciseMetrics {
     ) : ExerciseMetrics
 }
 
-@Serializable
-data class DailyWorkoutPlan(
-    val exercises: List<ExerciseWithMetrics>,
-)
