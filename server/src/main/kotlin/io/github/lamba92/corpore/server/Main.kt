@@ -1,7 +1,6 @@
 package io.github.lamba92.corpore.server
 
 import com.appstractive.jwt.JWT
-import com.appstractive.jwt.from
 import io.github.lamba92.corpore.server.di.DI
 import io.github.lamba92.corpore.server.routing.authentication
 import io.ktor.serialization.kotlinx.json.json
@@ -11,8 +10,6 @@ import io.ktor.server.auth.bearer
 import io.ktor.server.netty.Netty
 import io.ktor.server.routing.routing
 import io.ktor.server.sse.SSE
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import org.koin.ktor.plugin.Koin
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
@@ -48,7 +45,3 @@ fun main() {
     }
 }
 
-val JsonElement.jsonPrimitiveOrNull
-    get() = this as? JsonPrimitive
-
-fun JWT.Companion.fromOrNull(jwt: String) = runCatching { from(jwt) }.getOrNull()

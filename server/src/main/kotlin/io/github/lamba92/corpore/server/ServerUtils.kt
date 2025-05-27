@@ -1,5 +1,7 @@
 package io.github.lamba92.corpore.server
 
+import com.appstractive.jwt.JWT
+import com.appstractive.jwt.from
 import io.ktor.server.application.Application
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.ApplicationEngineFactory
@@ -7,6 +9,8 @@ import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 
 fun <TEngine : ApplicationEngine, TConfiguration : ApplicationEngine.Configuration> launchEmbeddedServer(
     factory: ApplicationEngineFactory<TEngine, TConfiguration>,
@@ -20,3 +24,8 @@ fun <TEngine : ApplicationEngine, TConfiguration : ApplicationEngine.Configurati
     server.start(wait = false)
     return server
 }
+
+val JsonElement.jsonPrimitiveOrNull
+    get() = this as? JsonPrimitive
+
+fun JWT.Companion.fromOrNull(jwt: String) = runCatching { from(jwt) }.getOrNull()
