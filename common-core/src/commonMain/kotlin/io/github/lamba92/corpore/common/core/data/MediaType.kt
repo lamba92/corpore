@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.common.core
+package io.github.lamba92.corpore.common.core.data
 
 import kotlinx.serialization.Serializable
 

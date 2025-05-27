@@ -2,8 +2,8 @@ package io.github.lamba92.corpore.server.data
 
 import com.appstractive.jwt.JWT
 import com.appstractive.jwt.from
-import io.github.lamba92.corpore.common.core.User
 import io.github.lamba92.corpore.common.core.UserId
+import io.github.lamba92.corpore.common.core.data.User
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -16,22 +16,24 @@ interface UserRepository {
     suspend fun getOrCreateUser(
         email: String,
         name: String,
-        pictureUrl: String? = null
+        pictureUrl: String? = null,
     ): User
 }
 
 interface TokenRepository {
-
     suspend fun createToken(id: UserId): CreateTokenResult
+
     suspend fun revokeToken(token: String): Boolean
+
     suspend fun revokeAllTokens(userId: String): Boolean
 
     @Serializable
     sealed interface CreateTokenResult {
-
-        @JvmInline
         @Serializable
-        value class Success(val token: SerializableJWT) : CreateTokenResult
+        data class Success(
+            val accessToken: SerializableJWT,
+            val refreshToken: SerializableJWT,
+        ) : CreateTokenResult
 
         @JvmInline
         @Serializable
@@ -39,17 +41,20 @@ interface TokenRepository {
     }
 }
 
-typealias SerializableJWT = @Serializable(with = JWTSerializer::class) JWT
+typealias SerializableJWT =
+    @Serializable(with = JWTSerializer::class)
+    JWT
 
 object JWTSerializer : KSerializer<JWT> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(JWT::class.simpleName!!, PrimitiveKind.STRING)
 
-    override fun deserialize(decoder: Decoder): JWT =
-        JWT.from(decoder.decodeString())
+    override fun deserialize(decoder: Decoder): JWT = JWT.from(decoder.decodeString())
 
-    override fun serialize(encoder: Encoder, value: JWT) {
+    override fun serialize(
+        encoder: Encoder,
+        value: JWT,
+    ) {
         encoder.encodeString(value.toString())
     }
-
 }

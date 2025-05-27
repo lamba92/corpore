@@ -9,33 +9,42 @@ interface OAuthTokenVerifier {
 
     @Serializable
     sealed interface Result {
-
         @Serializable
         data class Success(
             val email: String,
             val name: String,
-            val pictureUrl: String? = null
+            val pictureUrl: String? = null,
         ) : Result
 
         @Serializable
         data class Failure(
-            val reason: String? = null
+            val reason: String? = null,
         ) : Result
     }
 }
 
 class GoogleTokenVerifier(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) : OAuthTokenVerifier {
-    override suspend fun verify(token: String): OAuthTokenVerifier.Result {
-        TODO()
+    override suspend fun verify(token: JWT): OAuthTokenVerifier.Result {
+        TODO("Not yet implemented")
     }
 }
 
 class AppleTokenVerifier(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) : OAuthTokenVerifier {
-    override suspend fun verify(token: String): OAuthTokenVerifier.Result {
-        TODO()
+    override suspend fun verify(token: JWT): OAuthTokenVerifier.Result {
+        TODO("Not yet implemented")
+    }
+}
+
+interface TokenRefresher {
+    suspend fun refresh(token: JWT): Result
+
+    sealed interface Result {
+        data class Success(val token: JWT) : Result
+
+        data class Failure(val reason: String? = null) : Result
     }
 }

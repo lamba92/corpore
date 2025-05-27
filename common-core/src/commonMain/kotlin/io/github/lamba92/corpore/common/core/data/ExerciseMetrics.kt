@@ -1,5 +1,7 @@
-package io.github.lamba92.corpore.common.core
+package io.github.lamba92.corpore.common.core.data
 
+import io.github.lamba92.corpore.common.core.units.Length
+import io.github.lamba92.corpore.common.core.units.Weight
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 
@@ -52,4 +54,3 @@ sealed interface ExerciseMetrics {
         val notes: String,
     ) : ExerciseMetrics
 }
-

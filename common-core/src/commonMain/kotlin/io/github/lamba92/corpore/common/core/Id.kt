@@ -30,4 +30,3 @@ value class DailyWorkoutPlanId(override val id: String) : Id
 @Serializable
 @JvmInline
 value class UserId(override val id: String) : Id
-

@@ -2,7 +2,7 @@ package io.github.lamba92.corpore.app.core.usecase.login
 
 import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.repository.AuthResult
-import usecase.FunctionalUseCase
+import io.github.lamba92.corpore.common.core.usecase.FunctionalUseCase
 
 class LoginWithGoogleUseCase(
     private val authRepository: AuthRepository,

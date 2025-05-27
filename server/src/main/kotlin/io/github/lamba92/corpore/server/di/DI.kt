@@ -10,27 +10,29 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 object DI {
-    val core = module {
-        single {
-            Json {
-                ignoreUnknownKeys = true
-                isLenient = false
-                encodeDefaults = true
-                explicitNulls = false
+    val core =
+        module {
+            single {
+                Json {
+                    ignoreUnknownKeys = true
+                    isLenient = false
+                    encodeDefaults = true
+                    explicitNulls = false
+                }
             }
-        }
-        single {
-            HttpClient(Apache) {
-                install(ContentNegotiation) {
-                    json(json = get())
+            single {
+                HttpClient(Apache) {
+                    install(ContentNegotiation) {
+                        json(json = get())
+                    }
                 }
             }
         }
-    }
-    val auth = module {
-        single { GoogleTokenVerifier(get()) }
-        single { AppleTokenVerifier(get()) }
-    }
+    val auth =
+        module {
+            single { GoogleTokenVerifier(get()) }
+            single { AppleTokenVerifier(get()) }
+        }
 
     val all = core + auth
 }
