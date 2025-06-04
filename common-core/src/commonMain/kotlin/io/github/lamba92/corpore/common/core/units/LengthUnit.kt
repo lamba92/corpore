@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.common.core
+package io.github.lamba92.corpore.common.core.units
 
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
