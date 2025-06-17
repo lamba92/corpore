@@ -55,7 +55,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun LoginScreen(
+fun Login(
     viewModel: LoginScreenViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit,
 ) {
@@ -79,7 +79,7 @@ fun LoginScreen(
             .launchIn(this)
     }
 
-    LoginScreen(
+    Login(
         onLoginWithGoogleClick = viewModel::loginWithGoogle,
         onLoginWithAppleClick = viewModel::loginWithApple,
         onTOSClicked = viewModel::onTOSClicked,
@@ -90,7 +90,7 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginScreen(
+fun Login(
     isLoggingInUsingGoogle: Boolean,
     isLoggingInUsingApple: Boolean,
     onLoginWithGoogleClick: () -> Unit = {},

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.repository.AuthResult
-import io.github.lamba92.corpore.app.core.repository.LoggingRepository
+import io.github.lamba92.corpore.app.core.repository.LoggingService
 import io.github.lamba92.corpore.app.core.repository.logError
 import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class LoginScreenViewModel(
     private val loginWithGoogleUseCase: LoginWithGoogleUseCase,
     private val loginWithAppleUseCase: LoginWithAppleUseCase,
-    private val loggingRepository: LoggingRepository,
+    private val loggingService: LoggingService,
     authRepository: AuthRepository,
 ) : ViewModel() {
     val isLoggedInStateFlow =
@@ -60,16 +60,16 @@ class LoginScreenViewModel(
         stateFlow: MutableStateFlow<Boolean>,
         action: suspend () -> AuthResult,
     ) {
-        loggingRepository.logInfo("Login started")
+        loggingService.logInfo("Login started")
         stateFlow.value = true
         viewModelScope.launch {
             val result = action()
             if (result is AuthResult.Failure) {
                 errorsChannel.send(Unit)
-                loggingRepository.logError(result.error)
+                loggingService.logError(result.error)
             }
             stateFlow.value = false
-            loggingRepository.logInfo("Login finished")
+            loggingService.logInfo("Login finished")
         }
     }
 }

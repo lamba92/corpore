@@ -10,9 +10,9 @@ import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
-actual data class StaticLoggingRepository actual constructor(
+actual data class StaticLoggingService actual constructor(
     actual override val tag: String,
-) : LoggingRepository {
+) : LoggingService {
     private val logger = formattedLogger(tag)
 
     actual override fun logEvent(event: String) {

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.lamba92.corpore.app.core.di.DiModules
 import io.github.lamba92.corpore.app.core.ui.components.WithCoilDebugLogger
-import io.github.lamba92.corpore.app.core.ui.onboarding.LoginScreen
+import io.github.lamba92.corpore.app.core.ui.onboarding.Login
 import io.github.lamba92.corpore.app.core.ui.onboarding.Onboarding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
@@ -29,7 +29,7 @@ fun CorporeApp(
                         startDestination = "login",
                     ) {
                         composable("login") {
-                            LoginScreen(
+                            Login(
                                 onLoginSuccess = {
                                     navHostController.navigate("onboarding") {
                                         popUpTo("login") { inclusive = true }

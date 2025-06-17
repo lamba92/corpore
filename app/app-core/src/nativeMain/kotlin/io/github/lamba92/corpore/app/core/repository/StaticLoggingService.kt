@@ -2,28 +2,31 @@
 
 package io.github.lamba92.corpore.app.core.repository
 
-import android.util.Log
+import kotlinx.datetime.Clock
 
-actual data class StaticLoggingRepository actual constructor(
+actual class StaticLoggingService actual constructor(
     actual override val tag: String,
-) : LoggingRepository {
+) : LoggingService {
+    private val now
+        get() = Clock.System.now()
+
     actual override fun logEvent(event: String) {
-        Log.d(tag, event)
+        println("$now | EVENT   [$tag] $event")
     }
 
     actual override fun logError(message: String) {
-        Log.e(tag, message)
+        println("$now | ERROR   [$tag] $message")
     }
 
     actual override fun logInfo(message: String) {
-        Log.i(tag, message)
+        println("$now | INFO    [$tag] $message")
     }
 
     actual override fun logDebug(message: String) {
-        Log.d(tag, message)
+        println("$now | DEBUG   [$tag] $message")
     }
 
     actual override fun logWarning(message: String) {
-        Log.w(tag, message)
+        println("$now | WARNING [$tag] $message")
     }
 }
