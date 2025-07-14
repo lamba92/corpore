@@ -1,6 +1,7 @@
 package io.github.lamba92.corpore.server
 
 import com.appstractive.jwt.JWT
+import io.github.lamba92.corpore.server.data.UserRepository
 import io.github.lamba92.corpore.server.di.DI
 import io.github.lamba92.corpore.server.routing.authentication
 import io.ktor.serialization.kotlinx.json.json
@@ -11,6 +12,7 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.routing.routing
 import io.ktor.server.sse.SSE
 import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.contentOrNull
 import org.koin.ktor.plugin.Koin
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
 import org.koin.ktor.ext.get as koinGet
@@ -18,7 +20,7 @@ import org.koin.ktor.ext.get as koinGet
 fun main() {
     launchEmbeddedServer(Netty, port = 8080) {
         install(Koin) {
-            modules(DI.all)
+            modules(DI.allModules)
         }
         install(ServerContentNegotiation) {
             json(this@launchEmbeddedServer.koinGet())
@@ -35,6 +37,10 @@ fun main() {
                                 ?.jsonPrimitiveOrNull
                                 ?.booleanOrNull == false
                         }
+                        ?.claims["email"]
+                        ?.jsonPrimitiveOrNull
+                        ?.contentOrNull
+                        ?.let { koinGet<UserRepository>().getOrCreateUser(it) }
                 }
             }
         }

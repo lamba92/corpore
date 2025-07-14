@@ -7,23 +7,24 @@ import kotlinx.serialization.Serializable
 sealed interface Exercise {
     val category: ExerciseCategory
     val primaryMuscles: List<MuscleGroup>
-    val secondaryMuscles: List<MuscleGroup>
     val isVerified: Boolean
+
+    val displayables: Map<Locale, ExerciseDisplayable>
 
     @Serializable
     data class WithId(
         val id: ExerciseId,
         override val category: ExerciseCategory,
         override val primaryMuscles: List<MuscleGroup>,
-        override val secondaryMuscles: List<MuscleGroup>,
         override val isVerified: Boolean,
+        override val displayables: Map<Locale, ExerciseDisplayable>,
     ) : Exercise
 
     @Serializable
     data class WithoutId(
         override val category: ExerciseCategory,
         override val primaryMuscles: List<MuscleGroup>,
-        override val secondaryMuscles: List<MuscleGroup>,
         override val isVerified: Boolean,
+        override val displayables: Map<Locale, ExerciseDisplayable>,
     ) : Exercise
 }

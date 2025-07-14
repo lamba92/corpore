@@ -28,11 +28,12 @@ object DI {
                 }
             }
         }
+
     val auth =
         module {
             single { GoogleTokenVerifier(get()) }
             single { AppleTokenVerifier(get()) }
         }
 
-    val all = core + auth
+    val allModules = core + auth
 }

@@ -3,12 +3,16 @@ package io.github.lamba92.corpore.common.core.data
 import io.github.lamba92.corpore.common.core.units.Length
 import io.github.lamba92.corpore.common.core.units.Weight
 import kotlinx.serialization.Serializable
-import kotlin.time.Duration
 
 @Serializable
 sealed interface ExerciseMetrics {
     @Serializable
-    data class StrengthMetrics(
+    data class Repetitions(
+        val repetitions: Int,
+    ) : ExerciseMetrics
+
+    @Serializable
+    data class SetsAndReps(
         val sets: List<Set>,
     ) : ExerciseMetrics {
         @Serializable
@@ -19,38 +23,12 @@ sealed interface ExerciseMetrics {
     }
 
     @Serializable
-    data class CardioMetrics(
-        val durationMinutes: Int,
-        val distance: Length? = null,
+    data class Duration(
+        val duration: kotlin.time.Duration,
     ) : ExerciseMetrics
 
     @Serializable
-    sealed interface HIITMetrics : ExerciseMetrics {
-        val rounds: Int
-        val restDuration: Duration
-
-        @Serializable
-        data class WithRepetitions(
-            override val rounds: Int,
-            override val restDuration: Duration,
-            val repetitions: Int,
-        ) : HIITMetrics
-
-        @Serializable
-        data class WithDuration(
-            override val rounds: Int,
-            override val restDuration: Duration,
-            val duration: Duration,
-        ) : HIITMetrics
-    }
-
-    @Serializable
-    data class SwimmingMetrics(
+    data class Distance(
         val distance: Length,
-    ) : ExerciseMetrics
-
-    @Serializable
-    data class OtherMetrics(
-        val notes: String,
     ) : ExerciseMetrics
 }

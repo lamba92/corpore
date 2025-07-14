@@ -4,29 +4,37 @@ import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
 sealed interface Id {
-    val id: String
+    val value: String
 }
 
 @Serializable
 @JvmInline
-value class ExerciseId(override val id: String) : Id
+value class ExerciseId(override val value: String) : Id
 
 @Serializable
 @JvmInline
-value class MediaId(override val id: String) : Id
+value class MediaId(override val value: String) : Id
 
 @Serializable
 @JvmInline
-value class DisplayableId(override val id: String) : Id
+value class DisplayableId(override val value: String) : Id
 
 @Serializable
 @JvmInline
-value class WorkoutId(override val id: String) : Id
+value class WorkoutId(override val value: String) : Id
 
 @Serializable
 @JvmInline
-value class DailyWorkoutPlanId(override val id: String) : Id
+value class WorkoutSessionId(override val value: String) : Id
 
 @Serializable
 @JvmInline
-value class UserId(override val id: String) : Id
+value class WeeklyPlanId(override val value: String) : Id
+
+@Serializable
+@JvmInline
+value class UserId(override val value: String) : Id
+
+@Serializable
+@JvmInline
+value class WorkoutFeedbackId(override val value: String) : Id

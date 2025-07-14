@@ -3,6 +3,7 @@ package io.github.lamba92.corpore.server.routing
 import com.appstractive.jwt.JWT
 import com.appstractive.jwt.from
 import io.github.lamba92.corpore.common.core.http.request.LoginRequest
+import io.github.lamba92.corpore.common.core.http.request.RefreshTokenRequest
 import io.github.lamba92.corpore.common.core.http.response.ApiResponse
 import io.github.lamba92.corpore.server.auth.TokenRefresher
 import io.github.lamba92.corpore.server.fromOrNull
@@ -41,6 +42,10 @@ private suspend fun RoutingContext.refreshToken(refresher: TokenRefresher) {
             .request
             .queryParameters["refreshToken"]
             ?.let { JWT.fromOrNull(it) }
+            ?: call.receiveNullable<RefreshTokenRequest>()
+                ?.token
+                ?.let { JWT.fromOrNull(it) }
+
     if (refreshToken == null) {
         call.respond(
             ApiResponse(
@@ -65,23 +70,30 @@ private suspend fun RoutingContext.refreshToken(refresher: TokenRefresher) {
 }
 
 private suspend fun RoutingContext.loginWithToken(verifier: RegisterOrLoginUserUseCase) {
-    val token = call.receiveNullable<LoginRequest>()?.oauthToken
+    val token =
+        call.parameters["token"]
+            ?: call.receiveNullable<LoginRequest>()?.oauthToken
+
     if (token == null) {
         call.respond(
-            ApiResponse(
-                errorMessage = "Token is required",
-                errorCode = HttpStatusCode.BadRequest.value,
-            ),
+            status = HttpStatusCode.BadRequest,
+            message =
+                ApiResponse(
+                    errorMessage = "Token is required",
+                    errorCode = HttpStatusCode.BadRequest.value,
+                ),
         )
         return
     }
     when (val result = verifier.execute(JWT.from(token))) {
         is RegisterOrLoginUserUseCase.Result.Failure ->
             call.respond(
-                ApiResponse(
-                    errorMessage = result.message,
-                    errorCode = result.code,
-                ),
+                status = HttpStatusCode.fromValue(result.code),
+                message =
+                    ApiResponse(
+                        errorMessage = result.message,
+                        errorCode = result.code,
+                    ),
             )
 
         is RegisterOrLoginUserUseCase.Result.Success ->

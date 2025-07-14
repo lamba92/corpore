@@ -15,7 +15,7 @@ import kotlinx.serialization.encoding.Encoder
 interface UserRepository {
     suspend fun getOrCreateUser(
         email: String,
-        name: String,
+        name: String? = null,
         pictureUrl: String? = null,
     ): User
 }

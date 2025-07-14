@@ -3,21 +3,26 @@ package io.github.lamba92.corpore.server.usecase
 import com.appstractive.jwt.JWT
 import io.github.lamba92.corpore.common.core.usecase.FunctionalUseCase
 import io.github.lamba92.corpore.server.auth.OAuthTokenVerifier
+import io.github.lamba92.corpore.server.data.SerializableJWT
 import io.github.lamba92.corpore.server.data.TokenRepository
 import io.github.lamba92.corpore.server.data.UserRepository
 import io.ktor.http.HttpStatusCode
+import kotlinx.serialization.Serializable
 
 abstract class RegisterOrLoginUserUseCase(
     private val userRepository: UserRepository,
     private val tokenRepository: TokenRepository,
     private val verifier: OAuthTokenVerifier,
 ) : FunctionalUseCase<JWT, RegisterOrLoginUserUseCase.Result> {
+    @Serializable
     sealed interface Result {
+        @Serializable
         data class Success(
-            val accessToken: JWT,
-            val refreshToken: JWT,
+            val accessToken: SerializableJWT,
+            val refreshToken: SerializableJWT,
         ) : Result
 
+        @Serializable
         data class Failure(val message: String, val code: Int) : Result
     }
 

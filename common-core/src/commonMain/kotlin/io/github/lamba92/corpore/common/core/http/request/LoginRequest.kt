@@ -6,3 +6,8 @@ import kotlinx.serialization.Serializable
 data class LoginRequest(
     val oauthToken: String,
 )
+
+@Serializable
+data class RefreshTokenRequest(
+    val token: String,
+)
