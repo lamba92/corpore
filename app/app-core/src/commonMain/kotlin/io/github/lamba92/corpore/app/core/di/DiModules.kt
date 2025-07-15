@@ -2,9 +2,9 @@ package io.github.lamba92.corpore.app.core.di
 
 import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.repository.CoilDebugLogger
-import io.github.lamba92.corpore.app.core.repository.LoggingRepository
+import io.github.lamba92.corpore.app.core.repository.LoggingService
 import io.github.lamba92.corpore.app.core.repository.MockAuthRepository
-import io.github.lamba92.corpore.app.core.repository.StaticLoggingRepository
+import io.github.lamba92.corpore.app.core.repository.StaticLoggingService
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
@@ -21,7 +21,7 @@ object DiModules {
         module {
             single<AuthRepository> { MockAuthRepository }
             single<CoilLogger> { CoilDebugLogger }
-            factory<LoggingRepository> { (tag: String) -> StaticLoggingRepository(tag) }
+            factory<LoggingService> { (tag: String) -> StaticLoggingService(tag) }
         }
 
     val useCases =
@@ -38,7 +38,7 @@ object DiModules {
                     loginWithGoogleUseCase = get(),
                     loginWithAppleUseCase = get(),
                     authRepository = get(),
-                    loggingRepository = get<LoggingRepository> { parametersOf(LoginScreenViewModel::class.simpleName!!) },
+                    loggingService = get<LoggingService> { parametersOf(LoginScreenViewModel::class.simpleName!!) },
                 )
             }
             viewModelOf(::OnboardingViewModel)
