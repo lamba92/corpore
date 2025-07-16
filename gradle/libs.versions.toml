@@ -1,6 +1,6 @@
 [versions]
 activity-compose = "1.10.1"
-android-gradle-plugin = "8.10.0"
+android-gradle-plugin = "8.10.1"
 android-multiplatform-library = "8.10.0"
 android-test-junit = "1.2.1"
 androidx-navigation = "2.9.0-beta02"
