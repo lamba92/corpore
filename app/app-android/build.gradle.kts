@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "io.github.lamba92.corpore"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = namespace
@@ -40,9 +40,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+}
+
+kotlin {
+    jvmToolchain(11)
 }
 
 dependencies {

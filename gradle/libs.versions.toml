@@ -1,31 +1,30 @@
 [versions]
 activity-compose = "1.10.1"
-android-gradle-plugin = "8.10.0"
-android-multiplatform-library = "8.10.0"
+android-gradle-plugin = "8.11.1"
 android-test-junit = "1.2.1"
-androidx-navigation = "2.9.0-beta02"
+androidx-navigation = "2.9.0-beta04"
 androidx-test-core = "1.6.1"
 androidx-test-runner = "1.6.2"
-coil = "3.2.0"
-compose-bom = "2025.05.01"
-compose-lifecycle-viewmodel = "2.9.0"
+coil = "3.3.0"
+compose-bom = "2025.07.00"
+compose-lifecycle-viewmodel = "2.9.1"
 dokka = "2.0.0"
 h2 = "2.3.232"
-jetbrains-compose = "1.8.0"
-junit = "5.12.2"
-jwt-kt = "1.1.0-2.0.21"
-koin = "4.1.0-RC1"
-kotlin = "2.1.21"
+jetbrains-compose = "1.8.2"
+junit = "5.13.4"
+jwt-kt = "1.2.0"
+koin = "4.1.0"
+kotlin = "2.2.0"
 kotlin-leveldb = "1.0.2"
 kotlinx-coroutines = "1.10.2"
-kotlinx-datetime = "0.6.2"
-kotlinx-io = "0.7.0"
-kotlinx-serialization-json = "1.8.1"
-ktlint-gradle = "12.1.2"
-ktor = "3.2.0-eap-1289"
-lamba-docker = "1.0.0"
+kotlinx-datetime = "0.7.1"
+kotlinx-io = "0.8.0"
+kotlinx-serialization-json = "1.9.0"
+ktlint-gradle = "13.0.0"
+ktor = "3.2.2"
+lamba-docker = "1.1.0"
 logback = "1.5.18"
-model-contex-protocol = "0.5.0"
+model-contex-protocol = "0.6.0"
 nexus-publish-plugin = "2.0.0"
 
 [libraries]
@@ -131,7 +130,7 @@ ktor-server = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-multiplatform-library" }
+android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-gradle-plugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
