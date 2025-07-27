@@ -5,7 +5,9 @@ import kotlin.jvm.JvmInline
 
 @Serializable
 @JvmInline
-value class Locale(val languageCode: String) {
+value class Locale(
+    val languageCode: String,
+) {
     companion object {
         val ENGLISH = Locale("en")
         val FRENCH = Locale("fr")

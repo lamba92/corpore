@@ -1,13 +1,15 @@
+@file:OptIn(ExperimentalTime::class)
+
 package io.github.lamba92.corpore.app.core.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.ui.onboarding.content.TrainingLevel
-import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
-import io.github.lamba92.corpore.common.core.Length
-import io.github.lamba92.corpore.common.core.Weight
+import io.github.lamba92.corpore.common.core.units.Length
+import io.github.lamba92.corpore.common.core.units.Weight
+import io.github.lamba92.corpore.common.core.usecase.execute
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,11 +20,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 @Serializable
 data class OnboardingData(
@@ -41,7 +44,12 @@ data class OnboardingData(
 
     @Serializable
     data class PhysicalProfile(
-        val yearOfBirth: Int = Clock.System.now().toLocalDateTime(TimeZone.UTC).year - 16,
+        val yearOfBirth: Int =
+            Clock
+                .System
+                .now()
+                .toLocalDateTime(TimeZone.UTC)
+                .year - 16,
         val weight: Weight = Weight.ZERO,
         val height: Length = Length.ZERO,
     )
@@ -101,61 +109,91 @@ enum class SportActivity {
 }
 
 sealed interface OnboardingDataUpdateEvent {
-    data class TrainingLevelSelected(val trainingLevel: TrainingLevel) : OnboardingDataUpdateEvent
+    data class TrainingLevelSelected(
+        val trainingLevel: TrainingLevel,
+    ) : OnboardingDataUpdateEvent
 
-    data class MeasurementSystemSelected(val measurementUnitSystem: MeasurementUnitSystem) :
-        OnboardingDataUpdateEvent
+    data class MeasurementSystemSelected(
+        val measurementUnitSystem: MeasurementUnitSystem,
+    ) : OnboardingDataUpdateEvent
 
     sealed interface PhysicalProfile : OnboardingDataUpdateEvent {
-        data class YearOfBirthSelected(val year: Int) : PhysicalProfile
+        data class YearOfBirthSelected(
+            val year: Int,
+        ) : PhysicalProfile
 
-        data class WeightSelected(val weight: Weight) : PhysicalProfile
+        data class WeightSelected(
+            val weight: Weight,
+        ) : PhysicalProfile
 
-        data class HeightSelected(val height: Length) : PhysicalProfile
+        data class HeightSelected(
+            val height: Length,
+        ) : PhysicalProfile
     }
 
     sealed interface ActivitiesSelection : OnboardingDataUpdateEvent {
-        data class ActivityAdded(val activities: List<SportActivity>) : ActivitiesSelection
+        data class ActivityAdded(
+            val activities: List<SportActivity>,
+        ) : ActivitiesSelection
 
-        data class ActivityRemoved(val activities: List<SportActivity>) : ActivitiesSelection
+        data class ActivityRemoved(
+            val activities: List<SportActivity>,
+        ) : ActivitiesSelection
     }
 
     sealed interface FitnessLevelProfile : OnboardingDataUpdateEvent {
         sealed interface Gym : FitnessLevelProfile {
-            data class BenchPress1RMChange(val weight: Weight) : Gym
+            data class BenchPress1RMChange(
+                val weight: Weight,
+            ) : Gym
 
-            data class Squat1RMChange(val weight: Weight) : Gym
+            data class Squat1RMChange(
+                val weight: Weight,
+            ) : Gym
 
-            data class Deadlift1RMChange(val weight: Weight) : Gym
+            data class Deadlift1RMChange(
+                val weight: Weight,
+            ) : Gym
         }
 
         sealed interface Running : FitnessLevelProfile {
-            data class DistanceIn30MinsChange(val length: Length) : Running
+            data class DistanceIn30MinsChange(
+                val length: Length,
+            ) : Running
         }
 
         sealed interface Swimming : FitnessLevelProfile {
-            data class FreestyleDistance15MinChange(val length: Length) : Swimming
+            data class FreestyleDistance15MinChange(
+                val length: Length,
+            ) : Swimming
 
-            data class KnownStrokesAdded(val stroke: OnboardingData.SwimmingFitness.Stroke) :
-                Swimming
+            data class KnownStrokesAdded(
+                val stroke: OnboardingData.SwimmingFitness.Stroke,
+            ) : Swimming
 
-            data class KnownStrokesRemoved(val stroke: OnboardingData.SwimmingFitness.Stroke) :
-                Swimming
+            data class KnownStrokesRemoved(
+                val stroke: OnboardingData.SwimmingFitness.Stroke,
+            ) : Swimming
         }
 
         sealed interface FreeBody : FitnessLevelProfile {
             data object HasTrainedBeforeToggle : FreeBody
 
-            data class MaxPushupsChange(val maxPushups: Int) : FreeBody
+            data class MaxPushupsChange(
+                val maxPushups: Int,
+            ) : FreeBody
 
-            data class WallSitHoldChange(val duration: Duration) : FreeBody
+            data class WallSitHoldChange(
+                val duration: Duration,
+            ) : FreeBody
 
             data object CanPlank30SecToggle : FreeBody
         }
     }
 
-    data class ActivitiesRotationFrequencySelected(val frequency: OnboardingData.RotationFrequency) :
-        OnboardingDataUpdateEvent
+    data class ActivitiesRotationFrequencySelected(
+        val frequency: OnboardingData.RotationFrequency,
+    ) : OnboardingDataUpdateEvent
 }
 
 enum class OnboardingStep {
@@ -207,12 +245,11 @@ class OnboardingViewModel(
             _currentOnboardingStepStateFlow,
         ) { onboardingData, currentOnboardingStep ->
             currentOnboardingStep.canGoNext(onboardingData)
-        }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Eagerly,
-                initialValue = false,
-            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false,
+        )
 
     fun logout() {
         _isLoggingOutStateFlow.value = true

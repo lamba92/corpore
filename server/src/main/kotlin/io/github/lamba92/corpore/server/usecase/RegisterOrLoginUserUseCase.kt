@@ -23,11 +23,14 @@ abstract class RegisterOrLoginUserUseCase(
         ) : Result
 
         @Serializable
-        data class Failure(val message: String, val code: Int) : Result
+        data class Failure(
+            val message: String,
+            val code: Int,
+        ) : Result
     }
 
-    override suspend fun execute(param: JWT): Result {
-        return when (val result = verifier.verify(param)) {
+    override suspend fun execute(param: JWT): Result =
+        when (val result = verifier.verify(param)) {
             is OAuthTokenVerifier.Result.Failure ->
                 Result.Failure(
                     message = result.reason ?: "Invalid token",
@@ -56,5 +59,4 @@ abstract class RegisterOrLoginUserUseCase(
                 }
             }
         }
-    }
 }

@@ -44,7 +44,9 @@ object CoilDebugLogger : CoilLogger {
     }
 }
 
-expect class StaticLoggingService(tag: String) : LoggingService {
+expect class StaticLoggingService(
+    tag: String,
+) : LoggingService {
     override val tag: String
 
     override fun logEvent(event: String)

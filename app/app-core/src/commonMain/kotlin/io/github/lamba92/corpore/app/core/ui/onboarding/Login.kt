@@ -71,8 +71,7 @@ fun Login(
                     message = snackbarMessage,
                     withDismissAction = true,
                 )
-            }
-            .launchIn(this)
+            }.launchIn(this)
         viewModel
             .isLoggedInStateFlow
             .onEach { if (it) onLoginSuccess() }

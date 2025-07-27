@@ -154,8 +154,7 @@ fun ToggleButton(
                         bottomStart = cornerRadius.bottomStart,
                         bottomEnd = cornerRadius.bottomEnd,
                     ),
-                )
-                .background(containerColor),
+                ).background(containerColor),
     ) {
         // Selected state indicator (the moving background)
         if (selectedItemSize != DpSize.Zero) {
@@ -171,8 +170,7 @@ fun ToggleButton(
                                 bottomStart = cornerRadius.bottomStart,
                                 bottomEnd = cornerRadius.bottomEnd,
                             ),
-                        )
-                        .background(selectedIndicatorColor),
+                        ).background(selectedIndicatorColor),
             )
         }
 

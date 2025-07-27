@@ -113,16 +113,13 @@ fun Onboarding(
                     .fillMaxWidth()
                     .onGloballyPositioned {
                         onboardingHeaderHeight = with(density) { it.size.height.toDp() }
-                    }
-                    .gradientOverlay(
+                    }.gradientOverlay(
                         CorporeTheme.colorScheme.background,
                         GradientDirection.BottomToTop,
-                    )
-                    .padding(
+                    ).padding(
                         vertical = CorporeTheme.appMetrics.innerPadding,
                         horizontal = CorporeTheme.appMetrics.outerPadding,
-                    )
-                    .zIndex(10f),
+                    ).zIndex(10f),
         )
         Column(
             modifier =
@@ -162,12 +159,10 @@ fun Onboarding(
                 Modifier
                     .onGloballyPositioned {
                         onboardingFooterHeight = with(density) { it.size.height.toDp() }
-                    }
-                    .gradientOverlay(
+                    }.gradientOverlay(
                         CorporeTheme.colorScheme.background,
                         GradientDirection.TopToBottom,
-                    )
-                    .padding(horizontal = CorporeTheme.appMetrics.outerPadding)
+                    ).padding(horizontal = CorporeTheme.appMetrics.outerPadding)
                     .padding(bottom = CorporeTheme.appMetrics.innerPadding)
                     .align(Alignment.BottomCenter)
                     .zIndex(10f),

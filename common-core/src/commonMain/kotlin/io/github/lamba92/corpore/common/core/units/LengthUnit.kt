@@ -1,5 +1,6 @@
 package io.github.lamba92.corpore.common.core.units
 
+import io.github.lamba92.corpore.common.core.toStringWithPrecision
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
@@ -66,7 +67,9 @@ sealed interface LengthUnit {
 
 @JvmInline
 @Serializable
-value class Length(private val meters: Double) : Comparable<Length> {
+value class Length(
+    private val meters: Double,
+) : Comparable<Length> {
     companion object {
         fun from(
             value: Number,

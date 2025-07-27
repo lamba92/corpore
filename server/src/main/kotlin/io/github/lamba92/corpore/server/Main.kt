@@ -36,8 +36,7 @@ fun main() {
                                 .claims["isRefresh"]
                                 ?.jsonPrimitiveOrNull
                                 ?.booleanOrNull == false
-                        }
-                        ?.claims["email"]
+                        }?.claims["email"]
                         ?.jsonPrimitiveOrNull
                         ?.contentOrNull
                         ?.let { koinGet<UserRepository>().getOrCreateUser(it) }

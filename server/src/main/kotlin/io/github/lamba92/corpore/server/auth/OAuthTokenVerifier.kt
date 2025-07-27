@@ -43,8 +43,12 @@ interface TokenRefresher {
     suspend fun refresh(token: JWT): Result
 
     sealed interface Result {
-        data class Success(val token: JWT) : Result
+        data class Success(
+            val token: JWT,
+        ) : Result
 
-        data class Failure(val reason: String? = null) : Result
+        data class Failure(
+            val reason: String? = null,
+        ) : Result
     }
 }

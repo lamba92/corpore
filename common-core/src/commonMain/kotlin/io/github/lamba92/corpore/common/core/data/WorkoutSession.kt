@@ -1,23 +1,48 @@
 package io.github.lamba92.corpore.common.core.data
 
-import io.github.lamba92.corpore.common.core.WorkoutId
-import io.github.lamba92.corpore.common.core.WorkoutSessionId
-import kotlinx.datetime.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class WorkoutSession(
-    val workoutSessionId: WorkoutSessionId,
-    val workoutId: WorkoutId,
-    val timings: Timings,
-    val startTime: Instant,
-    val endTime: Instant,
+    val timings: Timings = Timings.EMPTY,
+    val totalTime: TimeInterval = TimeInterval.NotStarted,
 ) {
+    companion object {
+        val NONE = WorkoutSession()
+    }
+
     @Serializable
     data class Timings(
-        val warmup: List<Duration>,
-        val exercises: List<Duration>,
-        val cooldown: List<Duration>,
-    )
+        val warmup: List<TimeInterval> = emptyList(),
+        val exercises: List<TimeInterval> = emptyList(),
+        val cooldown: List<TimeInterval> = emptyList(),
+    ) {
+        companion object {
+            val EMPTY = Timings()
+        }
+    }
+}
+
+@OptIn(ExperimentalTime::class)
+@Serializable
+sealed interface TimeInterval {
+    @Serializable
+    @SerialName("not_started")
+    data object NotStarted : TimeInterval
+
+    @Serializable
+    @SerialName("ongoing")
+    data class Ongoing(
+        val startTime: EpochMillisSerializableInstant,
+    ) : TimeInterval
+
+    @Serializable
+    @SerialName("finished")
+    data class Finished(
+        val startTime: EpochMillisSerializableInstant,
+        val endTime: EpochMillisSerializableInstant,
+    ) : TimeInterval
 }

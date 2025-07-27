@@ -40,28 +40,33 @@ private suspend fun RoutingContext.refreshToken(refresher: TokenRefresher) {
     val refreshToken =
         call
             .request
-            .queryParameters["refreshToken"]
+            .queryParameters["token"]
             ?.let { JWT.fromOrNull(it) }
-            ?: call.receiveNullable<RefreshTokenRequest>()
+            ?: call
+                .receiveNullable<RefreshTokenRequest>()
                 ?.token
                 ?.let { JWT.fromOrNull(it) }
 
     if (refreshToken == null) {
         call.respond(
-            ApiResponse(
-                errorMessage = "Refresh token is required",
-                errorCode = HttpStatusCode.BadRequest.value,
-            ),
+            status = HttpStatusCode.BadRequest,
+            message =
+                ApiResponse(
+                    errorMessage = "Refresh token is required",
+                    errorCode = HttpStatusCode.BadRequest.value,
+                ),
         )
         return
     }
     when (val result = refresher.refresh(refreshToken)) {
         is TokenRefresher.Result.Failure ->
             call.respond(
-                ApiResponse(
-                    errorMessage = result.reason ?: "Failed to refresh token",
-                    errorCode = HttpStatusCode.InternalServerError.value,
-                ),
+                status = HttpStatusCode.InternalServerError,
+                message =
+                    ApiResponse(
+                        errorMessage = result.reason ?: "Failed to refresh token",
+                        errorCode = HttpStatusCode.InternalServerError.value,
+                    ),
             )
 
         is TokenRefresher.Result.Success ->

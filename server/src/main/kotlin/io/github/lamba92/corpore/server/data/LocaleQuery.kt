@@ -6,12 +6,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface LocaleQuery {
     @Serializable
-    data class ByLanguage(val locales: List<Locale>) : LocaleQuery {
+    data class ByLanguage(
+        val locales: List<Locale>,
+    ) : LocaleQuery {
         companion object {
-            val ENGLISH_ONLY = ByLanguage(listOf(Locale.Companion.ENGLISH))
+            val ENGLISH_ONLY = ByLanguage(listOf(Locale.ENGLISH))
         }
     }
 
     @Serializable
     object All : LocaleQuery
+
+    @Serializable
+    object None : LocaleQuery
 }

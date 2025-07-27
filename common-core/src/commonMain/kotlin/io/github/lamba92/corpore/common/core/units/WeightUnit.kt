@@ -39,7 +39,9 @@ sealed interface WeightUnit {
 
 @JvmInline
 @Serializable
-value class Weight(private val grams: Double) : Comparable<Weight> {
+value class Weight(
+    private val grams: Double,
+) : Comparable<Weight> {
     companion object {
         fun from(
             value: Number,
