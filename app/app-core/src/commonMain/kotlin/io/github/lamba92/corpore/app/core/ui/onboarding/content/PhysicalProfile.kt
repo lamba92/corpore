@@ -26,8 +26,8 @@ import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.MeasurementUnitSystem
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import io.github.lamba92.corpore.common.core.Length
 import io.github.lamba92.corpore.common.core.LengthUnit
 import io.github.lamba92.corpore.common.core.Weight
@@ -37,9 +37,9 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PhysicalProfile(
-    data: OnboardingData.PhysicalProfile,
+    data: TrainingPreferences.PhysicalProfile,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
+    onUpdate: (OnboardingEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -90,9 +90,9 @@ fun PhysicalProfile(
 
 @Composable
 private fun HeightTextField(
-    data: OnboardingData.PhysicalProfile,
+    data: TrainingPreferences.PhysicalProfile,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
+    onUpdate: (OnboardingEvent) -> Unit,
 ) {
     LengthTextField(
         length = data.height,
@@ -117,9 +117,9 @@ private fun HeightTextField(
 
 @Composable
 fun WeightTextField(
-    data: OnboardingData.PhysicalProfile,
+    data: TrainingPreferences.PhysicalProfile,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
+    onUpdate: (OnboardingEvent) -> Unit,
 ) {
     WeightTextField(
         weight = data.weight,
@@ -142,10 +142,10 @@ fun WeightTextField(
     )
 }
 
-private fun Length.toHeightSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.HeightSelected(this)
+private fun Length.toHeightSelectedUpdate() = OnboardingEvent.PhysicalProfile.HeightSelected(this)
 
-private fun Weight.toWeightSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.WeightSelected(this)
+private fun Weight.toWeightSelectedUpdate() = OnboardingEvent.PhysicalProfile.WeightSelected(this)
 
-private fun Int.toYearOfBirthSelectedUpdate() = OnboardingDataUpdateEvent.PhysicalProfile.YearOfBirthSelected(this)
+private fun Int.toYearOfBirthSelectedUpdate() = OnboardingEvent.PhysicalProfile.YearOfBirthSelected(this)
 
-internal fun MeasurementUnitSystem.toUpdate() = OnboardingDataUpdateEvent.MeasurementSystemSelected(measurementUnitSystem = this)
+internal fun MeasurementUnitSystem.toUpdate() = OnboardingEvent.MeasurementSystemSelected(measurementUnitSystem = this)

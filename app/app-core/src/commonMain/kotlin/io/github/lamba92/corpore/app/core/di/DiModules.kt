@@ -1,9 +1,9 @@
 package io.github.lamba92.corpore.app.core.di
 
-import io.github.lamba92.corpore.app.core.repository.AuthRepository
+import io.github.lamba92.corpore.app.core.repository.AuthService
 import io.github.lamba92.corpore.app.core.repository.CoilDebugLogger
 import io.github.lamba92.corpore.app.core.repository.LoggingService
-import io.github.lamba92.corpore.app.core.repository.MockAuthRepository
+import io.github.lamba92.corpore.app.core.repository.MockAuthService
 import io.github.lamba92.corpore.app.core.repository.StaticLoggingService
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
@@ -19,7 +19,7 @@ import org.koin.dsl.module
 object DiModules {
     val repositories =
         module {
-            single<AuthRepository> { MockAuthRepository }
+            single<AuthService> { MockAuthService }
             single<CoilLogger> { CoilDebugLogger }
             factory<LoggingService> { (tag: String) -> StaticLoggingService(tag) }
         }

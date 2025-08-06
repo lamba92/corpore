@@ -24,14 +24,14 @@ import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ActivitiesRotationFrequency(
-    selectedRotationFrequency: OnboardingData.RotationFrequency,
-    onUpdate: (OnboardingDataUpdateEvent.ActivitiesRotationFrequencySelected) -> Unit,
+    selectedRotationFrequency: TrainingPreferences.RotationFrequency,
+    onUpdate: (OnboardingEvent.ActivitiesRotationFrequencySelected) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -50,8 +50,8 @@ fun ActivitiesRotationFrequency(
                     .height(100.dp),
             title = stringResource(Res.string.onboarding_activity_rotation_1_week_plan_title),
             bodyText = stringResource(Res.string.onboarding_activity_rotation_1_week_plan_subtitle),
-            isSelected = selectedRotationFrequency == OnboardingData.RotationFrequency.Weekly,
-            onClick = { onUpdate(OnboardingData.RotationFrequency.Weekly.toWeeklyRotationUpdate()) },
+            isSelected = selectedRotationFrequency == TrainingPreferences.RotationFrequency.Weekly,
+            onClick = { onUpdate(TrainingPreferences.RotationFrequency.Weekly.toWeeklyRotationUpdate()) },
         )
         ActivitiesRotationFrequencyButton(
             modifier =
@@ -60,8 +60,8 @@ fun ActivitiesRotationFrequency(
                     .height(100.dp),
             title = stringResource(Res.string.onboarding_activity_rotation_more_week_plan_title, 2),
             bodyText = stringResource(Res.string.onboarding_activity_rotation_more_week_plan_subtitle, 2),
-            isSelected = selectedRotationFrequency == OnboardingData.RotationFrequency.BiWeekly,
-            onClick = { onUpdate(OnboardingData.RotationFrequency.BiWeekly.toWeeklyRotationUpdate()) },
+            isSelected = selectedRotationFrequency == TrainingPreferences.RotationFrequency.BiWeekly,
+            onClick = { onUpdate(TrainingPreferences.RotationFrequency.BiWeekly.toWeeklyRotationUpdate()) },
         )
         ActivitiesRotationFrequencyButton(
             modifier =
@@ -70,13 +70,13 @@ fun ActivitiesRotationFrequency(
                     .height(100.dp),
             title = stringResource(Res.string.onboarding_activity_rotation_more_week_plan_title, 4),
             bodyText = stringResource(Res.string.onboarding_activity_rotation_more_week_plan_subtitle, 4),
-            isSelected = selectedRotationFrequency == OnboardingData.RotationFrequency.Monthly,
-            onClick = { onUpdate(OnboardingData.RotationFrequency.Monthly.toWeeklyRotationUpdate()) },
+            isSelected = selectedRotationFrequency == TrainingPreferences.RotationFrequency.Monthly,
+            onClick = { onUpdate(TrainingPreferences.RotationFrequency.Monthly.toWeeklyRotationUpdate()) },
         )
     }
 }
 
-private fun OnboardingData.RotationFrequency.toWeeklyRotationUpdate() = OnboardingDataUpdateEvent.ActivitiesRotationFrequencySelected(this)
+private fun TrainingPreferences.RotationFrequency.toWeeklyRotationUpdate() = OnboardingEvent.ActivitiesRotationFrequencySelected(this)
 
 @Composable
 fun ActivitiesRotationFrequencyButton(

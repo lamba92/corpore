@@ -33,10 +33,10 @@ import io.github.lamba92.corpore.app.core.ui.components.GradientDirection
 import io.github.lamba92.corpore.app.core.ui.components.gradientOverlay
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingStep
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
+import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -51,7 +51,7 @@ fun Onboarding(
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
 ) {
-    val onboardingData by viewModel.onboardingDataStateFlow.collectAsState()
+    val onboardingData by viewModel.trainingPreferencesStateFlow.collectAsState()
     val currentStep by viewModel.currentOnboardingStepStateFlow.collectAsState()
     val canGoNext by viewModel.canGoNextStateFlow.collectAsState()
     val isLoggingOut by viewModel.isLoggingOutStateFlow.collectAsState()
@@ -73,7 +73,7 @@ fun Onboarding(
         currentStep = currentStep,
         canGoNext = canGoNext,
         isLoggingOut = isLoggingOut,
-        onUpdate = viewModel::update,
+        onUpdate = viewModel::onEvent,
         onBackClick = viewModel::onBackClick,
         onNextClick = viewModel::onNextClick,
         modifier = modifier,
@@ -84,10 +84,10 @@ fun Onboarding(
 
 @Composable
 fun Onboarding(
-    data: OnboardingData,
+    data: TrainingPreferences,
     currentStep: OnboardingStep,
     canGoNext: Boolean,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit = {},
+    onUpdate: (OnboardingEvent) -> Unit = {},
     onBackClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
     modifier: Modifier = Modifier,

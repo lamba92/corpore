@@ -25,14 +25,14 @@ import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import io.github.lamba92.corpore.app.core.viewmodel.SportActivity
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ActivitiesSelection(
     selectedActivities: Set<SportActivity>,
-    onUpdate: (OnboardingDataUpdateEvent.ActivitiesSelection) -> Unit,
+    onUpdate: (OnboardingEvent.ActivitiesSelection) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -66,9 +66,9 @@ fun ActivitiesSelection(
     }
 }
 
-private fun SportActivity.toActivityRemovedUpdate() = OnboardingDataUpdateEvent.ActivitiesSelection.ActivityRemoved(listOf(this))
+private fun SportActivity.toActivityRemovedUpdate() = OnboardingEvent.ActivitiesSelection.ActivityRemoved(listOf(this))
 
-private fun SportActivity.toActivityAddedUpdate() = OnboardingDataUpdateEvent.ActivitiesSelection.ActivityAdded(listOf(this))
+private fun SportActivity.toActivityAddedUpdate() = OnboardingEvent.ActivitiesSelection.ActivityAdded(listOf(this))
 
 @Composable
 fun SportActivity(

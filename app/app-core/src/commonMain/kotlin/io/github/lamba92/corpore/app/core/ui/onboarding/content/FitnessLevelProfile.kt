@@ -61,8 +61,8 @@ import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.core.viewmodel.MeasurementUnitSystem
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import io.github.lamba92.corpore.app.core.viewmodel.SportActivity
 import io.github.lamba92.corpore.common.core.Length
 import io.github.lamba92.corpore.common.core.LengthUnit
@@ -74,9 +74,9 @@ import kotlin.time.Duration.Companion.seconds
 @Composable
 fun FitnessLevelProfile(
     selectedActivities: Set<SportActivity>,
-    currentFitnessLevel: OnboardingData.FitnessLevelProfile,
+    currentFitnessLevel: TrainingPreferences.FitnessLevelProfile,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
+    onUpdate: (OnboardingEvent) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -127,8 +127,8 @@ fun FitnessLevelProfile(
 
 @Composable
 fun FitnessLevelInputCard(
-    data: OnboardingData.CalisthenicsFitness,
-    onUpdate: (OnboardingDataUpdateEvent.FitnessLevelProfile.FreeBody) -> Unit,
+    data: TrainingPreferences.CalisthenicsFitness,
+    onUpdate: (OnboardingEvent.FitnessLevelProfile.FreeBody) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FitnessLevelCard(
@@ -144,21 +144,21 @@ fun FitnessLevelInputCard(
     ) {
         OutlineCheckboxTextButton(
             isSelected = data.hasTrainedBefore,
-            onClick = { onUpdate(OnboardingDataUpdateEvent.FitnessLevelProfile.FreeBody.HasTrainedBeforeToggle) },
+            onClick = { onUpdate(OnboardingEvent.FitnessLevelProfile.FreeBody.HasTrainedBeforeToggle) },
             text = stringResource(Res.string.onboarding_fitness_level_profile_user_input_calisthenics_has_trained_before),
         )
         IntTextField(
             modifier = Modifier.fillMaxWidth(),
             enabled = data.hasTrainedBefore,
             value = data.maxPushups,
-            onValueChange = { onUpdate(OnboardingDataUpdateEvent.FitnessLevelProfile.FreeBody.MaxPushupsChange(it)) },
+            onValueChange = { onUpdate(OnboardingEvent.FitnessLevelProfile.FreeBody.MaxPushupsChange(it)) },
             label = defaultTextFieldLabel(stringResource(Res.string.onboarding_fitness_level_profile_user_input_calisthenics_max_pushups)),
         )
         IntTextField(
             modifier = Modifier.fillMaxWidth(),
             enabled = data.hasTrainedBefore,
             value = data.wallSitHold.inWholeSeconds.toInt(),
-            onValueChange = { onUpdate(OnboardingDataUpdateEvent.FitnessLevelProfile.FreeBody.WallSitHoldChange(it.seconds)) },
+            onValueChange = { onUpdate(OnboardingEvent.FitnessLevelProfile.FreeBody.WallSitHoldChange(it.seconds)) },
             label =
                 defaultTextFieldLabel(
                     stringResource(Res.string.onboarding_fitness_level_profile_user_input_calisthenics_wall_sit_hold),
@@ -167,7 +167,7 @@ fun FitnessLevelInputCard(
         OutlineCheckboxTextButton(
             enabled = data.hasTrainedBefore,
             isSelected = data.canPlank30Sec,
-            onClick = { onUpdate(OnboardingDataUpdateEvent.FitnessLevelProfile.FreeBody.CanPlank30SecToggle) },
+            onClick = { onUpdate(OnboardingEvent.FitnessLevelProfile.FreeBody.CanPlank30SecToggle) },
             text = stringResource(Res.string.onboarding_fitness_level_profile_user_input_calisthenics_can_plank_30_sec),
         )
     }
@@ -202,9 +202,9 @@ fun FitnessLevelCard(
 
 @Composable
 fun GymLevelCard(
-    data: OnboardingData.GymFitness,
+    data: TrainingPreferences.GymFitness,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent.FitnessLevelProfile.Gym) -> Unit,
+    onUpdate: (OnboardingEvent.FitnessLevelProfile.Gym) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FitnessLevelCard(
@@ -238,9 +238,9 @@ fun GymLevelCard(
 
 @Composable
 fun RunningLevelCard(
-    data: OnboardingData.RunningFitness,
+    data: TrainingPreferences.RunningFitness,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent.FitnessLevelProfile.Running) -> Unit,
+    onUpdate: (OnboardingEvent.FitnessLevelProfile.Running) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FitnessLevelCard(
@@ -278,9 +278,9 @@ fun RunningLevelCard(
 
 @Composable
 fun SwimmingLevelCard(
-    data: OnboardingData.SwimmingFitness,
+    data: TrainingPreferences.SwimmingFitness,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent.FitnessLevelProfile.Swimming) -> Unit,
+    onUpdate: (OnboardingEvent.FitnessLevelProfile.Swimming) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FitnessLevelCard(
@@ -305,11 +305,11 @@ fun SwimmingLevelCard(
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
-        OnboardingData.SwimmingFitness.Stroke
+        TrainingPreferences.SwimmingFitness.Stroke
             .entries
             .forEach { stroke ->
                 SwimmingStrokeButton(
-                    enabled = stroke != OnboardingData.SwimmingFitness.Stroke.Freestyle,
+                    enabled = stroke != TrainingPreferences.SwimmingFitness.Stroke.Freestyle,
                     modifier = Modifier.fillMaxWidth(),
                     stroke = stroke,
                     isSelected = stroke in data.knownStrokes,
@@ -319,18 +319,18 @@ fun SwimmingLevelCard(
     }
 }
 
-private fun OnboardingData.SwimmingFitness.Stroke.toKnownSwimmingStrokesUpdate(knownStrokes: Set<OnboardingData.SwimmingFitness.Stroke>) =
+private fun TrainingPreferences.SwimmingFitness.Stroke.toKnownSwimmingStrokesUpdate(knownStrokes: Set<TrainingPreferences.SwimmingFitness.Stroke>) =
     when (this) {
         in knownStrokes ->
-            OnboardingDataUpdateEvent.FitnessLevelProfile.Swimming.KnownStrokesRemoved(this)
+            OnboardingEvent.FitnessLevelProfile.Swimming.KnownStrokesRemoved(this)
 
         else ->
-            OnboardingDataUpdateEvent.FitnessLevelProfile.Swimming.KnownStrokesAdded(this)
+            OnboardingEvent.FitnessLevelProfile.Swimming.KnownStrokesAdded(this)
     }
 
 @Composable
 fun SwimmingStrokeButton(
-    stroke: OnboardingData.SwimmingFitness.Stroke,
+    stroke: TrainingPreferences.SwimmingFitness.Stroke,
     isSelected: Boolean,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -344,16 +344,16 @@ fun SwimmingStrokeButton(
         text =
             stringResource(
                 when (stroke) {
-                    OnboardingData.SwimmingFitness.Stroke.Freestyle ->
+                    TrainingPreferences.SwimmingFitness.Stroke.Freestyle ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_freestyle
 
-                    OnboardingData.SwimmingFitness.Stroke.Backstroke ->
+                    TrainingPreferences.SwimmingFitness.Stroke.Backstroke ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_backstroke
 
-                    OnboardingData.SwimmingFitness.Stroke.Breaststroke ->
+                    TrainingPreferences.SwimmingFitness.Stroke.Breaststroke ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_breaststroke
 
-                    OnboardingData.SwimmingFitness.Stroke.Butterfly ->
+                    TrainingPreferences.SwimmingFitness.Stroke.Butterfly ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_butterfly
                 },
             ),
@@ -421,9 +421,9 @@ fun OutlineCheckboxButton(
 
 @Composable
 fun FreestyleDistance15MinTextField(
-    data: OnboardingData.SwimmingFitness,
+    data: TrainingPreferences.SwimmingFitness,
     measurementUnitSystem: MeasurementUnitSystem,
-    onUpdate: (OnboardingDataUpdateEvent.FitnessLevelProfile.Swimming) -> Unit,
+    onUpdate: (OnboardingEvent.FitnessLevelProfile.Swimming) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LengthTextField(
@@ -448,7 +448,7 @@ fun FreestyleDistance15MinTextField(
 }
 
 private fun Length.toFreestyleDistance15MinUpdate() =
-    OnboardingDataUpdateEvent.FitnessLevelProfile.Swimming.FreestyleDistance15MinChange(this)
+    OnboardingEvent.FitnessLevelProfile.Swimming.FreestyleDistance15MinChange(this)
 
 @Composable
 fun DeadliftWeightTextField(
@@ -531,13 +531,13 @@ fun BenchPressWeightTextField(
     )
 }
 
-private fun Weight.toGymBenchPress1RMUpdate() = OnboardingDataUpdateEvent.FitnessLevelProfile.Gym.BenchPress1RMChange(this)
+private fun Weight.toGymBenchPress1RMUpdate() = OnboardingEvent.FitnessLevelProfile.Gym.BenchPress1RMChange(this)
 
-private fun Weight.toGymSquat1RMUpdate() = OnboardingDataUpdateEvent.FitnessLevelProfile.Gym.Squat1RMChange(this)
+private fun Weight.toGymSquat1RMUpdate() = OnboardingEvent.FitnessLevelProfile.Gym.Squat1RMChange(this)
 
-private fun Weight.toGymDeadlift1RMUpdate() = OnboardingDataUpdateEvent.FitnessLevelProfile.Gym.Deadlift1RMChange(this)
+private fun Weight.toGymDeadlift1RMUpdate() = OnboardingEvent.FitnessLevelProfile.Gym.Deadlift1RMChange(this)
 
-private fun Length.toRunningDistance15MinUpdate() = OnboardingDataUpdateEvent.FitnessLevelProfile.Running.DistanceIn30MinsChange(this)
+private fun Length.toRunningDistance15MinUpdate() = OnboardingEvent.FitnessLevelProfile.Running.DistanceIn30MinsChange(this)
 
 @Composable
 fun CardHeader(

@@ -29,13 +29,13 @@ import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeOuterPaddin
 import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TrainingLevel(
     selectedTrainingLevel: TrainingLevel?,
-    onUpdate: (OnboardingDataUpdateEvent.TrainingLevelSelected) -> Unit,
+    onUpdate: (OnboardingEvent.TrainingLevelSelected) -> Unit,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     modifier: Modifier = Modifier,
@@ -57,7 +57,7 @@ fun TrainingLevel(
         VerticalSpacer()
         TrainingLevelSelectionButtons(
             selectedTrainingLevel = selectedTrainingLevel,
-            onTrainingLevelClick = { onUpdate(OnboardingDataUpdateEvent.TrainingLevelSelected(it)) },
+            onTrainingLevelClick = { onUpdate(OnboardingEvent.TrainingLevelSelected(it)) },
             modifier =
                 Modifier
                     .fillMaxWidth()

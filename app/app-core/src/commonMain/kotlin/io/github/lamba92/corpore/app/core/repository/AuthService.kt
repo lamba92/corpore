@@ -14,7 +14,7 @@ data class AuthSession(
     val refreshToken: String? = null,
 )
 
-interface AuthRepository {
+interface AuthService {
     val authSession: StateFlow<AuthSession?>
 
     suspend fun loginWithGoogle(): AuthResult
@@ -32,7 +32,7 @@ sealed interface AuthResult {
     ) : AuthResult
 }
 
-object MockAuthRepository : AuthRepository {
+object MockAuthService : AuthService {
     val MockAuthSession =
         AuthSession(
             uid = "mockUid",

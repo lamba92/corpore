@@ -2,13 +2,13 @@ package io.github.lamba92.corpore.app.core.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.lamba92.corpore.app.core.repository.AuthRepository
 import io.github.lamba92.corpore.app.core.repository.AuthResult
+import io.github.lamba92.corpore.app.core.repository.AuthService
 import io.github.lamba92.corpore.app.core.repository.LoggingService
 import io.github.lamba92.corpore.app.core.repository.logError
-import io.github.lamba92.corpore.app.core.usecase.execute
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
+import io.github.lamba92.corpore.common.core.usecase.execute
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ class LoginScreenViewModel(
     private val loginWithGoogleUseCase: LoginWithGoogleUseCase,
     private val loginWithAppleUseCase: LoginWithAppleUseCase,
     private val loggingService: LoggingService,
-    authRepository: AuthRepository,
+    authRepository: AuthService,
 ) : ViewModel() {
     val isLoggedInStateFlow =
         authRepository

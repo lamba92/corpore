@@ -17,8 +17,8 @@ import io.github.lamba92.corpore.app.core.ui.onboarding.content.PhysicalProfile
 import io.github.lamba92.corpore.app.core.ui.onboarding.content.TrainingLevel
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingData
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingDataUpdateEvent
+import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
+import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
 import io.github.lamba92.corpore.app.core.viewmodel.OnboardingStep
 
 private val defaultOnboardingContentStateMap
@@ -37,8 +37,8 @@ fun rememberOnboardingContentState(initial: Map<OnboardingStep, Int> = emptyMap(
 @Composable
 fun OnboardingContent(
     target: OnboardingStep,
-    data: OnboardingData,
-    onUpdate: (OnboardingDataUpdateEvent) -> Unit,
+    data: TrainingPreferences,
+    onUpdate: (OnboardingEvent) -> Unit,
     verticalArrangement: Arrangement.Vertical,
     horizontalAlignment: Alignment.Horizontal,
     onboardingHeaderHeight: Dp,

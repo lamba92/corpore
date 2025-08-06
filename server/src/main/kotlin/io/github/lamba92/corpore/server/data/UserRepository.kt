@@ -3,7 +3,7 @@ package io.github.lamba92.corpore.server.data
 import io.github.lamba92.corpore.common.core.UserId
 import io.github.lamba92.corpore.common.core.data.User
 import io.github.lamba92.corpore.common.core.data.WorkoutPlan
-import io.github.lamba92.corpore.common.core.data.WorkoutSession
+import io.github.lamba92.corpore.common.core.data.WorkoutTimings
 
 interface UserRepository {
     suspend fun getOrCreateUser(
@@ -26,18 +26,18 @@ interface WorkoutRepository {
     suspend fun getCurrentWorkoutSessionForUser(
         id: UserId,
         localeQuery: LocaleQuery = LocaleQuery.ByLanguage.ENGLISH_ONLY,
-    ): WorkoutSession?
+    ): WorkoutTimings?
 
     suspend fun getAllWorkoutSessionsForUser(
         id: UserId,
         localeQuery: LocaleQuery = LocaleQuery.ByLanguage.ENGLISH_ONLY,
         page: Int = 0,
         size: Int = 25,
-    ): Page<WorkoutSession>
+    ): Page<WorkoutTimings>
 
     suspend fun updateCurrentWorkoutSessionForUser(
         id: UserId,
-        workoutSession: WorkoutSession,
+        workoutSession: WorkoutTimings,
     )
 
     suspend fun updateWorkoutPlanForUser(

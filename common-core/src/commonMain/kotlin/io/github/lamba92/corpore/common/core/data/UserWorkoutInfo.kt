@@ -6,6 +6,6 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 @Serializable
 data class UserWorkoutInfo(
-    val currentWorkoutSession: WorkoutSession,
+    val currentWorkoutSession: WorkoutTimings,
     val createdAt: EpochMillisSerializableInstant,
 )

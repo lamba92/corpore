@@ -6,12 +6,12 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Serializable
-data class WorkoutSession(
+data class WorkoutTimings(
     val timings: Timings = Timings.EMPTY,
     val totalTime: TimeInterval = TimeInterval.NotStarted,
 ) {
     companion object {
-        val NONE = WorkoutSession()
+        val NONE = WorkoutTimings()
     }
 
     @Serializable
