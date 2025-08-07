@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding.content
+package io.github.lamba92.corpore.app.features.onboarding.components.content
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,22 +22,22 @@ import io.github.lamba92.corpore.app.core.ui.components.UnitSystemRow
 import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.WeightTextField
 import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
-import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.MeasurementUnitSystem
-import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
-import io.github.lamba92.corpore.common.core.Length
-import io.github.lamba92.corpore.common.core.LengthUnit
-import io.github.lamba92.corpore.common.core.Weight
-import io.github.lamba92.corpore.common.core.WeightUnit
+import io.github.lamba92.corpore.app.features.onboarding.MeasurementUnitSystem
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingState
+import io.github.lamba92.corpore.app.features.onboarding.components.OnboardingTitle
+import io.github.lamba92.corpore.common.core.units.Length
+import io.github.lamba92.corpore.common.core.units.LengthUnit
+import io.github.lamba92.corpore.common.core.units.Weight
+import io.github.lamba92.corpore.common.core.units.WeightUnit
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PhysicalProfile(
-    data: TrainingPreferences.PhysicalProfile,
+    data: OnboardingState.PhysicalProfileStep,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -90,7 +90,7 @@ fun PhysicalProfile(
 
 @Composable
 private fun HeightTextField(
-    data: TrainingPreferences.PhysicalProfile,
+    data: OnboardingState.PhysicalProfileStep,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent) -> Unit,
 ) {
@@ -117,7 +117,7 @@ private fun HeightTextField(
 
 @Composable
 fun WeightTextField(
-    data: TrainingPreferences.PhysicalProfile,
+    data: OnboardingState.PhysicalProfileStep,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent) -> Unit,
 ) {

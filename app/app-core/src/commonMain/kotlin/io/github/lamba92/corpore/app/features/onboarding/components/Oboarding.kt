@@ -1,4 +1,6 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+@file:OptIn(ExperimentalComposeUiApi::class)
+
+package io.github.lamba92.corpore.app.features.onboarding.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -24,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -33,13 +36,12 @@ import io.github.lamba92.corpore.app.core.ui.components.GradientDirection
 import io.github.lamba92.corpore.app.core.ui.components.gradientOverlay
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingStep
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
-import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingEffects
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingState
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingStepNames
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingViewModel
+import io.github.lamba92.corpore.app.features.onboarding.isCurrentStepValid
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -51,31 +53,21 @@ fun Onboarding(
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
 ) {
-    val onboardingData by viewModel.trainingPreferencesStateFlow.collectAsState()
-    val currentStep by viewModel.currentOnboardingStepStateFlow.collectAsState()
-    val canGoNext by viewModel.canGoNextStateFlow.collectAsState()
-    val isLoggingOut by viewModel.isLoggingOutStateFlow.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel
-            .isLoggedInStateFlow
-            .filter { !it }
-            .onEach { onLogout() }
-            .launchIn(this)
-
-        viewModel
-            .onboardingCompleteSharedFlow
-            .collect { onOnboardingComplete() }
+            .effects
+            .collect {
+                when (it) {
+                    OnboardingEffects.Logout -> onLogout()
+                    OnboardingEffects.OnboardingComplete -> onOnboardingComplete()
+                }
+            }
     }
-
     Onboarding(
-        data = onboardingData,
-        currentStep = currentStep,
-        canGoNext = canGoNext,
-        isLoggingOut = isLoggingOut,
-        onUpdate = viewModel::onEvent,
-        onBackClick = viewModel::onBackClick,
-        onNextClick = viewModel::onNextClick,
+        state = state,
+        onEvent = viewModel::onEvent,
         modifier = modifier,
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
@@ -84,16 +76,11 @@ fun Onboarding(
 
 @Composable
 fun Onboarding(
-    data: TrainingPreferences,
-    currentStep: OnboardingStep,
-    canGoNext: Boolean,
-    onUpdate: (OnboardingEvent) -> Unit = {},
-    onBackClick: () -> Unit = {},
-    onNextClick: () -> Unit = {},
+    state: OnboardingState,
+    onEvent: (OnboardingEvent) -> Unit,
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    isLoggingOut: Boolean,
 ) {
     Box(
         modifier =
@@ -106,8 +93,8 @@ fun Onboarding(
         var onboardingFooterHeight by remember { mutableStateOf(0.dp) }
         val density = LocalDensity.current
         OnboardingHeader(
-            pageNumber = currentStep.ordinal + 1,
-            totalPages = OnboardingStep.entries.size,
+            pageNumber = state.currentStep.ordinal + 1,
+            totalPages = OnboardingStepNames.entries.size,
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -127,30 +114,31 @@ fun Onboarding(
                     .fillMaxSize()
                     .padding(top = CorporeTheme.appMetrics.outerPadding),
         ) {
-            var previousStep by remember { mutableStateOf(currentStep) }
+            var previousStep by remember { mutableStateOf(state.currentStep) }
             val direction =
                 when {
-                    currentStep.ordinal > previousStep.ordinal -> 1 // Forward
-                    currentStep.ordinal < previousStep.ordinal -> -1 // Backward
+                    state.currentStep.ordinal > previousStep.ordinal -> 1 // Forward
+                    state.currentStep.ordinal < previousStep.ordinal -> -1 // Backward
                     else -> 0
                 }
-            remember(currentStep) { previousStep = currentStep }
-            val onboardingContentState = rememberOnboardingContentState()
+            remember(state.currentStep) { previousStep = state.currentStep }
+            val onboardingContentScrollingState =
+                rememberOnboardingContentScrollingState()
             AnimatedContent(
-                targetState = currentStep,
+                targetState = state.currentStep,
                 transitionSpec = slideAnimation(direction),
                 label = "OnboardingContent",
                 modifier = Modifier.fillMaxWidth(),
             ) { target ->
                 OnboardingContent(
                     target = target,
-                    data = data,
-                    onUpdate = onUpdate,
+                    state = state,
+                    onUpdate = onEvent,
                     verticalArrangement = verticalArrangement,
                     horizontalAlignment = horizontalAlignment,
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
-                    state = onboardingContentState,
+                    onboardingContentScrollingState = onboardingContentScrollingState,
                 )
             }
         }
@@ -166,17 +154,16 @@ fun Onboarding(
                     .padding(bottom = CorporeTheme.appMetrics.innerPadding)
                     .align(Alignment.BottomCenter)
                     .zIndex(10f),
-            isFirstScreen = currentStep.ordinal == 0,
-            isLastScreen = currentStep.ordinal == OnboardingStep.entries.lastIndex,
-            isLoggingOut = isLoggingOut,
-            canGoNext = canGoNext,
-            onBackClick = onBackClick,
-            onNextClick = onNextClick,
+            isFirstScreen = state.currentStep.ordinal == 0,
+            isLastScreen = state.currentStep.ordinal == OnboardingStepNames.entries.lastIndex,
+            isLoggingOut = state.isLoggingOut,
+            canGoNext = remember(state) { state.isCurrentStepValid() },
+            onEvent = onEvent,
         )
     }
 }
 
-private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<OnboardingStep>.() -> ContentTransform =
+private fun slideAnimation(direction: Int): AnimatedContentTransitionScope<OnboardingStepNames>.() -> ContentTransform =
     { slideIn(direction) togetherWith slideOut(direction) }
 
 private fun slideOut(direction: Int) = slideOutHorizontally { fullWidth -> -direction * fullWidth }

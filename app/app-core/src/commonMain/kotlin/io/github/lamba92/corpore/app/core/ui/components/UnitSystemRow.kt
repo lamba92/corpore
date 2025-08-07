@@ -16,7 +16,7 @@ import io.github.lamba92.app_core.generated.resources.Res
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_unit_system
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_unit_system_imperial
 import io.github.lamba92.app_core.generated.resources.onboarding_physical_unit_system_metric
-import io.github.lamba92.corpore.app.core.viewmodel.MeasurementUnitSystem
+import io.github.lamba92.corpore.app.features.onboarding.MeasurementUnitSystem
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

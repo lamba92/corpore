@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.features.login.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -47,7 +47,7 @@ import io.github.lamba92.app_core.generated.resources.onboarding_login_welcome
 import io.github.lamba92.corpore.app.core.ui.components.ResourceImage
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
+import io.github.lamba92.corpore.app.features.login.LoginScreenViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.jetbrains.compose.resources.StringResource

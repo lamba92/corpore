@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.features.onboarding.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +9,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
 
 @Composable
 fun OnboardingFooter(
     isFirstScreen: Boolean,
     isLastScreen: Boolean,
     canGoNext: Boolean,
-    onBackClick: () -> Unit = {},
-    onNextClick: () -> Unit = {},
+    onEvent: (OnboardingEvent) -> Unit,
     modifier: Modifier = Modifier,
     isLoggingOut: Boolean,
 ) {
@@ -31,28 +31,28 @@ fun OnboardingFooter(
             isFirstScreen ->
                 LogoutButton(
                     enabled = !isLoggingOut,
-                    onClick = onBackClick,
+                    onClick = { onEvent(OnboardingEvent.BackClick) },
                     modifier = Modifier.weight(leftButtonWeight),
                 )
 
             else ->
                 OnboardingBackButton(
                     isLastScreen = isLastScreen,
-                    onClick = onBackClick,
+                    onClick = { onEvent(OnboardingEvent.BackClick) },
                     modifier = Modifier.weight(leftButtonWeight),
                 )
         }
         when {
             isLastScreen ->
                 OnboardingGeneratePlanButton(
-                    onClick = onNextClick,
+                    onClick = { onEvent(OnboardingEvent.NextClick) },
                     enabled = canGoNext,
                     modifier = Modifier.weight(rightButtonWeight),
                 )
 
             else ->
                 OnboardingNextButton(
-                    onClick = onNextClick,
+                    onClick = { onEvent(OnboardingEvent.NextClick) },
                     enabled = canGoNext,
                     modifier = Modifier.weight(rightButtonWeight),
                 )

@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import io.github.lamba92.corpore.common.core.Length
-import io.github.lamba92.corpore.common.core.LengthUnit
 import io.github.lamba92.corpore.common.core.toStringWithPrecision
+import io.github.lamba92.corpore.common.core.units.Length
+import io.github.lamba92.corpore.common.core.units.LengthUnit
 
 @Composable
 fun LengthTextField(

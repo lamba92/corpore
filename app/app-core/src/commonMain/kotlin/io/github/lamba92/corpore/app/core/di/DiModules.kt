@@ -9,8 +9,8 @@ import io.github.lamba92.corpore.app.core.usecase.login.LoginWithAppleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LoginWithGoogleUseCase
 import io.github.lamba92.corpore.app.core.usecase.login.LogoutUseCase
 import io.github.lamba92.corpore.app.core.utils.CoilLogger
-import io.github.lamba92.corpore.app.core.viewmodel.LoginScreenViewModel
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
+import io.github.lamba92.corpore.app.features.login.LoginScreenViewModel
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.parameter.parametersOf

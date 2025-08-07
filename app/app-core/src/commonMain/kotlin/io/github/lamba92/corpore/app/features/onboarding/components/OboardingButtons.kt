@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.features.onboarding.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope

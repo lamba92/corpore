@@ -1,8 +1,10 @@
 @file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+@file:OptIn(ExperimentalTime::class)
 
 package io.github.lamba92.corpore.app.core.repository
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 actual class StaticLoggingService actual constructor(
     actual override val tag: String,

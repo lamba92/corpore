@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding.content
+package io.github.lamba92.corpore.app.features.onboarding.components.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,10 +23,10 @@ import io.github.lamba92.app_core.generated.resources.onboarding_sport_activity_
 import io.github.lamba92.corpore.app.core.ui.components.HorizontalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
-import io.github.lamba92.corpore.app.core.ui.onboarding.OnboardingTitle
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
-import io.github.lamba92.corpore.app.core.viewmodel.SportActivity
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
+import io.github.lamba92.corpore.app.features.onboarding.SportActivity
+import io.github.lamba92.corpore.app.features.onboarding.components.OnboardingTitle
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

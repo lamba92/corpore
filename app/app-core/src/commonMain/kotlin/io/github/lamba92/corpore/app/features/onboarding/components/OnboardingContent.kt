@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.features.onboarding.components
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
@@ -10,42 +10,42 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import io.github.lamba92.corpore.app.core.ui.onboarding.content.ActivitiesRotationFrequency
-import io.github.lamba92.corpore.app.core.ui.onboarding.content.ActivitiesSelection
-import io.github.lamba92.corpore.app.core.ui.onboarding.content.FitnessLevelProfile
-import io.github.lamba92.corpore.app.core.ui.onboarding.content.PhysicalProfile
-import io.github.lamba92.corpore.app.core.ui.onboarding.content.TrainingLevel
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.core.viewmodel.TrainingPreferences
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingEvent
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingStep
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingState
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingStepNames
+import io.github.lamba92.corpore.app.features.onboarding.components.content.ActivitiesRotationFrequency
+import io.github.lamba92.corpore.app.features.onboarding.components.content.ActivitiesSelection
+import io.github.lamba92.corpore.app.features.onboarding.components.content.FitnessLevelProfile
+import io.github.lamba92.corpore.app.features.onboarding.components.content.PhysicalProfile
+import io.github.lamba92.corpore.app.features.onboarding.components.content.TrainingLevel
 
 private val defaultOnboardingContentStateMap
-    get() = OnboardingStep.entries.associateWith { ScrollState(0) }
+    get() = OnboardingStepNames.entries.associateWith { ScrollState(0) }
 
-class OnboardingContentState(
-    private val scrollStateMap: Map<OnboardingStep, ScrollState> = defaultOnboardingContentStateMap,
+class OnboardingContentScrollingState(
+    private val scrollStateMap: Map<OnboardingStepNames, ScrollState> = defaultOnboardingContentStateMap,
 ) {
-    fun getScrollState(step: OnboardingStep): ScrollState = scrollStateMap.getValue(step)
+    fun getScrollState(step: OnboardingStepNames): ScrollState = scrollStateMap.getValue(step)
 }
 
 @Composable
-fun rememberOnboardingContentState(initial: Map<OnboardingStep, Int> = emptyMap()): OnboardingContentState =
-    remember { OnboardingContentState(defaultOnboardingContentStateMap + initial.mapValues { ScrollState(it.value) }) }
+fun rememberOnboardingContentScrollingState(initial: Map<OnboardingStepNames, Int> = emptyMap()): OnboardingContentScrollingState =
+    remember { OnboardingContentScrollingState(defaultOnboardingContentStateMap + initial.mapValues { ScrollState(it.value) }) }
 
 @Composable
 fun OnboardingContent(
-    target: OnboardingStep,
-    data: TrainingPreferences,
+    target: OnboardingStepNames,
+    state: OnboardingState,
     onUpdate: (OnboardingEvent) -> Unit,
     verticalArrangement: Arrangement.Vertical,
     horizontalAlignment: Alignment.Horizontal,
     onboardingHeaderHeight: Dp,
     onboardingFooterHeight: Dp,
-    state: OnboardingContentState = remember { OnboardingContentState() },
+    onboardingContentScrollingState: OnboardingContentScrollingState = remember { OnboardingContentScrollingState() },
 ) {
-    val scrollState = state.getScrollState(target)
+    val scrollState = onboardingContentScrollingState.getScrollState(target)
     Box(
         modifier =
             Modifier
@@ -53,67 +53,67 @@ fun OnboardingContent(
                 .padding(horizontal = CorporeTheme.appMetrics.outerPadding),
     ) {
         when (target) {
-            OnboardingStep.TrainingLevelSelection ->
+            OnboardingStepNames.TrainingLevelSelection ->
                 OnboardingContentScaffold(
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
                     scrollState = scrollState,
                 ) {
                     TrainingLevel(
-                        selectedTrainingLevel = data.selectedTrainingLevel,
+                        selectedTrainingLevel = state.stepsData.trainingLevelSelection.level,
                         onUpdate = onUpdate,
                         verticalArrangement = verticalArrangement,
                         horizontalAlignment = horizontalAlignment,
                     )
                 }
 
-            OnboardingStep.PhysicalProfile ->
+            OnboardingStepNames.PhysicalProfile ->
                 OnboardingContentScaffold(
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
                     scrollState = scrollState,
                 ) {
                     PhysicalProfile(
-                        data = data.physicalProfile,
-                        measurementUnitSystem = data.measurementUnitSystem,
+                        data = state.stepsData.physicalProfile,
+                        measurementUnitSystem = state.measurementUnitSystem,
                         onUpdate = onUpdate,
                     )
                 }
 
-            OnboardingStep.ActivitiesSelection ->
+            OnboardingStepNames.ActivitiesSelection ->
                 OnboardingContentScaffold(
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
                     scrollState = scrollState,
                 ) {
                     ActivitiesSelection(
-                        selectedActivities = data.selectedActivities,
+                        selectedActivities = state.stepsData.activitiesSelection.activities,
                         onUpdate = onUpdate,
                     )
                 }
 
-            OnboardingStep.FitnessLevelProfile ->
+            OnboardingStepNames.FitnessLevelProfile ->
                 OnboardingContentScaffold(
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
                     scrollState = scrollState,
                 ) {
                     FitnessLevelProfile(
-                        selectedActivities = data.selectedActivities.toSet(),
-                        currentFitnessLevel = data.fitnessLevelProfile,
-                        measurementUnitSystem = data.measurementUnitSystem,
+                        selectedActivities = state.stepsData.activitiesSelection.activities,
+                        currentFitnessLevel = state.stepsData.fitnessLevelProfile,
+                        measurementUnitSystem = state.measurementUnitSystem,
                         onUpdate = onUpdate,
                     )
                 }
 
-            OnboardingStep.ActivitiesRotationFrequency ->
+            OnboardingStepNames.ActivitiesRotationFrequency ->
                 OnboardingContentScaffold(
                     onboardingHeaderHeight = onboardingHeaderHeight,
                     onboardingFooterHeight = onboardingFooterHeight,
                     scrollState = scrollState,
                 ) {
                     ActivitiesRotationFrequency(
-                        selectedRotationFrequency = data.activitiesRotationFrequency,
+                        data = state.stepsData.rotationFrequency,
                         onUpdate = onUpdate,
                     )
                 }

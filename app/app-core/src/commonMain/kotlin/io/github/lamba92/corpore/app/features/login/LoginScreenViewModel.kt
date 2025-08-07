@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.viewmodel
+package io.github.lamba92.corpore.app.features.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,7 +29,7 @@ class LoginScreenViewModel(
         authRepository
             .authSession
             .map { it != null }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+            .stateIn(viewModelScope, SharingStarted.Companion.Eagerly, false)
 
     val isLoggingInUsingGoogleStateFlow =
         MutableStateFlow(false)
@@ -42,7 +42,7 @@ class LoginScreenViewModel(
     val errorsFlow =
         errorsChannel
             .consumeAsFlow()
-            .shareIn(viewModelScope, SharingStarted.Eagerly, 0)
+            .shareIn(viewModelScope, SharingStarted.Companion.Eagerly, 0)
 
     fun loginWithGoogle() {
         login(isLoggingInUsingGoogleStateFlow, loginWithGoogleUseCase::execute)

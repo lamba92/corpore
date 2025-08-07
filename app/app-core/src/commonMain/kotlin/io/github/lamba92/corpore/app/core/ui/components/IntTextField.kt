@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun IntTextField(
-    value: Int = 0,
+    value: Int? = null,
     enabled: Boolean = true,
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -16,7 +16,7 @@ fun IntTextField(
     OutlinedTextField(
         modifier = modifier,
         enabled = enabled,
-        value = value.toString(),
+        value = value?.toString() ?: "",
         onValueChange = { it.toIntOrNull()?.let(onValueChange) },
         trailingIcon = trailingIcon,
         label = label,

@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.features.onboarding.components
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun OnboardingContentScaffold(
@@ -30,6 +31,6 @@ fun OnboardingContentScaffold(
     ) {
         Spacer(modifier = Modifier.height(onboardingHeaderHeight))
         content()
-        Spacer(modifier = Modifier.height(onboardingFooterHeight))
+        Spacer(modifier = Modifier.height(onboardingFooterHeight + 4.dp))
     }
 }

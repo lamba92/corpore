@@ -7,17 +7,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.lamba92.corpore.app.core.di.DiModules
 import io.github.lamba92.corpore.app.core.ui.components.WithCoilDebugLogger
-import io.github.lamba92.corpore.app.core.ui.onboarding.Login
-import io.github.lamba92.corpore.app.core.ui.onboarding.Onboarding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
-import io.github.lamba92.corpore.app.core.viewmodel.OnboardingViewModel
+import io.github.lamba92.corpore.app.core.utils.BackHandler
+import io.github.lamba92.corpore.app.features.login.components.Login
+import io.github.lamba92.corpore.app.features.onboarding.OnboardingViewModel
+import io.github.lamba92.corpore.app.features.onboarding.components.Onboarding
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CorporeApp(
     navHostController: NavHostController = rememberNavController(),
-    onboardingBackHandler: @Composable (OnboardingViewModel) -> Unit = {},
+    onboardingBackHandler: @Composable (BackHandler) -> Unit = {},
 ) {
     CorporeTheme {
         KoinApplication(
@@ -39,7 +40,7 @@ fun CorporeApp(
                         }
                         composable("onboarding") {
                             val onboardingViewModel: OnboardingViewModel = koinViewModel()
-                            onboardingBackHandler(onboardingViewModel)
+                            onboardingBackHandler { onboardingViewModel.onBackClick() }
                             Onboarding(
                                 viewModel = onboardingViewModel,
                                 onLogout = {

@@ -1,4 +1,4 @@
-package io.github.lamba92.corpore.app.core.ui.onboarding
+package io.github.lamba92.corpore.app.features.onboarding.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
