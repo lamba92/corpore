@@ -1,6 +1,13 @@
 package io.github.lamba92.corpore.app.features.onboarding
 
-import io.github.lamba92.corpore.app.features.onboarding.components.content.TrainingLevel
+import io.github.lamba92.corpore.common.core.data.CalisthenicsFitness
+import io.github.lamba92.corpore.common.core.data.GymFitness
+import io.github.lamba92.corpore.common.core.data.MeasurementUnitSystem
+import io.github.lamba92.corpore.common.core.data.RunningFitness
+import io.github.lamba92.corpore.common.core.data.SportActivity
+import io.github.lamba92.corpore.common.core.data.SwimmingFitness
+import io.github.lamba92.corpore.common.core.data.TrainingFrequency
+import io.github.lamba92.corpore.common.core.data.TrainingLevel
 import io.github.lamba92.corpore.common.core.units.Length
 import io.github.lamba92.corpore.common.core.units.Weight
 import kotlinx.serialization.Serializable
@@ -19,7 +26,7 @@ data class OnboardingState(
         val physicalProfile: PhysicalProfileStep = PhysicalProfileStep(),
         val activitiesSelection: ActivitiesSelectionStep = ActivitiesSelectionStep(),
         val fitnessLevelProfile: FitnessLevelProfileStep = FitnessLevelProfileStep(),
-        val rotationFrequency: RotationFrequencyStep = RotationFrequencyStep(),
+        val rotationFrequency: TrainingFrequencyStep = TrainingFrequencyStep(),
     )
 
     companion object {
@@ -41,11 +48,11 @@ data class OnboardingState(
     @Serializable
     data class PhysicalProfileStep(
         val yearOfBirth: Int? = null,
-        val weight: Weight = Weight.Companion.ZERO,
-        val height: Length = Length.Companion.ZERO,
+        val weight: Weight = Weight.ZERO,
+        val height: Length = Length.ZERO,
     ) : OnboardingStep {
         override val isValid: Boolean
-            get() = yearOfBirth != null && weight != Weight.Companion.ZERO && height != Length.Companion.ZERO
+            get() = yearOfBirth != null && weight != Weight.ZERO && height != Length.ZERO
     }
 
     @Serializable
@@ -58,93 +65,52 @@ data class OnboardingState(
 
     @Serializable
     data class FitnessLevelProfileStep(
-        val gym: Gym = Gym(),
-        val running: Running = Running(),
-        val swimming: Swimming = Swimming(),
-        val calisthenics: Calisthenics = Calisthenics(),
+        val gym: GymFitness = GymFitness(),
+        val running: RunningFitness = RunningFitness(),
+        val swimming: SwimmingFitness = SwimmingFitness(),
+        val calisthenics: CalisthenicsFitness = CalisthenicsFitness(),
     ) : OnboardingStep {
         override val isValid: Boolean
             get() = gym.isValid && running.isValid && swimming.isValid && calisthenics.isValid
 
-        @Serializable
-        data class Gym(
-            val hasTrainedBefore: Boolean = false,
-            val benchPress1RM: Weight = Weight.Companion.ZERO,
-            val squat1RM: Weight = Weight.Companion.ZERO,
-            val deadlift1RM: Weight = Weight.Companion.ZERO,
-        ) : OnboardingStep {
-            override val isValid: Boolean
-                get() =
-                    when {
-                        hasTrainedBefore ->
-                            benchPress1RM != Weight.Companion.ZERO &&
-                                squat1RM != Weight.Companion.ZERO &&
-                                deadlift1RM != Weight.Companion.ZERO
-                        else -> true
-                    }
-        }
-
-        @Serializable
-        data class Running(
-            val hasTrainedBefore: Boolean = false,
-            val distanceIn30Mins: Length = Length.Companion.ZERO,
-        ) : OnboardingStep {
-            override val isValid: Boolean
-                get() =
-                    when {
-                        hasTrainedBefore -> distanceIn30Mins != Length.Companion.ZERO
-                        else -> true
-                    }
-        }
-
-        @Serializable
-        data class Swimming(
-            val hasTrainedBefore: Boolean = false,
-            val freestyleDistance15Min: Length = Length.Companion.ZERO,
-            val knownStrokes: Set<Strokes> = setOf(Strokes.Freestyle),
-        ) : OnboardingStep {
-            enum class Strokes {
-                Freestyle,
-                Backstroke,
-                Breaststroke,
-                Butterfly,
-            }
-
-            override val isValid: Boolean
-                get() =
-                    when {
-                        hasTrainedBefore -> freestyleDistance15Min != Length.Companion.ZERO
-                        else -> true
-                    }
-        }
-
-        @Serializable
-        data class Calisthenics(
-            val hasTrainedBefore: Boolean = false,
-            val maxPushups: Int = 0,
-            val wallSitHold: Duration = Duration.Companion.ZERO,
-            val canPlank30Sec: Boolean = false,
-        ) : OnboardingStep {
-            override val isValid: Boolean
-                get() =
-                    when {
-                        hasTrainedBefore -> maxPushups != 0 && wallSitHold != Duration.Companion.ZERO
-                        else -> true
-                    }
-        }
     }
 
     @Serializable
-    data class RotationFrequencyStep(
-        val frequency: RotationFrequency? = null,
+    data class TrainingFrequencyStep(
+        val frequency: TrainingFrequency? = null,
     ) : OnboardingStep {
         override val isValid: Boolean
             get() = frequency != null
-
-        enum class RotationFrequency {
-            Weekly,
-            BiWeekly,
-            Monthly,
-        }
     }
 }
+
+val CalisthenicsFitness.isValid: Boolean
+    get() =
+        when {
+            hasTrainedBefore -> maxPushups != 0 && wallSitHold != Duration.ZERO
+            else -> true
+        }
+
+val SwimmingFitness.isValid: Boolean
+    get() =
+        when {
+            hasTrainedBefore -> freestyleDistance15Min != Length.ZERO
+            else -> true
+        }
+
+val RunningFitness.isValid: Boolean
+    get() =
+        when {
+            hasTrainedBefore -> distanceIn30Mins != Length.ZERO
+            else -> true
+        }
+
+val GymFitness.isValid: Boolean
+    get() =
+        when {
+            hasTrainedBefore ->
+                benchPress1RM != Weight.ZERO &&
+                    squat1RM != Weight.ZERO &&
+                    deadlift1RM != Weight.ZERO
+            else -> true
+        }

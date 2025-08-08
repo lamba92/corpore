@@ -50,12 +50,12 @@ class OnboardingViewModel(
             is OnboardingEvent.PhysicalProfile -> onEvent(event)
             is OnboardingEvent.ActivitiesSelection -> onEvent(event)
             is OnboardingEvent.FitnessLevelProfile -> onEvent(event)
-            is OnboardingEvent.ActivitiesRotationFrequencySelected ->
+            is OnboardingEvent.TrainingFrequencySelected ->
                 _state.update {
                     it.copy(
                         stepsData =
                             it.stepsData.copy(
-                                rotationFrequency = OnboardingState.RotationFrequencyStep(event.frequency),
+                                rotationFrequency = OnboardingState.TrainingFrequencyStep(event.frequency),
                             ),
                     )
                 }

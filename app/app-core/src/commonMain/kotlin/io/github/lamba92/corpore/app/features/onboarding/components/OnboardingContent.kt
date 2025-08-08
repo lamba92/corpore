@@ -15,11 +15,11 @@ import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingState
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingStepNames
-import io.github.lamba92.corpore.app.features.onboarding.components.content.ActivitiesRotationFrequency
 import io.github.lamba92.corpore.app.features.onboarding.components.content.ActivitiesSelection
 import io.github.lamba92.corpore.app.features.onboarding.components.content.FitnessLevelProfile
 import io.github.lamba92.corpore.app.features.onboarding.components.content.PhysicalProfile
-import io.github.lamba92.corpore.app.features.onboarding.components.content.TrainingLevel
+import io.github.lamba92.corpore.app.features.onboarding.components.content.TrainingFrequency
+import io.github.lamba92.corpore.common.core.data.TrainingLevel
 
 private val defaultOnboardingContentStateMap
     get() = OnboardingStepNames.entries.associateWith { ScrollState(0) }
@@ -112,7 +112,7 @@ fun OnboardingContent(
                     onboardingFooterHeight = onboardingFooterHeight,
                     scrollState = scrollState,
                 ) {
-                    ActivitiesRotationFrequency(
+                    TrainingFrequency(
                         data = state.stepsData.rotationFrequency,
                         onUpdate = onUpdate,
                     )

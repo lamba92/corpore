@@ -59,10 +59,11 @@ import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
 import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.features.onboarding.MeasurementUnitSystem
+import io.github.lamba92.corpore.common.core.data.MeasurementUnitSystem
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingState
-import io.github.lamba92.corpore.app.features.onboarding.SportActivity
+import io.github.lamba92.corpore.common.core.data.SportActivity
+import io.github.lamba92.corpore.common.core.data.SwimmingStroke
 import io.github.lamba92.corpore.app.features.onboarding.components.OnboardingTitle
 import io.github.lamba92.corpore.common.core.units.Length
 import io.github.lamba92.corpore.common.core.units.LengthUnit
@@ -127,7 +128,7 @@ fun FitnessLevelProfile(
 
 @Composable
 fun FitnessLevelInputCard(
-    data: OnboardingState.FitnessLevelProfileStep.Calisthenics,
+    data: OnboardingState.FitnessLevelProfileStep.CalisthenicsFitness,
     onUpdate: (OnboardingEvent.FitnessLevelProfile.Calisthenics) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -202,7 +203,7 @@ fun FitnessLevelCard(
 
 @Composable
 fun GymLevelCard(
-    data: OnboardingState.FitnessLevelProfileStep.Gym,
+    data: OnboardingState.FitnessLevelProfileStep.GymFitness,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent.FitnessLevelProfile.Gym) -> Unit,
     modifier: Modifier = Modifier,
@@ -238,7 +239,7 @@ fun GymLevelCard(
 
 @Composable
 fun RunningLevelCard(
-    data: OnboardingState.FitnessLevelProfileStep.Running,
+    data: OnboardingState.FitnessLevelProfileStep.RunningFitness,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent.FitnessLevelProfile.Running) -> Unit,
     modifier: Modifier = Modifier,
@@ -278,7 +279,7 @@ fun RunningLevelCard(
 
 @Composable
 fun SwimmingLevelCard(
-    data: OnboardingState.FitnessLevelProfileStep.Swimming,
+    data: OnboardingState.FitnessLevelProfileStep.SwimmingFitness,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent.FitnessLevelProfile.Swimming) -> Unit,
     modifier: Modifier = Modifier,
@@ -305,11 +306,11 @@ fun SwimmingLevelCard(
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
-        OnboardingState.FitnessLevelProfileStep.Swimming.Strokes
+        SwimmingStroke
             .entries
             .forEach { stroke ->
                 SwimmingStrokeButton(
-                    enabled = stroke != OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.Freestyle,
+                    enabled = stroke != SwimmingStroke.Freestyle,
                     modifier = Modifier.fillMaxWidth(),
                     stroke = stroke,
                     isSelected = stroke in data.knownStrokes,
@@ -319,8 +320,8 @@ fun SwimmingLevelCard(
     }
 }
 
-private fun OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.toKnownSwimmingStrokesUpdate(
-    knownStrokes: Set<OnboardingState.FitnessLevelProfileStep.Swimming.Strokes>,
+private fun SwimmingStroke.toKnownSwimmingStrokesUpdate(
+    knownStrokes: Set<SwimmingStroke>,
 ) = when (this) {
     in knownStrokes ->
         OnboardingEvent.FitnessLevelProfile.Swimming.KnownStrokesRemoved(this)
@@ -331,7 +332,7 @@ private fun OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.toKnownSwim
 
 @Composable
 fun SwimmingStrokeButton(
-    stroke: OnboardingState.FitnessLevelProfileStep.Swimming.Strokes,
+    stroke: SwimmingStroke,
     isSelected: Boolean,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -345,16 +346,16 @@ fun SwimmingStrokeButton(
         text =
             stringResource(
                 when (stroke) {
-                    OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.Freestyle ->
+                    SwimmingStroke.Freestyle ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_freestyle
 
-                    OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.Backstroke ->
+                    SwimmingStroke.Backstroke ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_backstroke
 
-                    OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.Breaststroke ->
+                    SwimmingStroke.Breaststroke ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_breaststroke
 
-                    OnboardingState.FitnessLevelProfileStep.Swimming.Strokes.Butterfly ->
+                    SwimmingStroke.Butterfly ->
                         Res.string.onboarding_fitness_level_profile_user_input_swimming_stroke_butterfly
                 },
             ),
@@ -422,7 +423,7 @@ fun OutlineCheckboxButton(
 
 @Composable
 fun FreestyleDistance15MinTextField(
-    data: OnboardingState.FitnessLevelProfileStep.Swimming,
+    data: OnboardingState.FitnessLevelProfileStep.SwimmingFitness,
     measurementUnitSystem: MeasurementUnitSystem,
     onUpdate: (OnboardingEvent.FitnessLevelProfile.Swimming) -> Unit,
     modifier: Modifier = Modifier,

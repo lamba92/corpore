@@ -30,6 +30,7 @@ import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
 import io.github.lamba92.corpore.app.features.onboarding.components.OnboardingTitle
+import io.github.lamba92.corpore.common.core.data.TrainingLevel
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -111,13 +112,6 @@ fun TrainingLevelSelectionButtonsRow(
             )
         }
     }
-}
-
-enum class TrainingLevel {
-    Beginner,
-    Intermediate,
-    Advanced,
-    Pro,
 }
 
 @Composable

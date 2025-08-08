@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CompletedWorkout(
     val workout: Workout,
-    val session: WorkoutTimings,
+    val timings: WorkoutTimings,
     val feedback: WorkoutFeedback,
 )

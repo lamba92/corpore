@@ -61,10 +61,9 @@
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_max_pushups">Maximum consecutive push-ups</string>
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_wall_sit_hold">Wall sit hold (seconds)</string>
     <string name="onboarding_fitness_level_profile_user_input_calisthenics_can_plank_30_sec">Can hold plank for 30 seconds</string>
-    <string name="onboarding_activity_rotation_title">How long should your training cycle be?</string>
-    <string name="onboarding_activity_rotation_subtitle">Select the length of your plan.</string>
-    <string name="onboarding_activity_rotation_1_week_plan_title">1-Week Plan</string>
-    <string name="onboarding_activity_rotation_more_week_plan_title">%1$s-Weeks Plan</string>
-    <string name="onboarding_activity_rotation_1_week_plan_subtitle">Training plan lasts and repeats every week</string>
-    <string name="onboarding_activity_rotation_more_week_plan_subtitle">Training plan lasts and repeats every %1$s weeks</string>
+    <string name="onboarding_training_frequency_title">How often do you want to train?</string>
+    <string name="onboarding_training_frequency_subtitle">Select your weekly workout frequency</string>
+    <string name="onboarding_training_frequency_once">Once per week</string>
+    <string name="onboarding_training_frequency_twice">Twice per week</string>
+    <string name="onboarding_training_frequency_more">%1$s time per week</string>
 </resources>

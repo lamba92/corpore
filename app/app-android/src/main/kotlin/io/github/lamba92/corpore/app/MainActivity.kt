@@ -12,11 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CorporeApp(
-                onboardingBackHandler = {
-                    BackHandler { it.onBackClick() }
-                }
-            )
+            CorporeApp(onboardingBackHandler = { BackHandler(onBack = it::onBackClick) })
         }
     }
 }

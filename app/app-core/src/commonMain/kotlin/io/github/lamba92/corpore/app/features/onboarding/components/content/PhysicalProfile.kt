@@ -24,7 +24,7 @@ import io.github.lamba92.corpore.app.core.ui.components.WeightTextField
 import io.github.lamba92.corpore.app.core.ui.components.defaultTextFieldLabel
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.core.ui.theme.appMetrics
-import io.github.lamba92.corpore.app.features.onboarding.MeasurementUnitSystem
+import io.github.lamba92.corpore.common.core.data.MeasurementUnitSystem
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingState
 import io.github.lamba92.corpore.app.features.onboarding.components.OnboardingTitle

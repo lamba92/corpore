@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class ExerciseDisplayable(
     val name: String,
     val description: String,
-    val instructions: List<String>,
+    val instructions: String,
     val locale: Locale,
 )

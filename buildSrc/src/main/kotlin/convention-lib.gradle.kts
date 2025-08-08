@@ -29,6 +29,8 @@ kotlin {
     jvm()
     iosArm64()
     iosSimulatorArm64()
-
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-sensitive-resolution")
+    }
 }
 

@@ -25,7 +25,7 @@ import io.github.lamba92.corpore.app.core.ui.components.VerticalSpacer
 import io.github.lamba92.corpore.app.core.ui.components.spacedByThemeInnerPadding
 import io.github.lamba92.corpore.app.core.ui.theme.CorporeTheme
 import io.github.lamba92.corpore.app.features.onboarding.OnboardingEvent
-import io.github.lamba92.corpore.app.features.onboarding.SportActivity
+import io.github.lamba92.corpore.common.core.data.SportActivity
 import io.github.lamba92.corpore.app.features.onboarding.components.OnboardingTitle
 import org.jetbrains.compose.resources.stringResource
 

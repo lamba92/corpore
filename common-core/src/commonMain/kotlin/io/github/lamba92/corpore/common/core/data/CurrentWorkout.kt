@@ -3,7 +3,7 @@ package io.github.lamba92.corpore.common.core.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExerciseWithMetrics(
-    val exercise: Exercise,
-    val metrics: ExerciseMetrics,
+data class CurrentWorkout(
+    val workout: Workout,
+    val timings: WorkoutTimings,
 )

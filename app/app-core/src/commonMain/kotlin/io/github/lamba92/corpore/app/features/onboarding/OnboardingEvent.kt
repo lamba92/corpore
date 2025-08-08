@@ -1,6 +1,10 @@
 package io.github.lamba92.corpore.app.features.onboarding
 
-import io.github.lamba92.corpore.app.features.onboarding.components.content.TrainingLevel
+import io.github.lamba92.corpore.common.core.data.TrainingLevel
+import io.github.lamba92.corpore.common.core.data.MeasurementUnitSystem
+import io.github.lamba92.corpore.common.core.data.SportActivity
+import io.github.lamba92.corpore.common.core.data.SwimmingStroke
+import io.github.lamba92.corpore.common.core.data.TrainingFrequency
 import io.github.lamba92.corpore.common.core.units.Length
 import io.github.lamba92.corpore.common.core.units.Weight
 import kotlinx.serialization.Serializable
@@ -86,11 +90,11 @@ sealed interface OnboardingEvent {
             ) : Swimming
 
             data class KnownStrokesAdded(
-                val stroke: OnboardingState.FitnessLevelProfileStep.Swimming.Strokes,
+                val stroke: SwimmingStroke,
             ) : Swimming
 
             data class KnownStrokesRemoved(
-                val stroke: OnboardingState.FitnessLevelProfileStep.Swimming.Strokes,
+                val stroke: SwimmingStroke,
             ) : Swimming
         }
 
@@ -111,7 +115,7 @@ sealed interface OnboardingEvent {
     }
 
     @Serializable
-    data class ActivitiesRotationFrequencySelected(
-        val frequency: OnboardingState.RotationFrequencyStep.RotationFrequency,
+    data class TrainingFrequencySelected(
+        val frequency: TrainingFrequency,
     ) : OnboardingEvent
 }

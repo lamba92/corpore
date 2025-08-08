@@ -11,10 +11,5 @@ data class User(
     val name: String,
     val registeredAt: EpochMillisSerializableInstant,
     val pictureUrl: String? = null,
-//    val trainingPreferences: TrainingPreferences? = null,
+    val currentWorkout: CurrentWorkout? = null,
 )
-
-// @Serializable
-// data class TrainingPreferences(
-//    val
-// )
