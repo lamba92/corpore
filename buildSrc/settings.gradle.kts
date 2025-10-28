@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("dev.panuszewski.typesafe-conventions") version "0.7.1"
+    id("dev.panuszewski.typesafe-conventions") version "0.9.1"
 }
 
 dependencyResolutionManagement {
